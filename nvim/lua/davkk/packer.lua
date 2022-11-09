@@ -22,6 +22,8 @@ return require('packer').startup(function(use)
     use { 'nvim-telescope/telescope.nvim', requires = { {'nvim-lua/plenary.nvim'} } }
     use 'nvim-telescope/telescope-file-browser.nvim'
 
+    use 'lukas-reineke/indent-blankline.nvim'
+
     use {
         'nvim-treesitter/nvim-treesitter',
         run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
@@ -35,7 +37,12 @@ return require('packer').startup(function(use)
         end
     }
 
-    use 'numToStr/Comment.nvim'
+    use { 
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
 
     use 'nvim-lualine/lualine.nvim'
 

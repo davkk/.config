@@ -1,9 +1,5 @@
-#r "nuget: FSharp.Stats"
-
-open FSharp.Stats
-
-let something = "something"
-
 let square x = float (x * x)
 
-let sum = 2 + 2
+let add222 = (+) 2.
+
+14 |> square |> add222

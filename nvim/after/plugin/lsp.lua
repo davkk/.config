@@ -33,6 +33,10 @@ local on_attach  = function(client, bufnr)
     buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
     buf_set_keymap('n', '<leader>fsi', ':FsiShow<CR>', opts)
+
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, { focusable = false }
+    )
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -66,27 +70,9 @@ setup(require('ionide'), {
     cmd = { "fsautocomplete" },
 })
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, { focusable = false }
-)
 
 vim.cmd [[
-    let g:fsharp#fsi_window_command = "botright vnew"
+    let g:fsharp#fsi_window_command = 'botright vnew'
     let g:fsharp#lsp_recommended_colorscheme = 0
-    "
-    " " Required: to be used with nvim-cmp.
-    " let g:fsharp#lsp_auto_setup = 0
-    "
-    " " Recommended: show tooptip when you hold cursor over something for 1 second.
-    " if has('nvim') && exists('*nvim_open_win')
-    "     set updatetime=1000
-    "
-    "     augroup FSharpShowTooltip
-    "     autocmd!
-    "     autocmd CursorHold *.fs,*.fsi,*.fsx call fsharp#showTooltip()
-    "     augroup END
-    " endif
-    "
-    " Recommended: Paket files are excluded from the project loader.
     let g:fsharp#exclude_project_directories = ['paket-files']
 ]]
