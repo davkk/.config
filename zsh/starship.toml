@@ -40,7 +40,9 @@ format = "[:](bright-black) [$branch(:$remote_branch)$symbol]($style)"
 
 [git_metrics]
 disabled = false
-format = "([+$added]($added_style) )([-$deleted]($deleted_style))"
+added_style = "bright-green"
+deleted_style = "bright-red"
+format = "[:](bright-black) ([+$added]($added_style)) ([-$deleted]($deleted_style))"
 
 [fill]
 symbol = " "
