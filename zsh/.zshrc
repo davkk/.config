@@ -103,6 +103,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.dotnet/tools
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
