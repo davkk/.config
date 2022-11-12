@@ -73,26 +73,24 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git 
-    tmux 
+    # tmux 
     vi-mode 
+    fzf
     zsh-autosuggestions 
     zsh-syntax-highlighting 
     web-search
 )
 
 export STARSHIP_CONFIG=$HOME/.config/zsh/starship.toml
-export ZSH_TMUX_AUTOSTART=true
-export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
+# export ZSH_TMUX_AUTOSTART=true
+# export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
+export FZF_BASE=$(which fzf)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 bindkey -v
-
-# LS_COLORS=$LS_COLORS':di=36;01'
-# LS_COLORS=$LS_COLORS':tw=36;01'
-# LS_COLORS=$LS_COLORS':ow=36;01'
 
 export TERM='xterm-256color'
 export MANPAGER='nvim +Man!'
@@ -104,6 +102,9 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.dotnet/tools
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -132,7 +133,11 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias nv='nvim'
 alias python='python3'
+alias nuget='nuget.exe'
 
-eval `dircolors --sh ~/.config/zsh/.gruvbox.dircolors`
+# eval `dircolors --sh ~/.config/zsh/.gruvbox.dircolors`
+LS_COLORS=$LS_COLORS':di=36;01'
+LS_COLORS=$LS_COLORS':tw=36;01'
+LS_COLORS=$LS_COLORS':ow=36;01'
 
 eval "$(starship init zsh)"

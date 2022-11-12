@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory$git_branch $git_metrics $fill $time
+$directory$git_branch $fill $time
 $character
 """
 
@@ -38,11 +38,11 @@ style = "purple"
 symbol = " "
 format = "[:](bright-black) [$branch(:$remote_branch)$symbol]($style)"
 
-[git_metrics]
-disabled = false
-added_style = "bright-green"
-deleted_style = "bright-red"
-format = "([[:](bright-black) +$added]($added_style)) ([-$deleted]($deleted_style))"
+# [git_metrics]
+# disabled = false
+# added_style = "bright-green"
+# deleted_style = "bright-red"
+# format = "([[:](bright-black) +$added]($added_style)) ([-$deleted]($deleted_style))"
 
 [fill]
 symbol = " "

@@ -1,5 +1,6 @@
 plugins/
 .oh-my-zsh/
+nvm/
 
 # Created by https://www.toptal.com/developers/gitignore/api/vim,zsh
 # Edit at https://www.toptal.com/developers/gitignore?templates=vim,zsh

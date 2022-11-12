@@ -65,8 +65,6 @@ return require('packer').startup(function(use)
 
     use 'ionide/Ionide-vim'
 
-    use 'ixru/nvim-markdown'
-
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then

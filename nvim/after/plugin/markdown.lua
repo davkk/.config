@@ -1,1 +1,1 @@
--- vim.cmd "let g:vim_markdown_math = 1"
+vim.cmd "let g:vim_markdown_math = 1"

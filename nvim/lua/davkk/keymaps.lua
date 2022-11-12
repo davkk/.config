@@ -25,10 +25,10 @@ keymap.set('n', '<leader>se', '<C-w>=', opts)
 keymap.set('n', '<leader>sx', ':close<CR>', opts)
 
 -- resize window
-keymap.set('n', '<leader><left>', '<C-w>>', opts)
-keymap.set('n', '<leader><right>', '<C-w><', opts)
-keymap.set('n', '<leader><up>', '<C-w>-', opts)
-keymap.set('n', '<leader><down>', '<C-w>+', opts)
+keymap.set('n', '<leader><left>', '<C-w>5<', opts)
+keymap.set('n', '<leader><right>', '<C-w>5>', opts)
+keymap.set('n', '<leader><up>', '<C-w>5+', opts)
+keymap.set('n', '<leader><down>', '<C-w>5-', opts)
 
 -- better experience
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
