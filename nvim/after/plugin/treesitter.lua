@@ -23,3 +23,10 @@ ts.setup {
         enable = true,
     },
 }
+
+local ok, ts_context = pcall(require, "treesitter-context")
+if not ok then return end
+
+ts_context.setup {
+    enable = true
+}

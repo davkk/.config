@@ -32,6 +32,9 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
     }
+    -- use 'nvim-treesitter/nvim-treesitter-context'
+
+    use 'numToStr/Navigator.nvim'
 
     use {
         'kylechui/nvim-surround', 
@@ -39,6 +42,15 @@ return require('packer').startup(function(use)
         config = function()
             require('nvim-surround').setup()
         end
+    }
+
+    use {
+        'abecodes/tabout.nvim',
+        config = function()
+            require('tabout').setup {}
+        end,
+        wants = {'nvim-treesitter'}, -- or require if not used so far
+        after = {'nvim-cmp'} -- if a completion plugin is using tabs load it before
     }
 
     use { 
