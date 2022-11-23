@@ -5,10 +5,13 @@
 !nvim/
 !nvim/**
 
+!tmux/
 !tmux/**
 
+!zsh/
 !zsh/**
 
+!git/
 !git/**
 
 plugins/
