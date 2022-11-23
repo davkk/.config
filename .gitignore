@@ -1,18 +1,18 @@
 *
-!nvim/
-!nvim/**/*
 
-!tmux/
-!tmux/**/*
+!.gitignore
 
-!zsh/
-!zsh/**/*
+!nvim/**
 
-!git/
-!git/**/*
+!tmux/**
+
+!zsh/**
+
+!git/**
 
 plugins/
 .oh-my-zsh/
+
 
 # nvm/
 # astro/
