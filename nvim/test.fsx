@@ -5,4 +5,3 @@ let square x =
 let add222 = (+) 2.
 
 14 |> square
-

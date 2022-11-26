@@ -38,7 +38,7 @@ local on_attach  = function(client, bufnr)
         vim.lsp.handlers.hover, { focusable = false }
     )
 
-    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = true }]]
+    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)]]
 end
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
