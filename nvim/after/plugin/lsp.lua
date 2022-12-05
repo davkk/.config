@@ -30,7 +30,7 @@ local on_attach  = function(client, bufnr)
     buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format { async = true }<CR>', opts)
+    buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format(nil, 1000)<CR>', opts)
 
     buf_set_keymap('n', '<leader>fsi', ':FsiShow<CR>', opts)
 
@@ -38,7 +38,7 @@ local on_attach  = function(client, bufnr)
         vim.lsp.handlers.hover, { focusable = false }
     )
 
-    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)]]
+    vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format(nil, 1000)]]
 end
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
