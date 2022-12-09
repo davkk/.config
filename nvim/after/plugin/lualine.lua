@@ -35,7 +35,7 @@ local branch = {"branch", icons_enabled = true, icon = ""}
 lualine.setup({
     options = {
         icons_enabled = true,
-        theme = 'gruvbox',
+        theme = 'no-clown-fiesta',
         component_separators = '│',
         section_separators = '',
         disabled_filetypes = {
