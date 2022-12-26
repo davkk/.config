@@ -1,4 +1,4 @@
-let square x =
+let square x = 
     let something = "nothig"
     float (x * x)
 

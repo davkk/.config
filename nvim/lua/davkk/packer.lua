@@ -1,8 +1,8 @@
 local ensure_packer = function()
     local fn = vim.fn
-    local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+    local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
     if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+        fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
         vim.cmd [[packadd packer.nvim]]
         return true
     end
@@ -16,12 +16,19 @@ return require('packer').startup(function(use)
 
     use 'ellisonleao/gruvbox.nvim'
     use 'aktersnurra/no-clown-fiesta.nvim'
+    use({
+        'rose-pine/neovim',
+        as = 'rose-pine',
+    })
 
     use 'nvim-tree/nvim-web-devicons'
 
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable "make" == 1 }
-    use { 'nvim-telescope/telescope.nvim', requires = { {'nvim-lua/plenary.nvim'} } }
+    use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/plenary.nvim' } } }
     use 'nvim-telescope/telescope-file-browser.nvim'
+
+    use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
+    use('mbbill/undotree')
 
     use 'lukas-reineke/indent-blankline.nvim'
     use {
@@ -32,14 +39,14 @@ return require('packer').startup(function(use)
     use 'numToStr/Navigator.nvim'
 
     use {
-        'kylechui/nvim-surround', 
+        'kylechui/nvim-surround',
         tag = '*', -- Use for stability; omit to use `main` branch for the latest features
         config = function()
             require('nvim-surround').setup()
         end
     }
 
-    use { 
+    use {
         'numToStr/Comment.nvim',
         config = function()
             require('Comment').setup()
@@ -48,6 +55,7 @@ return require('packer').startup(function(use)
 
     use 'nvim-lualine/lualine.nvim'
 
+    use('tpope/vim-fugitive')
     use {
         'lewis6991/gitsigns.nvim',
         config = function()
@@ -55,7 +63,14 @@ return require('packer').startup(function(use)
         end
     }
 
-    use 'gpanders/editorconfig.nvim'
+    use {
+        'abecodes/tabout.nvim',
+        config = function() require('tabout').setup() end,
+        wants = { 'nvim-treesitter' }, -- or require if not used so far
+        after = { 'nvim-cmp' } -- if a completion plugin is using tabs load it before
+    }
+
+    -- use 'gpanders/editorconfig.nvim'
 
     use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
     use 'onsails/lspkind-nvim' -- vscode-like pictograms

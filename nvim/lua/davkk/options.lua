@@ -20,6 +20,9 @@ opt.breakindent = true
 -- text wrapping
 opt.wrap = false
 
+-- disable autowrapping
+opt.tw = 500
+
 -- search
 opt.ignorecase = true
 opt.smartcase = true
