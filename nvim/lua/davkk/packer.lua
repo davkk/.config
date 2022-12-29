@@ -14,12 +14,38 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim'
 
-    use 'ellisonleao/gruvbox.nvim'
-    use 'aktersnurra/no-clown-fiesta.nvim'
-    use({
+    use { -- LSP Configuration & Plugins
+        'neovim/nvim-lspconfig',
+        requires = {
+            -- Automatically install LSPs to stdpath for neovim
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
+
+            -- Useful status updates for LSP
+            'j-hui/fidget.nvim',
+
+            -- Additional lua configuration, makes nvim stuff amazing
+            'folke/neodev.nvim',
+        },
+    }
+    use 'onsails/lspkind-nvim' -- vscode-like pictograms
+    use 'ionide/Ionide-vim' -- F# support
+
+    use { -- Autocompletion
+        'hrsh7th/nvim-cmp',
+        requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    }
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+
+    -- use 'ellisonleao/gruvbox.nvim'
+    -- use 'aktersnurra/no-clown-fiesta.nvim'
+    use {
         'rose-pine/neovim',
         as = 'rose-pine',
-    })
+    }
 
     use 'nvim-tree/nvim-web-devicons'
 
@@ -27,8 +53,7 @@ return require('packer').startup(function(use)
     use { 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/plenary.nvim' } } }
     use 'nvim-telescope/telescope-file-browser.nvim'
 
-    use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
-    use('mbbill/undotree')
+    use 'mbbill/undotree'
 
     use 'lukas-reineke/indent-blankline.nvim'
     use {
@@ -36,6 +61,7 @@ return require('packer').startup(function(use)
         config = function() require('nvim-autopairs').setup {} end
     }
 
+    -- seamlessly navigate between nvim and tmux
     use 'numToStr/Navigator.nvim'
 
     use {
@@ -65,22 +91,12 @@ return require('packer').startup(function(use)
 
     use {
         'abecodes/tabout.nvim',
-        config = function() require('tabout').setup() end,
+        config = function() require('tabout').setup({}) end,
         wants = { 'nvim-treesitter' }, -- or require if not used so far
         after = { 'nvim-cmp' } -- if a completion plugin is using tabs load it before
     }
 
     -- use 'gpanders/editorconfig.nvim'
-
-    use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
-    use 'onsails/lspkind-nvim' -- vscode-like pictograms
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/nvim-cmp'
-
-    use 'ionide/Ionide-vim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
