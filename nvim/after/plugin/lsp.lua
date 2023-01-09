@@ -10,6 +10,7 @@ require('fidget').setup()
 local servers = {
     'sumneko_lua',
     'pyright',
+    'marksman',
 }
 
 require("mason").setup()
@@ -106,3 +107,6 @@ setup(lspconfig.sumneko_lua, {
         }
     }
 })
+
+-- markdown
+setup(lspconfig.marksman)

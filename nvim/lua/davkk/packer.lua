@@ -30,6 +30,7 @@ return require('packer').startup(function(use)
     }
     use 'onsails/lspkind-nvim' -- vscode-like pictograms
     use 'ionide/Ionide-vim' -- F# support
+    use 'adelarsq/neofsharp.vim'
 
     use { -- Autocompletion
         'hrsh7th/nvim-cmp',
@@ -96,7 +97,7 @@ return require('packer').startup(function(use)
         after = { 'nvim-cmp' } -- if a completion plugin is using tabs load it before
     }
 
-    -- use 'gpanders/editorconfig.nvim'
+    use 'gpanders/editorconfig.nvim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

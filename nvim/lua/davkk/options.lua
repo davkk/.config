@@ -21,7 +21,7 @@ opt.breakindent = true
 opt.wrap = false
 
 -- disable autowrapping
-opt.tw = 500
+opt.fo:remove("t")
 
 -- search
 opt.ignorecase = true
