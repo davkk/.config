@@ -17,6 +17,8 @@
 plugins/
 .oh-my-zsh/
 
+!nvim/lua/plugins/
+!nvim/lua/plugins/**
 
 # nvm/
 # astro/

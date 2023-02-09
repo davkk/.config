@@ -1,5 +1,9 @@
 local opt = vim.opt
 
+-- colors
+vim.opt.background = "dark"
+vim.opt.termguicolors = true
+
 -- file encoding
 opt.fileencoding = "utf-8"
 
@@ -26,6 +30,11 @@ opt.fo:remove("t")
 -- search
 opt.ignorecase = true
 opt.smartcase = true
+
+-- netrw
+vim.g.netrw_browse_split = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
 
 -- cursor line
 opt.cursorline = true
