@@ -19,7 +19,7 @@ return {
                     ]]
                 end
             },
-            "adelarsq/neofsharp.vim",
+            -- "adelarsq/neofsharp.vim",
         },
         config = function()
             local utils = require("plugins.lsp.utils")

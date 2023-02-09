@@ -1,7 +1,7 @@
 return {
     {
         "nvim-telescope/telescope.nvim",
-        event = "BufReadPre",
+        lazy = false,
         dependencies = {
             { "nvim-lua/plenary.nvim" },
             {
