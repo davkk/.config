@@ -12,7 +12,7 @@ return {
         'aktersnurra/no-clown-fiesta.nvim',
         opts = {
             transparent = true, -- Enable this to disable the bg color
-            styles = { 
+            styles = {
                 -- You can set any of the style values specified for `:h nvim_set_hl`
                 comments = {},
                 keywords = {},
@@ -35,7 +35,7 @@ return {
             disable_float_background = true,
             disable_italics = true,
         },
-        config = function(_, opts) 
+        config = function(_, opts)
             require("rose-pine").setup(opts)
             vim.cmd([[colorscheme rose-pine]])
         end,
