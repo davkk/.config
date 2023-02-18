@@ -17,9 +17,9 @@ return {
                         let g:fsharp#lsp_recommended_colorscheme = 0
                         let g:fsharp#exclude_project_directories = ['paket-files']
                     ]]
-                end
+                end,
             },
-            -- "adelarsq/neofsharp.vim",
+            "adelarsq/neofsharp.vim",
         },
         config = function()
             local utils = require("plugins.lsp.utils")

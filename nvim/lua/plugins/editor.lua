@@ -1,5 +1,8 @@
 return {
-    "gpanders/editorconfig.nvim",
+    {
+        "gpanders/editorconfig.nvim",
+        event = "BufReadPost"
+    },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -34,4 +37,3 @@ return {
         dependencies = { "nvim-treesitter" }, -- or require if not used so far
     },
 }
-

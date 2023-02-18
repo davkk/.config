@@ -1,5 +1,8 @@
 local opt = vim.opt
 
+-- disable mouse
+opt.mouse = ""
+
 -- colors
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
