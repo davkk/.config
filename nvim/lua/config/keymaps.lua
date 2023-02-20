@@ -37,3 +37,6 @@ keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true }
 
 -- exit teminal with Esc
 keymap.set('t', '<Esc>', '<C-\\><C-n>')
+
+-- select all
+keymap.set('n', '<leader>a', 'gg<S-V>G', opts)
