@@ -36,4 +36,9 @@ return {
         event = "InsertEnter",
         dependencies = { "nvim-treesitter" }, -- or require if not used so far
     },
+    {
+        "EtiamNullam/deferred-clipboard.nvim",
+        event = "BufReadPost",
+        config = true,
+    }
 }

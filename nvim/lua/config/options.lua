@@ -56,14 +56,17 @@ opt.backspace = "indent,eol,start"
 
 -- clipboard
 vim.g.clipboard = {
-    name = "WslClipboard",
+    name = 'win32yank-wsl',
     copy = {
-        ["+"] = "clip.exe",
-        ["*"] = "clip.exe",
+        ['+'] = 'win32yank.exe -i --crlf',
+        ['*'] = 'win32yank.exe -i --crlf',
+    },
+    paste = {
+        ['+'] = 'win32yank.exe -o --lf',
+        ['*'] = 'win32yank.exe -o --lf',
     },
     cache_enabled = 0,
 }
-opt.clipboard:append("unnamedplus")
 
 -- force splits
 opt.splitright = true
