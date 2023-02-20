@@ -55,6 +55,14 @@ opt.signcolumn = "yes"
 opt.backspace = "indent,eol,start"
 
 -- clipboard
+vim.g.clipboard = {
+    name = "WslClipboard",
+    copy = {
+        ["+"] = "clip.exe",
+        ["*"] = "clip.exe",
+    },
+    cache_enabled = 0,
+}
 opt.clipboard:append("unnamedplus")
 
 -- force splits
@@ -87,7 +95,7 @@ opt.isfname:append("@-@")
 -- more space for messages
 opt.cmdheight = 1
 
--- Don't pass messages to |ins-completion-menu|. // not mine, borrowed 
+-- Don't pass messages to |ins-completion-menu|. // not mine, borrowed
 opt.shortmess:append("c")
 
 -- better experience
