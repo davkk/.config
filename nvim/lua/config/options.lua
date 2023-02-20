@@ -4,8 +4,8 @@ local opt = vim.opt
 opt.mouse = ""
 
 -- colors
-vim.opt.background = "dark"
-vim.opt.termguicolors = true
+opt.background = "dark"
+opt.termguicolors = true
 
 -- file encoding
 opt.fileencoding = "utf-8"
@@ -16,6 +16,12 @@ opt.title = true
 -- line numbers
 opt.relativenumber = true
 opt.number = true
+
+-- winbar
+opt.winbar = "%=%f %m%="
+
+-- global statusline
+opt.laststatus = 3
 
 -- tabs and indent
 opt.tabstop = 4

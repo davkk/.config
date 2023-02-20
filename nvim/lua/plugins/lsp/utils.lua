@@ -29,6 +29,7 @@ M.setup = function()
         severity_sort = true,
         signs = { active = signs },
         underline = true,
+        update_in_insert = true,
         float = {
             focusable = false,
             style = 'minimal',
@@ -59,7 +60,7 @@ M.on_attach = function(_, bufnr)
     vim.keymap.set('n', '<leader>fsi', ':FsiShow<CR>', opts)
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-            vim.lsp.handlers.hover, { focusable = false }
+            vim.lsp.handlers.hover, { focusable = false, border = "rounded" }
         )
 end
 
