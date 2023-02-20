@@ -36,8 +36,8 @@ return {
                 function(server_name)
                     utils.server_setup(lspconfig[server_name])
                 end,
-                ["sumneko_lua"] = function()
-                    utils.server_setup(lspconfig.sumneko_lua, {
+                ["lua_ls"] = function()
+                    utils.server_setup(lspconfig.lua_ls, {
                         -- Fix Undefined global 'vim'
                         settings = {
                             Lua = {
