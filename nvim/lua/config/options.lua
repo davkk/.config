@@ -48,9 +48,6 @@ vim.g.netrw_winsize = 25
 -- cursor line
 opt.cursorline = true
 
--- apearance
-opt.signcolumn = "yes"
-
 -- backspace
 opt.backspace = "indent,eol,start"
 
@@ -79,7 +76,7 @@ opt.iskeyword:append("-")
 opt.colorcolumn = "80"
 
 -- faster completion
-opt.updatetime = 100
+opt.updatetime = 50
 
 -- dont create swap file nor backup file
 opt.swapfile = false
@@ -109,6 +106,3 @@ opt.list = true
 
 -- save undo history
 opt.undofile = true
-
--- hide command-line when not used
-opt.cmdheight = 0

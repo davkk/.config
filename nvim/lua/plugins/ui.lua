@@ -24,7 +24,7 @@ return {
             custom_rose_pine.normal.c.bg = "None"
             custom_rose_pine.insert.c.bg = "None"
             custom_rose_pine.visual.c.bg = "None"
-
+            custom_rose_pine.command.c.bg = "None"
 
             return {
                 options = {
