@@ -1,5 +1,33 @@
 return {
     {
+        'stevearc/oil.nvim',
+        lazy = false,
+        opts = {
+            columns = {
+                "icon",
+                -- "size",
+                -- "mtime",
+            },
+            keymaps = {
+                ["q"] = "actions.close",
+                ["<C-v>"] = "actions.select_vsplit",
+            },
+            float = {
+                max_width = 100,
+                max_height = 30,
+                win_options = {
+                    winblend = 0,
+                },
+            },
+        },
+        config = function(_, opts)
+            local oil = require("oil")
+            oil.setup(opts)
+
+            vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent directory" })
+        end,
+    },
+    {
         "gpanders/editorconfig.nvim",
         event = "BufReadPost"
     },
@@ -40,5 +68,10 @@ return {
         "EtiamNullam/deferred-clipboard.nvim",
         event = "BufReadPost",
         config = true,
-    }
+    },
+    {
+        "m4xshen/smartcolumn.nvim",
+        event = "BufReadPost",
+        config = true,
+    },
 }
