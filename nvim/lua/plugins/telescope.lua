@@ -30,9 +30,7 @@ return {
                 "\\\\",
                 function()
                     require("telescope.builtin").buffers({
-                        theme = "dropdown",
-                        grouped = true,
-                        layout_config = { height = 30 },
+                        buffer = 0
                     })
                 end,
                 desc = "Search Buffers"
@@ -51,6 +49,17 @@ return {
                     })
                 end,
                 desc = "Browse Files",
+            },
+
+            {
+                "<leader>se",
+                function()
+                    require("telescope.builtin").diagnostics({
+                        theme = "dropdown",
+                        grouped = true,
+                        layout_config = { height = 30 },
+                    })
+                end
             },
         },
         opts = function()
