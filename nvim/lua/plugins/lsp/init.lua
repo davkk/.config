@@ -64,7 +64,7 @@ return {
                     root = root or lspconfig.util.root_pattern("*.fsx")(filename)
                     return root
                 end,
-                cmd = { "fsautocomplete" },
+                cmd = { "dotnet", "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
             })
         end,
     },
