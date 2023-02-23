@@ -1,17 +1,11 @@
 local opt = vim.opt
 
--- disable mouse
-opt.mouse = ""
-
 -- colors
 opt.background = "dark"
 opt.termguicolors = true
 
 -- file encoding
 opt.fileencoding = "utf-8"
-
--- title
-opt.title = true
 
 -- line numbers
 opt.relativenumber = true
