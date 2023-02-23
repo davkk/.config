@@ -9,6 +9,12 @@ return {
             context_char = '▏',
             show_current_context = true,
         },
+        config = function (_, opts)
+            require("indent_blankline").setup(opts)
+
+            vim.cmd [[highlight IndentBlanklineChar guifg=#1f1d2e gui=nocombine]]
+            vim.cmd [[highlight IndentBlanklineContextChar guifg=#6e6a86 gui=nocombine]]
+        end
     },
 
     {
