@@ -6,8 +6,27 @@ return {
             "hrsh7th/cmp-nvim-lsp",
             "williamboman/mason-lspconfig.nvim",
 
-            "j-hui/fidget.nvim",
-            "folke/neodev.nvim",
+            {
+                "j-hui/fidget.nvim",
+                opts = {
+                    text = {
+                        spinner = "line",
+                        done = "",
+                    },
+                    window = {
+                        blend = 0,
+                        zindex = 100,
+                        border = "rounded", -- style of border for the fidget window
+                    },
+                },
+                config = function(_, opts)
+                    require("fidget").setup(opts)
+                end
+            },
+            {
+                "folke/neodev.nvim",
+                config = true
+            },
 
             {
                 "ionide/Ionide-vim", -- F# support
@@ -17,9 +36,17 @@ return {
                         let g:fsharp#lsp_recommended_colorscheme = 0
                         let g:fsharp#exclude_project_directories = ['paket-files']
                     ]]
+
+                    -- change filetype of fsproj files
+                    vim.api.nvim_create_autocmd(
+                        { 'BufNewFile', 'BufRead' },
+                        {
+                            command = 'set ft=xml',
+                            pattern = { '*.fsproj' },
+                        })
                 end,
             },
-            "adelarsq/neofsharp.vim",
+            -- "adelarsq/neofsharp.vim",
         },
         config = function()
             local utils = require("plugins.lsp.utils")
@@ -27,6 +54,8 @@ return {
             local lspconfig = require("lspconfig")
 
             utils.setup()
+
+            require("lspconfig.ui.windows").default_options.border = "rounded"
 
             mason_lspconfig.setup({
                 ensure_installed = utils.lsp_servers,
@@ -64,7 +93,7 @@ return {
                     root = root or lspconfig.util.root_pattern("*.fsx")(filename)
                     return root
                 end,
-                cmd = { "dotnet", "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
+                cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
             })
         end,
     },
