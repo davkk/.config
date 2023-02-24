@@ -43,6 +43,7 @@ return {
                         {
                             command = 'set ft=xml',
                             pattern = { '*.fsproj' },
+                            group = vim.api.nvim_create_augroup('fsprojFtdetect', { clear = true })
                         })
                 end,
             },
