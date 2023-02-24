@@ -16,6 +16,8 @@ return {
                 "elm",
                 "javascript",
                 "typescript",
+                "tsx",
+                "css",
                 "astro",
                 "json",
                 "graphql",
