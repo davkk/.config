@@ -35,8 +35,8 @@ use_12hr = true
 
 [git_branch]
 style = "purple"
-symbol = " "
-format = "[:](bright-black) [$branch(:$remote_branch)$symbol]($style)"
+symbol = " "
+format = "[:](bright-black) [$symbol$branch(:$remote_branch)]($style)"
 
 # [git_metrics]
 # disabled = false
