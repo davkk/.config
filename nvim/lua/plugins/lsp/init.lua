@@ -82,6 +82,38 @@ return {
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
                     })
+                end,
+                ["tailwindcss"] = function()
+                    utils.server_setup(lspconfig.tailwindcss, {
+                        filetypes = { "fsharp", "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx", "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact", "rescript", "typescript", "typescriptreact", },
+                        init_options = {
+                            userLanguages = {
+                                elm = "html",
+                                html = "html",
+                            },
+                        },
+                        settings = {
+                            tailwindCss = {
+                                includeLanguages = {
+                                    elm = "html",
+                                    html = "html",
+                                },
+                                classAttributes = { "class", "className", "classList", "classes" },
+                                experimental = {
+                                    classRegex = {
+                                        "\\bclass[\\s(<|]+\"([^\"]*)\"",
+                                        "\\bclass[\\s(]+\"[^\"]*\"[\\s+]+\"([^\"]*)\"",
+                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
+                                        "\\bclassList[\\s\\[\\(]+\"([^\"]*)\"",
+                                        "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\"",
+                                        "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\""
+                                    }
+                                },
+                            }
+                        }
+                    })
                 end
             })
 

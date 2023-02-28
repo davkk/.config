@@ -6,6 +6,7 @@ return {
             "mrjones2014/nvim-ts-rainbow",
             "windwp/nvim-ts-autotag",
             "andymass/vim-matchup",
+            "JoosepAlviste/nvim-ts-context-commentstring",
         },
         build = ":TSUpdate",
         event = "BufReadPost",
@@ -53,6 +54,9 @@ return {
                 extended_mode = true,
                 max_file_lines = 1000,
             },
+            context_commentstring = {
+                enable = true,
+            }
         },
         config = function(_, opts)
             local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
