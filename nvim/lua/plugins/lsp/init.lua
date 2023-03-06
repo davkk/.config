@@ -48,6 +48,8 @@ return {
                 end,
             },
             -- "adelarsq/neofsharp.vim",
+
+            "simrat39/rust-tools.nvim",
         },
         config = function()
             local utils = require("plugins.lsp.utils")
@@ -85,7 +87,9 @@ return {
                 end,
                 ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
-                        filetypes = { "fsharp", "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx", "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact", "rescript", "typescript", "typescriptreact", },
+                        filetypes = { "fsharp", "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
+                            "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
+                            "rescript", "typescript", "typescriptreact", },
                         init_options = {
                             userLanguages = {
                                 elm = "html",
@@ -114,7 +118,7 @@ return {
                             }
                         }
                     })
-                end
+                end,
             })
 
             utils.server_setup(require("ionide"), {
@@ -127,6 +131,31 @@ return {
                     return root
                 end,
                 cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
+            })
+
+            require("rust-tools").setup({
+                server = {
+                    on_attach = utils.on_attach,
+                    capabilities = utils.capabilities,
+                    flags = {
+                        debounce_text_changes = 100,
+                    },
+                    cmd = {
+                        "rustup", "run", "stable", "rust-analyzer"
+                    },
+                    imports = {
+                        prefix = "crate",
+                    },
+                    cargo = {
+                        features = "all",
+                    },
+                    check = {
+                        command = "clippy",
+                    },
+                    diagnostics = {
+                        enable = true,
+                    },
+                }
             })
         end,
     },
