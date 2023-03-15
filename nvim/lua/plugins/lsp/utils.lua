@@ -29,7 +29,7 @@ M.setup = function()
     vim.diagnostic.config({
         severity_sort = true,
         signs = { active = signs },
-        underline = false,
+        underline = true,
         update_in_insert = false,
         float = {
             focusable = false,

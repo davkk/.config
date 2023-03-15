@@ -87,41 +87,19 @@ return {
                 end,
                 ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
-                        filetypes = { "fsharp", "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
+                        filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
                             "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
                             "rescript", "typescript", "typescriptreact", },
-                        init_options = {
-                            userLanguages = {
-                                elm = "html",
-                                html = "html",
-                            },
-                        },
-                        settings = {
-                            tailwindCss = {
-                                includeLanguages = {
-                                    elm = "html",
-                                    html = "html",
-                                },
-                                classAttributes = { "class", "className", "classList", "classes" },
-                                experimental = {
-                                    classRegex = {
-                                        "\\bclass[\\s(<|]+\"([^\"]*)\"",
-                                        "\\bclass[\\s(]+\"[^\"]*\"[\\s+]+\"([^\"]*)\"",
-                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
-                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
-                                        "\\bclass[\\s<|]+\"[^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" [^\"]*\"\\s*\\+{2}\\s*\" ([^\"]*)\"",
-                                        "\\bclassList[\\s\\[\\(]+\"([^\"]*)\"",
-                                        "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\"",
-                                        "\\bclassList[\\s\\[\\(]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"[^\"]*\",\\s[^\\)]+\\)[\\s\\[\\(,]+\"([^\"]*)\""
-                                    }
-                                },
-                            }
-                        }
                     })
                 end,
             })
 
             utils.server_setup(require("ionide"), {
+                cmd = {
+                    "fsautocomplete",
+                    "--project-graph-enabled",
+                    "--adaptive-lsp-server-enabled",
+                },
                 root_dir = function(filename, _)
                     local root
                     root = lspconfig.util.find_git_ancestor(filename)
@@ -130,7 +108,6 @@ return {
                     root = root or lspconfig.util.root_pattern("*.fsx")(filename)
                     return root
                 end,
-                cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
             })
 
             require("rust-tools").setup({

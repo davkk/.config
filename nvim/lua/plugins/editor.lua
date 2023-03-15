@@ -1,5 +1,21 @@
 return {
     {
+        'codota/tabnine-nvim',
+        lazy = false,
+        build = "./dl_binaries.sh",
+        opts = {
+            disable_auto_comment = true,
+            accept_keymap = "<Tab>",
+            dismiss_keymap = "<C-]>",
+            suggestion_color = { gui = "#6e6a86", cterm = 8 },
+            debounce_ms = 500,
+            exclude_filetypes = { "TelescopePrompt" }
+        },
+        config = function(_, opts)
+            require("tabnine").setup(opts)
+        end,
+    },
+    {
         'stevearc/oil.nvim',
         lazy = false,
         opts = {
@@ -9,8 +25,8 @@ return {
                 -- "mtime",
             },
             keymaps = {
-                ["q"] = "actions.close",
-                ["<C-v>"] = "actions.select_vsplit",
+                    ["q"] = "actions.close",
+                    ["<C-v>"] = "actions.select_vsplit",
             },
             float = {
                 max_width = 100,
@@ -36,7 +52,8 @@ return {
         event = "InsertEnter",
         config = true,
     },
-    { -- seamlessly navigate between nvim and tmux
+    {
+        -- seamlessly navigate between nvim and tmux
         "numToStr/Navigator.nvim",
         event = "VeryLazy",
         keys = {
@@ -58,12 +75,12 @@ return {
         event = "VeryLazy",
         config = true,
     },
-    {
-        "abecodes/tabout.nvim",
-        config = true,
-        event = "InsertEnter",
-        dependencies = { "nvim-treesitter" }, -- or require if not used so far
-    },
+    -- {
+    --     "abecodes/tabout.nvim",
+    --     config = true,
+    --     event = "InsertEnter",
+    --     dependencies = { "nvim-treesitter" }, -- or require if not used so far
+    -- },
     {
         "EtiamNullam/deferred-clipboard.nvim",
         event = "BufReadPost",
