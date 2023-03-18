@@ -1,27 +1,5 @@
 return {
     {
-        'ellisonleao/gruvbox.nvim',
-        opts = {
-            contrast = "hard", -- can be "hard", "soft" or empty string
-            transparent_mode = true,
-            italic = false,
-            dim_inactive = true,
-        }
-    },
-    {
-        'aktersnurra/no-clown-fiesta.nvim',
-        opts = {
-            transparent = true, -- Enable this to disable the bg color
-            styles = {
-                comments = {},
-                keywords = {},
-                functions = {},
-                variables = {},
-                type = { bold = true },
-            },
-        }
-    },
-    {
         'rose-pine/neovim',
         name = 'rose-pine',
         lazy = false,
@@ -39,5 +17,27 @@ return {
             vim.cmd([[colorscheme rose-pine]])
             vim.cmd [[hi WinSeparator guibg=None]]
         end,
-    }
+    },
+    -- {
+    --     'ellisonleao/gruvbox.nvim',
+    --     opts = {
+    --         contrast = "hard", -- can be "hard", "soft" or empty string
+    --         transparent_mode = true,
+    --         italic = false,
+    --         dim_inactive = true,
+    --     }
+    -- },
+    -- {
+    --     'aktersnurra/no-clown-fiesta.nvim',
+    --     opts = {
+    --         transparent = true, -- Enable this to disable the bg color
+    --         styles = {
+    --             comments = {},
+    --             keywords = {},
+    --             functions = {},
+    --             variables = {},
+    --             type = { bold = true },
+    --         },
+    --     }
+    -- },
 }
