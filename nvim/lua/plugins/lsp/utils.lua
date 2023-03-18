@@ -28,6 +28,8 @@ M.setup = function()
 
     vim.diagnostic.config({
         severity_sort = true,
+        virtual_text = true,
+        virtual_lines = false,
         signs = { active = signs },
         underline = true,
         update_in_insert = false,
@@ -47,10 +49,13 @@ M.on_attach = function(_, bufnr)
 
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
     vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
-    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+    -- vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+
     vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
@@ -61,8 +66,16 @@ M.on_attach = function(_, bufnr)
     vim.keymap.set('n', '<leader>fsi', ':FsiShow<CR>', opts)
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-            vim.lsp.handlers.hover, { focusable = false, border = "rounded" }
-        )
+        vim.lsp.handlers.hover, { focusable = false, border = "rounded" }
+    )
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+        vim.lsp.handlers.signature_help,
+        {
+            focusable = false,
+            border = "rounded",
+        }
+    )
 end
 
 M.server_setup = function(server, custom_config)

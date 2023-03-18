@@ -16,11 +16,7 @@ return {
                 "<C-p>",
                 function()
                     require("telescope.builtin").find_files({
-                        hidden = true,
-                        theme = "dropdown",
-                        grouped = true,
                         previewer = false,
-                        layout_config = { height = 30 },
                     })
                 end,
                 desc = "Find Files",
@@ -30,7 +26,8 @@ return {
                 "\\\\",
                 function()
                     require("telescope.builtin").buffers({
-                        buffer = 0
+                        buffer = 0,
+                        initial_mode = "normal",
                     })
                 end,
                 desc = "Search Buffers"
@@ -43,8 +40,6 @@ return {
                         path = "%:p:h",
                         cwd = vim.fn.expand("%:p:h"),
                         respect_gitignore = false,
-                        hidden = true,
-                        grouped = true,
                         initial_mode = "normal",
                     })
                 end,
@@ -52,12 +47,10 @@ return {
             },
 
             {
-                "<leader>se",
+                "]]",
                 function()
                     require("telescope.builtin").diagnostics({
-                        theme = "dropdown",
-                        grouped = true,
-                        layout_config = { height = 30 },
+                        initial_mode = "normal",
                     })
                 end
             },
@@ -69,15 +62,25 @@ return {
 
             return {
                 defaults = {
+                    layout_strategy = "vertical",
+                    layout_config = {
+                        mirror = true,
+                        prompt_position = "top",
+                        width = 0.6,
+                        height = 30,
+                    },
+                    preview = { hide_on_startup = false },
+                    results_title = false,
+                    sorting_strategy = 'ascending',
                     file_ignore_patterns = { "^.git/" },
                     mappings = {
                         i = {
                             -- ['<esc>'] = actions.close,
-                            ["<C-q>"] = actions.send_to_qflist,
-                            ["<CR>"] = actions.select_default,
+                                ["<C-q>"] = actions.send_to_qflist,
+                                ["<CR>"] = actions.select_default,
                         },
                         n = {
-                            ["q"] = actions.close,
+                                ["q"] = actions.close,
                         },
                     },
                 },
@@ -89,15 +92,14 @@ return {
                         case_mode = "smart_case",
                     },
                     file_browser = {
-                        theme = "dropdown",
-                        hidden = true,
                         hijack_netrw = true,
-                        file_ignore_patterns = { "^.git/" },
+                        file_ignore_patterns = { "^.git/", "^node_modules/", "^.vscode/" },
+                        initial_mode = "normal",
                         mappings = {
-                            ["n"] = {
-                                ["N"] = fb_actions.create,
-                                ["h"] = fb_actions.goto_parent_dir,
-                                ["/"] = function()
+                                ["n"] = {
+                                    ["N"] = fb_actions.create,
+                                    ["h"] = fb_actions.goto_parent_dir,
+                                    ["/"] = function()
                                     vim.cmd("startinsert")
                                 end
                             },

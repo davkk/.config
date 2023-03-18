@@ -1,48 +1,57 @@
 return {
     {
-        'codota/tabnine-nvim',
-        lazy = false,
-        build = "./dl_binaries.sh",
-        opts = {
-            disable_auto_comment = true,
-            accept_keymap = "<Tab>",
-            dismiss_keymap = "<C-]>",
-            suggestion_color = { gui = "#6e6a86", cterm = 8 },
-            debounce_ms = 500,
-            exclude_filetypes = { "TelescopePrompt" }
-        },
-        config = function(_, opts)
-            require("tabnine").setup(opts)
-        end,
+        "Exafunction/codeium.vim",
+        event = "BufReadPost",
+        config = function()
+            vim.keymap.set('i', '<Tab>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+            vim.cmd([[ hi CodeiumSuggestion guifg=#6e6a86 ctermfg=8 ]])
+        end
     },
-    {
-        'stevearc/oil.nvim',
-        lazy = false,
-        opts = {
-            columns = {
-                "icon",
-                -- "size",
-                -- "mtime",
-            },
-            keymaps = {
-                    ["q"] = "actions.close",
-                    ["<C-v>"] = "actions.select_vsplit",
-            },
-            float = {
-                max_width = 100,
-                max_height = 30,
-                win_options = {
-                    winblend = 0,
-                },
-            },
-        },
-        config = function(_, opts)
-            local oil = require("oil")
-            oil.setup(opts)
-
-            vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent directory" })
-        end,
-    },
+    -- {
+    --     'codota/tabnine-nvim',
+    --     lazy = false,
+    --     build = "./dl_binaries.sh",
+    --     opts = {
+    --         disable_auto_comment = true,
+    --         accept_keymap = "<Tab>",
+    --         dismiss_keymap = "<C-]>",
+    --         suggestion_color = { gui = "#6e6a86", cterm = 8 },
+    --         debounce_ms = 500,
+    --         exclude_filetypes = { "TelescopePrompt" }
+    --     },
+    --     config = function(_, opts)
+    --         require("tabnine").setup(opts)
+    --     end,
+    -- },
+    -- {
+    --     'stevearc/oil.nvim',
+    --     lazy = false,
+    --     opts = {
+    --         columns = {
+    --             "icon",
+    --             -- "size",
+    --             -- "mtime",
+    --         },
+    --         keymaps = {
+    --                 ["q"] = "actions.close",
+    --                 ["<C-v>"] = "actions.select_vsplit",
+    --         },
+    --         float = {
+    --             max_width = 100,
+    --             max_height = 30,
+    --             win_options = {
+    --                 winblend = 0,
+    --             },
+    --         },
+    --     },
+    --     config = function(_, opts)
+    --         local oil = require("oil")
+    --         oil.setup(opts)
+    --
+    --         vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent directory" })
+    --     end,
+    -- },
     {
         "gpanders/editorconfig.nvim",
         event = "BufReadPost"

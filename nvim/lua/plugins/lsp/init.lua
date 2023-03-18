@@ -7,6 +7,20 @@ return {
             "williamboman/mason-lspconfig.nvim",
 
             {
+                "ErichDonGubler/lsp_lines.nvim",
+                config = function()
+                    require("lsp_lines").setup()
+
+                    vim.keymap.set("n", "<leader>e", function()
+                        vim.diagnostic.config({
+                            virtual_text = not vim.diagnostic.config().virtual_text,
+                            virtual_lines = not vim.diagnostic.config().virtual_lines,
+                        })
+                    end)
+                end,
+            },
+
+            {
                 "j-hui/fidget.nvim",
                 opts = {
                     text = {
@@ -68,7 +82,7 @@ return {
                 function(server_name)
                     utils.server_setup(lspconfig[server_name])
                 end,
-                ["lua_ls"] = function()
+                    ["lua_ls"] = function()
                     utils.server_setup(lspconfig.lua_ls, {
                         -- Fix Undefined global 'vim'
                         settings = {
@@ -80,12 +94,12 @@ return {
                         }
                     })
                 end,
-                ["elmls"] = function()
+                    ["elmls"] = function()
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
                     })
                 end,
-                ["tailwindcss"] = function()
+                    ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
                         filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
                             "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
