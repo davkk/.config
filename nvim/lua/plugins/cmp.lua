@@ -10,6 +10,9 @@ return {
             "hrsh7th/cmp-path",
 
             "onsails/lspkind-nvim",
+
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
         },
         opts = function()
             local cmp = require("cmp")
@@ -36,6 +39,7 @@ return {
                     { name = "nvim_lsp_signature_help" },
                     { name = "path" },
                     { name = "buffer" },
+                    { name = 'luasnip' },
                 }),
                 formatting = {
                     format = require("lspkind").cmp_format(
