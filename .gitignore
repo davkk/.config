@@ -10,6 +10,7 @@
 
 !zsh/
 !zsh/**
+.zsh_history
 
 !git/
 !git/**
