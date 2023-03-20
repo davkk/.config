@@ -45,7 +45,7 @@ return {
                     format = require("lspkind").cmp_format(
                         {
                             with_text = false,
-                            maxwidth = 100,
+                            maxwidth = 50,
                         }
                     )
                 }
