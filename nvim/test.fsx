@@ -1,3 +1,7 @@
+#load "./test1.fsx"
+
+open Test1
+
 let square x =
     let something = "nothing"
     let hello = "hello"

@@ -46,18 +46,33 @@ return {
                 "ionide/Ionide-vim", -- F# support
                 config = function()
                     vim.cmd [[
-                        let g:fsharp#fsi_window_command = 'botright vnew'
+                        let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
                         let g:fsharp#lsp_recommended_colorscheme = 0
                         let g:fsharp#exclude_project_directories = ['paket-files']
+                        let g:fsharp#lsp_codelens = 0
                     ]]
 
                     -- change filetype of fsproj files
                     vim.api.nvim_create_autocmd(
-                        { 'BufNewFile', 'BufRead' },
+                        { "BufNewFile", "BufRead" },
                         {
-                            command = 'set ft=xml',
-                            pattern = { '*.fsproj' },
-                            group = vim.api.nvim_create_augroup('fsprojFtdetect', { clear = true })
+                            command = "set ft=xml",
+                            pattern = { "*.fsproj" },
+                            group = vim.api.nvim_create_augroup("fsprojFtdetect", { clear = true })
+                        })
+
+                    -- change cwd on open .fsx files
+                    vim.api.nvim_create_autocmd(
+                        "BufLeave",
+                        {
+                            command = "cd!",
+                            pattern = { "*.fsx" },
+                        })
+                    vim.api.nvim_create_autocmd(
+                        { "BufEnter", "TermOpen" },
+                        {
+                            command = "cd %:p:h",
+                            pattern = { "*.fsx" },
                         })
                 end,
             },
