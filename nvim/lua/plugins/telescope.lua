@@ -17,6 +17,7 @@ return {
                 function()
                     require("telescope.builtin").find_files({
                         previewer = false,
+                        hidden = true,
                     })
                 end,
                 desc = "Find Files",
@@ -37,6 +38,7 @@ return {
                 "<C-e>",
                 function()
                     require("telescope").extensions.file_browser.file_browser({
+                        hidden = true,
                         path = "%:p:h",
                         cwd = vim.fn.expand("%:p:h"),
                         respect_gitignore = false,
@@ -92,6 +94,7 @@ return {
                         case_mode = "smart_case",
                     },
                     file_browser = {
+                        hidden = true,
                         hijack_netrw = true,
                         file_ignore_patterns = { "^.git/", "^node_modules/", "^.vscode/" },
                         initial_mode = "normal",
