@@ -16,6 +16,7 @@ opt.winbar = "%=%f %m%="
 
 -- global statusline
 opt.laststatus = 3
+opt.showmode = false
 
 -- tabs and indent
 opt.tabstop = 4
