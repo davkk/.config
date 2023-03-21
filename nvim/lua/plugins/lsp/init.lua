@@ -49,7 +49,7 @@ return {
                         let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
                         let g:fsharp#lsp_recommended_colorscheme = 0
                         let g:fsharp#exclude_project_directories = ['paket-files']
-                        let g:fsharp#lsp_codelens = 0
+                        let g:fsharp#recommended_colorscheme = 0
                     ]]
 
                     -- change filetype of fsproj files
