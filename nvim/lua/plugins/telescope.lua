@@ -10,14 +10,34 @@ return {
                 cond = vim.fn.executable "make" == 1,
             },
             "nvim-telescope/telescope-file-browser.nvim",
+            {
+                "ahmedkhalf/project.nvim",
+                config = function() require("project_nvim").setup() end,
+            }
         },
         keys = {
+            {
+                "<C-e>",
+                function()
+                    require("telescope").extensions.file_browser.file_browser({
+                        hidden = true,
+                        -- path = "%:p:h",
+                        -- cwd = vim.fn.expand("%:p:h"),
+                        respect_gitignore = false,
+                        initial_mode = "normal",
+                    })
+                end,
+                desc = "Browse Files",
+            },
+
             {
                 "<C-p>",
                 function()
                     require("telescope.builtin").find_files({
                         previewer = false,
                         hidden = true,
+                        -- path = "%:p:h",
+                        -- cwd = vim.fn.expand("%:p:h"),
                     })
                 end,
                 desc = "Find Files",
@@ -35,23 +55,18 @@ return {
             },
 
             {
-                "<C-e>",
-                function()
-                    require("telescope").extensions.file_browser.file_browser({
-                        hidden = true,
-                        path = "%:p:h",
-                        cwd = vim.fn.expand("%:p:h"),
-                        respect_gitignore = false,
-                        initial_mode = "normal",
-                    })
-                end,
-                desc = "Browse Files",
-            },
-
-            {
                 "]]",
                 function()
                     require("telescope.builtin").diagnostics({
+                        initial_mode = "normal",
+                    })
+                end
+            },
+
+            {
+                "[[",
+                function()
+                    require'telescope'.extensions.projects.projects({
                         initial_mode = "normal",
                     })
                 end
@@ -117,6 +132,7 @@ return {
             telescope.setup(opts)
             telescope.load_extension("fzf")
             telescope.load_extension("file_browser")
+            telescope.load_extension("projects")
         end,
     },
 }
