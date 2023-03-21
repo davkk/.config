@@ -51,7 +51,9 @@ M.on_attach = function(_, bufnr)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
     vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
-    -- vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+
+    -- open detailed error message window
+    vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, opts)
 
     vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
