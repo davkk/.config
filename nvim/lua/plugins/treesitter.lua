@@ -7,6 +7,7 @@ return {
             "windwp/nvim-ts-autotag",
             "andymass/vim-matchup",
             "JoosepAlviste/nvim-ts-context-commentstring",
+            "nvim-treesitter/nvim-treesitter-context",
         },
         build = ":TSUpdate",
         event = "BufReadPost",
@@ -81,6 +82,13 @@ return {
             }
 
             require("nvim-treesitter.configs").setup(opts)
+
+            require("treesitter-context").setup({
+                enable = true,
+                max_lines = 0,
+            })
+
+            vim.cmd [[ hi TreesitterContextBottom guibg=#26233a ]]
         end,
     },
 }
