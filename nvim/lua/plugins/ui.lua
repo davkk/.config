@@ -78,31 +78,13 @@ return {
                         {
                             "diagnostics",
                             sources = { "nvim_diagnostic" },
-                            -- sections = { "error", "warn" },
                             symbols = { error = " ", warn = " ", hint = " ", info = " " },
                             colored = true,
-                            -- diagnostics_color = {
-                            --     error = { fg = "#6e6a86", bg = "None" },
-                            --     warn = { fg = "#6e6a86", bg = "None" },
-                            --     info = { fg = "#6e6a86", bg = "None" },
-                            --     hint = { fg = "#6e6a86", bg = "None" },
-                            -- },
                             update_in_insert = true,
-                            -- always_visible = true,
                         },
                     },
                     lualine_y = {},
-                    lualine_z = {
-                        -- {
-                        --     function()
-                        --         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-                        --         if buf_ft == "toggleterm" then return "" end
-                        --         return buf_ft
-                        --     end,
-                        --     separator = { left = "", right = "", },
-                        --     padding = 1,
-                        -- },
-                    },
+                    lualine_z = {},
                 },
             }
         end,
