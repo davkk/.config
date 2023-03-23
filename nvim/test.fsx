@@ -15,5 +15,6 @@ module Hello =
     let run () =
         let result = square 2 |> fst |> world
         if result = 222 then () else ()
+        "run"
 
 Hello.run ()

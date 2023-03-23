@@ -42,40 +42,7 @@ return {
                 config = true
             },
 
-            {
-                "ionide/Ionide-vim", -- F# support
-                config = function()
-                    vim.cmd [[
-                        let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
-                        let g:fsharp#lsp_recommended_colorscheme = 0
-                        let g:fsharp#exclude_project_directories = ['paket-files']
-                        let g:fsharp#recommended_colorscheme = 0
-                    ]]
-
-                    -- change filetype of fsproj files
-                    vim.api.nvim_create_autocmd(
-                        { "BufNewFile", "BufRead" },
-                        {
-                            command = "set ft=xml",
-                            pattern = { "*.fsproj" },
-                            group = vim.api.nvim_create_augroup("fsprojFtdetect", { clear = true })
-                        })
-
-                    -- change cwd on open .fsx files
-                    vim.api.nvim_create_autocmd(
-                        "BufLeave",
-                        {
-                            command = "cd!",
-                            pattern = { "*.fsx" },
-                        })
-                    vim.api.nvim_create_autocmd(
-                        { "BufEnter", "TermOpen" },
-                        {
-                            command = "cd %:p:h",
-                            pattern = { "*.fsx" },
-                        })
-                end,
-            },
+            "ionide/Ionide-vim", -- F# support
             -- "adelarsq/neofsharp.vim",
 
             "simrat39/rust-tools.nvim",
@@ -97,7 +64,7 @@ return {
                 function(server_name)
                     utils.server_setup(lspconfig[server_name])
                 end,
-                    ["lua_ls"] = function()
+                ["lua_ls"] = function()
                     utils.server_setup(lspconfig.lua_ls, {
                         -- Fix Undefined global 'vim'
                         settings = {
@@ -109,33 +76,17 @@ return {
                         }
                     })
                 end,
-                    ["elmls"] = function()
+                ["elmls"] = function()
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
                     })
                 end,
-                    ["tailwindcss"] = function()
+                ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
                         filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
                             "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
                             "rescript", "typescript", "typescriptreact", },
                     })
-                end,
-            })
-
-            utils.server_setup(require("ionide"), {
-                cmd = {
-                    "fsautocomplete",
-                    "--project-graph-enabled",
-                    "--adaptive-lsp-server-enabled",
-                },
-                root_dir = function(filename, _)
-                    local root
-                    root = lspconfig.util.find_git_ancestor(filename)
-                    root = root or lspconfig.util.root_pattern("*.sln")(filename)
-                    root = root or lspconfig.util.root_pattern("*.fsproj")(filename)
-                    root = root or lspconfig.util.root_pattern("*.fsx")(filename)
-                    return root
                 end,
             })
 
@@ -163,6 +114,46 @@ return {
                     },
                 }
             })
+
+            utils.server_setup(require("ionide"), {
+                cmd = {
+                    "fsautocomplete",
+                    "--project-graph-enabled",
+                    "--adaptive-lsp-server-enabled",
+                },
+                root_dir = function(filename, _)
+                    local root
+                    root = lspconfig.util.find_git_ancestor(filename)
+                    root = root or lspconfig.util.root_pattern("*.sln")(filename)
+                    root = root or lspconfig.util.root_pattern("*.fsproj")(filename)
+                    root = root or lspconfig.util.root_pattern("*.fsx")(filename)
+                    return root
+                end,
+            })
+
+            vim.cmd [[
+                let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
+                let g:fsharp#lsp_recommended_colorscheme = 0
+                let g:fsharp#exclude_project_directories = ['paket-files']
+                let g:fsharp#recommended_colorscheme = 0
+            ]]
+
+            -- change filetype of fsproj files
+            vim.api.nvim_create_autocmd(
+                { "BufNewFile", "BufRead" },
+                {
+                    command = "set ft=xml",
+                    pattern = { "*.fsproj" },
+                    group = vim.api.nvim_create_augroup("fsprojFtdetect", { clear = true })
+                })
+
+            -- change cwd on open .fsx files
+            vim.api.nvim_create_autocmd(
+                { "BufEnter", "TermOpen" },
+                {
+                    command = "lcd %:p:h",
+                    pattern = { "*.fsx" },
+                })
         end,
     },
 
