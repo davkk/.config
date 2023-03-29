@@ -42,7 +42,34 @@ return {
                 config = true
             },
 
-            "ionide/Ionide-vim", -- F# support
+            {
+                "ionide/Ionide-vim", -- F# support
+                config = function()
+                    vim.cmd [[
+                        let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
+                        let g:fsharp#lsp_recommended_colorscheme = 0
+                        let g:fsharp#exclude_project_directories = ['paket-files']
+                        let g:fsharp#recommended_colorscheme = 0
+                    ]]
+
+                    -- change filetype of fsproj files
+                    vim.api.nvim_create_autocmd(
+                        { "BufNewFile", "BufRead" },
+                        {
+                            command = "set ft=xml",
+                            pattern = { "*.fsproj" },
+                            group = vim.api.nvim_create_augroup("fsprojFtdetect", { clear = true })
+                        })
+
+                    -- change cwd on open .fsx files
+                    vim.api.nvim_create_autocmd(
+                        { "BufEnter", "TermOpen" },
+                        {
+                            command = "lcd %:p:h",
+                            pattern = { "*.fsx" },
+                        })
+                end
+            },
             -- "adelarsq/neofsharp.vim",
 
             "simrat39/rust-tools.nvim",
@@ -91,6 +118,17 @@ return {
             })
 
             require("rust-tools").setup({
+                tools = {
+                    hover_actions = {
+                        max_width = 50,
+                    },
+                    inlay_hints = {
+                        auto = true,
+                        show_parameter_hints = false,
+                        parameter_hints_prefix = "// ",
+                        other_hints_prefix = "// ",
+                    },
+                },
                 server = {
                     on_attach = utils.on_attach,
                     capabilities = utils.capabilities,
@@ -100,18 +138,28 @@ return {
                     cmd = {
                         "rustup", "run", "stable", "rust-analyzer"
                     },
-                    imports = {
-                        prefix = "crate",
-                    },
-                    cargo = {
-                        features = "all",
-                    },
-                    check = {
-                        command = "clippy",
-                    },
-                    diagnostics = {
-                        enable = true,
-                    },
+                    settings = {
+                        ['rust-analyzer'] = {
+                            cargo = {
+                                features = "all",
+                            },
+                            check = {
+                                command = "clippy",
+                            },
+                            imports = {
+                                granularity = {
+                                    group = "module",
+                                    enforce = true,
+                                },
+                            },
+                            diagnostics = {
+                                enable = true,
+                                experimental = {
+                                    enable = true,
+                                },
+                            },
+                        }
+                    }
                 }
             })
 
@@ -130,30 +178,6 @@ return {
                     return root
                 end,
             })
-
-            vim.cmd [[
-                let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
-                let g:fsharp#lsp_recommended_colorscheme = 0
-                let g:fsharp#exclude_project_directories = ['paket-files']
-                let g:fsharp#recommended_colorscheme = 0
-            ]]
-
-            -- change filetype of fsproj files
-            vim.api.nvim_create_autocmd(
-                { "BufNewFile", "BufRead" },
-                {
-                    command = "set ft=xml",
-                    pattern = { "*.fsproj" },
-                    group = vim.api.nvim_create_augroup("fsprojFtdetect", { clear = true })
-                })
-
-            -- change cwd on open .fsx files
-            vim.api.nvim_create_autocmd(
-                { "BufEnter", "TermOpen" },
-                {
-                    command = "lcd %:p:h",
-                    pattern = { "*.fsx" },
-                })
         end,
     },
 

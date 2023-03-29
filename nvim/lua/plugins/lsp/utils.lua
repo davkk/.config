@@ -6,7 +6,7 @@ M.lsp_servers = {
     "marksman",
     "elmls",
     "astro",
-    "rust_analyzer",
+    -- "rust_analyzer",
 }
 
 M.mason_packages = {
