@@ -4,6 +4,7 @@ return {
         event = "BufReadPre",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
 
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-buffer",
@@ -35,19 +36,18 @@ return {
                     }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
                     { name = "nvim_lsp_signature_help" },
-                    { name = "path" },
+                    { name = "nvim_lsp" },
                     { name = "buffer" },
-                    { name = 'luasnip' },
+                    { name = "luasnip" },
+                    { name = "path" },
                 }),
                 formatting = {
-                    format = require("lspkind").cmp_format(
-                        {
-                            with_text = false,
-                            maxwidth = 50,
-                        }
-                    )
+                    format = require("lspkind").cmp_format({
+                        with_text = false,
+                        maxwidth = 30,
+                        ellipsis_char = "...",
+                    })
                 }
             }
         end,
