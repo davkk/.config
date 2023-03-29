@@ -7,7 +7,7 @@ return {
             local keymap = vim.keymap
             local opts = { noremap = true, silent = true }
 
-            keymap.set('n', '<leader>gg', '<cmd>:G<CR>', opts)
+            keymap.set('n', '<leader>gg', '<cmd>:vertical G<CR>', opts)
             keymap.set('n', '<leader>gw', '<cmd>:Gwrite<CR>', opts)
             keymap.set('n', '<leader>gp', '<cmd>:G push<CR>', opts)
         end
