@@ -15,7 +15,7 @@ return {
                 opts = {
                     patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".editorconfig",
                         "global.json", "package-lock.json", "yarn.lock", "*.sln", "=src", ".env", "Cargo.toml" },
-                    ignore_lsp = { "codeium" },
+                    ignore_lsp = { "codeium", "lua_ls" },
                 },
                 config = function(_, opts) require("project_nvim").setup(opts) end,
             }
