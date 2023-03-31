@@ -8,50 +8,24 @@ return {
             vim.cmd([[ hi CodeiumSuggestion guifg=#6e6a86 ctermfg=8 ]])
         end
     },
-    -- {
-    --     'codota/tabnine-nvim',
-    --     lazy = false,
-    --     build = "./dl_binaries.sh",
-    --     opts = {
-    --         disable_auto_comment = true,
-    --         accept_keymap = "<Tab>",
-    --         dismiss_keymap = "<C-]>",
-    --         suggestion_color = { gui = "#6e6a86", cterm = 8 },
-    --         debounce_ms = 500,
-    --         exclude_filetypes = { "TelescopePrompt" }
-    --     },
-    --     config = function(_, opts)
-    --         require("tabnine").setup(opts)
-    --     end,
-    -- },
-    -- {
-    --     'stevearc/oil.nvim',
-    --     lazy = false,
-    --     opts = {
-    --         columns = {
-    --             "icon",
-    --             -- "size",
-    --             -- "mtime",
-    --         },
-    --         keymaps = {
-    --                 ["q"] = "actions.close",
-    --                 ["<C-v>"] = "actions.select_vsplit",
-    --         },
-    --         float = {
-    --             max_width = 100,
-    --             max_height = 30,
-    --             win_options = {
-    --                 winblend = 0,
-    --             },
-    --         },
-    --     },
-    --     config = function(_, opts)
-    --         local oil = require("oil")
-    --         oil.setup(opts)
-    --
-    --         vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent directory" })
-    --     end,
-    -- },
+    {
+        "ThePrimeagen/harpoon",
+        lazy = false,
+        config = function()
+            local mark = require("harpoon.mark")
+            local ui = require("harpoon.ui")
+
+            vim.keymap.set("n", "<leader>h", mark.add_file, { desc = "add file to Harpoon" })
+
+            vim.keymap.set("n", "<leader>H", ui.toggle_quick_menu, { desc = "toggle Harpoon quick menu" })
+
+            vim.keymap.set("n", "<A-1>", function() ui.nav_file(1) end, { desc = "navigate to first file in Harpoon" })
+            vim.keymap.set("n", "<A-2>", function() ui.nav_file(2) end, { desc = "navigate to second file in Harpoon" })
+            vim.keymap.set("n", "<A-3>", function() ui.nav_file(3) end, { desc = "navigate to third file in Harpoon" })
+            vim.keymap.set("n", "<A-4>", function() ui.nav_file(4) end, { desc = "navigate to fourth file in Harpoon" })
+            vim.keymap.set("n", "<A-5>", function() ui.nav_file(5) end, { desc = "navigate to fifth file in Harpoon" })
+        end,
+    },
     {
         "gpanders/editorconfig.nvim",
         event = "BufReadPost"
@@ -84,12 +58,6 @@ return {
         event = "VeryLazy",
         config = true,
     },
-    -- {
-    --     "abecodes/tabout.nvim",
-    --     config = true,
-    --     event = "InsertEnter",
-    --     dependencies = { "nvim-treesitter" }, -- or require if not used so far
-    -- },
     {
         "EtiamNullam/deferred-clipboard.nvim",
         event = "BufReadPost",
