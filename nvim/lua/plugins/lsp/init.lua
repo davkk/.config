@@ -97,9 +97,16 @@ return {
                         settings = {
                             Lua = {
                                 diagnostics = {
-                                    globals = { 'vim' }
-                                }
-                            }
+                                    globals = { 'vim' },
+                                },
+                                workspace = {
+                                    library = vim.api.nvim_get_runtime_file('', true),
+                                    checkThirdParty = false, -- THIS IS THE IMPORTANT LINE TO ADD
+                                },
+                                telemetry = {
+                                    enable = false,
+                                },
+                            },
                         }
                     })
                 end,
