@@ -87,8 +87,8 @@ return {
                 enable = true,
                 max_lines = 0,
             })
-
-            vim.cmd [[ hi TreesitterContextBottom guibg=#26233a ]]
+            --
+            -- vim.cmd [[ hi TreesitterContextBottom guibg=#26233a ]]
         end,
     },
 }
