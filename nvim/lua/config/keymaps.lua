@@ -15,15 +15,6 @@ keymap.set('n', '-', '<C-x>', opts)
 keymap.set('n', '<C-d>', '<C-d>zz', opts)
 keymap.set('n', '<C-u>', '<C-u>zz', opts)
 
--- netrw
-keymap.set('n', '<C-e>', ':Ex<CR>', opts)
-
--- splits
-keymap.set('n', '<leader>sv', '<C-w>v', opts)
-keymap.set('n', '<leader>sh', '<C-w>s', opts)
-keymap.set('n', '<leader>se', '<C-w>=', opts)
-keymap.set('n', '<leader>sx', ':close<CR>', opts)
-
 -- resize window
 keymap.set('n', '<C-left>', '<C-w>3>', opts)
 keymap.set('n', '<C-right>', '<C-w>3<', opts)
@@ -39,4 +30,6 @@ keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true }
 keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 -- select all
-keymap.set('n', '<leader>a', 'gg<S-V>G', opts)
+keymap.set('n', '<C-a>', 'gg<S-V>G', opts)
+
+keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)

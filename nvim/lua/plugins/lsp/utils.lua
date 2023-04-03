@@ -55,15 +55,19 @@ M.on_attach = function(_, bufnr)
     -- open detailed error message window
     vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, opts)
 
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 
-    vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+    vim.keymap.set("i", "<C-h>",
+        function()
+            require("cmp").mapping.abort()
+            vim.lsp.buf.signature_help()
+        end,
+        opts)
 
     vim.keymap.set('n', '<leader>fsi', ':FsiShow<CR>', opts)
 

@@ -3,8 +3,8 @@ return {
         "Exafunction/codeium.vim",
         event = "BufReadPost",
         config = function()
-            vim.keymap.set('i', '<Tab>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-            vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+            vim.keymap.set('i', '<C-y>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+            vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
             vim.cmd([[ hi CodeiumSuggestion guifg=#6e6a86 ctermfg=8 ]])
         end
     },
@@ -19,11 +19,11 @@ return {
 
             vim.keymap.set("n", "<leader>H", ui.toggle_quick_menu, { desc = "toggle Harpoon quick menu" })
 
-            vim.keymap.set("n", "<A-1>", function() ui.nav_file(1) end, { desc = "navigate to first file in Harpoon" })
-            vim.keymap.set("n", "<A-2>", function() ui.nav_file(2) end, { desc = "navigate to second file in Harpoon" })
-            vim.keymap.set("n", "<A-3>", function() ui.nav_file(3) end, { desc = "navigate to third file in Harpoon" })
-            vim.keymap.set("n", "<A-4>", function() ui.nav_file(4) end, { desc = "navigate to fourth file in Harpoon" })
-            vim.keymap.set("n", "<A-5>", function() ui.nav_file(5) end, { desc = "navigate to fifth file in Harpoon" })
+            vim.keymap.set("n", "<leader>1", function() ui.nav_file(1) end, { desc = "navigate to first file in Harpoon" })
+            vim.keymap.set("n", "<leader>2", function() ui.nav_file(2) end, { desc = "navigate to second file in Harpoon" })
+            vim.keymap.set("n", "<leader>3", function() ui.nav_file(3) end, { desc = "navigate to third file in Harpoon" })
+            vim.keymap.set("n", "<leader>4", function() ui.nav_file(4) end, { desc = "navigate to fourth file in Harpoon" })
+            vim.keymap.set("n", "<leader>5", function() ui.nav_file(5) end, { desc = "navigate to fifth file in Harpoon" })
         end,
     },
     {

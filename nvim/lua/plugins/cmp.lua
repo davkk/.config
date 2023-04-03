@@ -4,7 +4,6 @@ return {
         event = "BufReadPre",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-nvim-lsp-signature-help",
 
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-buffer",
@@ -36,7 +35,6 @@ return {
                     }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp_signature_help" },
                     { name = "nvim_lsp" },
                     { name = "buffer" },
                     { name = "luasnip" },

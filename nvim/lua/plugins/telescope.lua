@@ -49,18 +49,7 @@ return {
             },
 
             {
-                "\\\\",
-                function()
-                    require("telescope.builtin").buffers({
-                        buffer = 0,
-                        initial_mode = "normal",
-                    })
-                end,
-                desc = "Search Buffers"
-            },
-
-            {
-                "]]",
+                "<leader>d",
                 function()
                     require("telescope.builtin").diagnostics({
                         initial_mode = "normal",
@@ -69,7 +58,14 @@ return {
             },
 
             {
-                "[[",
+                "<leader>lg",
+                function()
+                    require("telescope.builtin").live_grep()
+                end,
+            },
+
+            {
+                "\\\\",
                 function()
                     require 'telescope'.extensions.projects.projects({
                         initial_mode = "normal",
