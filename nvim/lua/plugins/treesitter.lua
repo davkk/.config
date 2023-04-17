@@ -45,6 +45,9 @@ return {
                     end
                 end,
                 additional_vim_regex_highlighting = false,
+                -- custom_captures = {
+                --     ["let_mutable_id"] = "LetMutableBindingIdentifier",
+                -- }
             },
             indent = { enable = true },
             autopairs = { enable = true },
@@ -66,7 +69,9 @@ return {
                 install_info = {
                     url = "https://github.com/Nsidorenco/tree-sitter-fsharp",
                     branch = "develop",
-                    files = { "src/scanner.cc", "src/parser.c" }
+                    files = {"src/scanner.cc", "src/parser.c" },
+                    generate_requires_npm = true,
+                    requires_generate_from_grammar = true
                 },
                 filetype = "fsharp",
             }
