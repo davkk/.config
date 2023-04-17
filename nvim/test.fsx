@@ -3,14 +3,14 @@
 open Test1
 
 let square x =
-    let something = "nothing"
+    let mutable something = "nothing"
     let hello = "hello"
     float (x * x), something
 
-14 |> square
-
 module Hello =
     let inline private world (x: float) = x * x
+
+    let mutable private lol = "lol"
 
     let run () =
         let result = square 2 |> fst |> world
