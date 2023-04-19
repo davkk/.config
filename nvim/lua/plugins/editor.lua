@@ -35,19 +35,19 @@ return {
         event = "InsertEnter",
         config = true,
     },
-    {
-        -- seamlessly navigate between nvim and tmux
-        "numToStr/Navigator.nvim",
-        event = "VeryLazy",
-        keys = {
-            { "<A-h>", "<CMD>NavigatorLeft<CR>" },
-            { "<A-l>", '<CMD>NavigatorRight<CR>' },
-            { "<A-k>", '<CMD>NavigatorUp<CR>' },
-            { "<A-j>", '<CMD>NavigatorDown<CR>' },
-            { "<A-p>", '<CMD>NavigatorPrevious<CR>' },
-        },
-        config = true,
-    },
+    -- {
+    --     -- seamlessly navigate between nvim and tmux
+    --     "numToStr/Navigator.nvim",
+    --     event = "VeryLazy",
+    --     keys = {
+    --         { "<A-h>", "<CMD>NavigatorLeft<CR>" },
+    --         { "<A-l>", '<CMD>NavigatorRight<CR>' },
+    --         { "<A-k>", '<CMD>NavigatorUp<CR>' },
+    --         { "<A-j>", '<CMD>NavigatorDown<CR>' },
+    --         { "<A-p>", '<CMD>NavigatorPrevious<CR>' },
+    --     },
+    --     config = true,
+    -- },
     {
         "kylechui/nvim-surround",
         event = "VeryLazy",
