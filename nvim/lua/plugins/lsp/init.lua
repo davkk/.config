@@ -32,6 +32,19 @@ return {
                         zindex = 100,
                         border = "rounded", -- style of border for the fidget window
                     },
+                    fmt = {
+                        -- function to format each task line
+                        task =
+                            function(task_name, message, percentage)
+                                if string.find(task_name, "Typechecking") then return nil end
+                                return string.format(
+                                    "%s%s [%s]",
+                                    message,
+                                    percentage and string.format(" (%s%%)", percentage) or "",
+                                    task_name
+                                )
+                            end,
+                    },
                 },
                 config = function(_, opts)
                     require("fidget").setup(opts)
@@ -92,7 +105,7 @@ return {
                 function(server_name)
                     utils.server_setup(lspconfig[server_name])
                 end,
-                ["lua_ls"] = function()
+                    ["lua_ls"] = function()
                     utils.server_setup(lspconfig.lua_ls, {
                         -- Fix Undefined global 'vim'
                         settings = {
@@ -111,12 +124,12 @@ return {
                         }
                     })
                 end,
-                ["elmls"] = function()
+                    ["elmls"] = function()
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
                     })
                 end,
-                ["tailwindcss"] = function()
+                    ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
                         filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
                             "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
@@ -147,7 +160,7 @@ return {
                         "rustup", "run", "stable", "rust-analyzer"
                     },
                     settings = {
-                        ['rust-analyzer'] = {
+                            ['rust-analyzer'] = {
                             cargo = {
                                 features = "all",
                             },
