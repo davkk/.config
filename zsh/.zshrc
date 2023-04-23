@@ -75,7 +75,7 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git 
-    # tmux 
+    tmux 
     vi-mode 
     fzf
     zsh-autosuggestions 
@@ -84,8 +84,8 @@ plugins=(
 )
 
 export STARSHIP_CONFIG=$HOME/.config/zsh/starship.toml
-# export ZSH_TMUX_AUTOSTART=true
-# export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
+export ZSH_TMUX_AUTOSTART=true
+export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
 export FZF_BASE=$(which fzf)
 
 source $ZSH/oh-my-zsh.sh
