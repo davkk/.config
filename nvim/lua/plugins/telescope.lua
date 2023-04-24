@@ -114,12 +114,12 @@ return {
                         file_ignore_patterns = { "^.git/", "^node_modules/", "^.vscode/" },
                         initial_mode = "normal",
                         mappings = {
-                                ["n"] = {
-                                    ["N"] = fb_actions.create,
-                                    ["h"] = fb_actions.goto_parent_dir,
-                                    ["/"] = function()
-                                    vim.cmd("startinsert")
-                                end
+                            ["n"] = {
+                                ["%"] = fb_actions.create,
+                                ["-"] = fb_actions.goto_parent_dir,
+                                ["D"] = fb_actions.remove,
+                                ["R"] = fb_actions.rename,
+                                ["g."] = fb_actions.toggle_hidden,
                             },
                         },
                     },
