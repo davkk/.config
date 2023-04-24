@@ -32,19 +32,6 @@ return {
                         zindex = 100,
                         border = "rounded", -- style of border for the fidget window
                     },
-                    fmt = {
-                        -- function to format each task line
-                        task =
-                            function(task_name, message, percentage)
-                                if string.find(task_name, "Typechecking") then return nil end
-                                return string.format(
-                                    "%s%s [%s]",
-                                    message,
-                                    percentage and string.format(" (%s%%)", percentage) or "",
-                                    task_name
-                                )
-                            end,
-                    },
                 },
                 config = function(_, opts)
                     require("fidget").setup(opts)
