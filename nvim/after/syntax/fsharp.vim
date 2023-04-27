@@ -1,1 +1,1 @@
-" syntax clear fsharpSymbol
+syntax clear fsharpSymbol
