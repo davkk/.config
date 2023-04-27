@@ -13,7 +13,7 @@ return {
             {
                 "ahmedkhalf/project.nvim",
                 opts = {
-                    patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".editorconfig",
+                    patterns = { "*.fsproj", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".editorconfig",
                         "global.json", "package-lock.json", "yarn.lock", "*.sln", "=src", ".env", "Cargo.toml" },
                     ignore_lsp = { "codeium", "lua_ls" },
                 },
@@ -49,7 +49,7 @@ return {
             },
 
             {
-                "<leader>d",
+                "<leader>di",
                 function()
                     require("telescope.builtin").diagnostics({
                         initial_mode = "normal",
