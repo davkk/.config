@@ -69,8 +69,6 @@ M.on_attach = function(_, bufnr)
         end,
         opts)
 
-    vim.keymap.set('n', '<leader>fsi', ':FsiShow<CR>', opts)
-
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
         vim.lsp.handlers.hover, { focusable = false, border = "rounded" }
     )
