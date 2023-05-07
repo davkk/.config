@@ -1,5 +1,6 @@
 return {
-    { -- Autocompletion,
+    {
+        -- Autocompletion,
         "hrsh7th/nvim-cmp",
         event = "BufReadPre",
         dependencies = {
@@ -40,11 +41,14 @@ return {
                     { name = "luasnip" },
                     { name = "path" },
                 }),
+                performance = {
+                    trigger_debounce_time = 500,
+                    throttle = 550,
+                    fetching_timeout = 80
+                },
                 formatting = {
                     format = require("lspkind").cmp_format({
-                        with_text = false,
-                        maxwidth = 30,
-                        ellipsis_char = "...",
+                        mode = "text",
                     })
                 }
             }
