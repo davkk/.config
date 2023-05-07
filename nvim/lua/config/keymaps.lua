@@ -9,6 +9,9 @@ keymap.set('n', '<leader>nh', ':nohl<CR>', opts)
 keymap.set('n', 'x', '"_x', opts)
 keymap.set('x', '<leader>p', '"_dP', opts)
 
+keymap.set("v", "<", "<gv", opts)
+keymap.set("v", ">", ">gv", opts)
+
 keymap.set('n', '+', '<C-a>', opts)
 keymap.set('n', '-', '<C-x>', opts)
 
