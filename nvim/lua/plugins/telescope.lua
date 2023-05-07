@@ -26,8 +26,8 @@ return {
                 function()
                     require("telescope").extensions.file_browser.file_browser({
                         hidden = true,
-                        -- path = "%:p:h",
-                        -- cwd = vim.fn.expand("%:p:h"),
+                        path = "%:p:h",
+                        cwd = vim.fn.expand("%:p:h"),
                         respect_gitignore = false,
                         initial_mode = "normal",
                     })
