@@ -92,7 +92,7 @@ return {
                 function(server_name)
                     utils.server_setup(lspconfig[server_name])
                 end,
-                    ["lua_ls"] = function()
+                ["lua_ls"] = function()
                     utils.server_setup(lspconfig.lua_ls, {
                         -- Fix Undefined global 'vim'
                         settings = {
@@ -111,16 +111,40 @@ return {
                         }
                     })
                 end,
-                    ["elmls"] = function()
+                ["elmls"] = function()
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
                     })
                 end,
-                    ["tailwindcss"] = function()
+                ["tailwindcss"] = function()
                     utils.server_setup(lspconfig.tailwindcss, {
                         filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
                             "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
                             "rescript", "typescript", "typescriptreact", },
+                    })
+                end,
+                ["cssls"] = function()
+                    utils.server_setup(lspconfig.cssls, {
+                        settings = {
+                            css = {
+                                validate = true,
+                                lint = {
+                                    unknownAtRules = "ignore"
+                                }
+                            },
+                            scss = {
+                                validate = true,
+                                lint = {
+                                    unknownAtRules = "ignore"
+                                }
+                            },
+                            less = {
+                                validate = true,
+                                lint = {
+                                    unknownAtRules = "ignore"
+                                }
+                            },
+                        },
                     })
                 end,
             })
@@ -147,7 +171,7 @@ return {
                         "rustup", "run", "stable", "rust-analyzer"
                     },
                     settings = {
-                            ['rust-analyzer'] = {
+                        ['rust-analyzer'] = {
                             cargo = {
                                 features = "all",
                             },
@@ -218,4 +242,24 @@ return {
             end
         end,
     },
+
+    {
+        "jose-elias-alvarez/null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            local null_ls = require("null-ls")
+            null_ls.setup({
+                sources = {
+                    null_ls.builtins.formatting.prettierd,
+                    null_ls.builtins.diagnostics.eslint_d.with({
+                        -- only enable eslint if root has .eslintrc.js
+                        condition = function(utils)
+                            return utils.root_has_file(".eslintrc") or utils.root_has_file(".eslintrc.js") or
+                                utils.root_has_file(".eslintrc.ts")
+                        end,
+                    }),
+                }
+            })
+        end,
+    }
 }
