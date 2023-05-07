@@ -19,33 +19,25 @@ return {
 
             vim.keymap.set("n", "<leader>H", ui.toggle_quick_menu, { desc = "toggle Harpoon quick menu" })
 
-            vim.keymap.set("n", "<leader>1", function() ui.nav_file(1) end, { desc = "navigate to first file in Harpoon" })
-            vim.keymap.set("n", "<leader>2", function() ui.nav_file(2) end, { desc = "navigate to second file in Harpoon" })
-            vim.keymap.set("n", "<leader>3", function() ui.nav_file(3) end, { desc = "navigate to third file in Harpoon" })
-            vim.keymap.set("n", "<leader>4", function() ui.nav_file(4) end, { desc = "navigate to fourth file in Harpoon" })
-            vim.keymap.set("n", "<leader>5", function() ui.nav_file(5) end, { desc = "navigate to fifth file in Harpoon" })
+            vim.keymap.set("n", "<leader>1", function() ui.nav_file(1) end,
+                { desc = "navigate to first file in Harpoon" })
+            vim.keymap.set("n", "<leader>2", function() ui.nav_file(2) end,
+                { desc = "navigate to second file in Harpoon" })
+            vim.keymap.set("n", "<leader>3", function() ui.nav_file(3) end,
+                { desc = "navigate to third file in Harpoon" })
+            vim.keymap.set("n", "<leader>4", function() ui.nav_file(4) end,
+                { desc = "navigate to fourth file in Harpoon" })
+            vim.keymap.set("n", "<leader>5", function() ui.nav_file(5) end,
+                { desc = "navigate to fifth file in Harpoon" })
         end,
     },
     {
         "gpanders/editorconfig.nvim",
         event = "BufReadPost"
     },
-    {
-        "windwp/nvim-autopairs",
-        event = "InsertEnter",
-        config = true,
-    },
     -- {
-    --     -- seamlessly navigate between nvim and tmux
-    --     "numToStr/Navigator.nvim",
-    --     event = "VeryLazy",
-    --     keys = {
-    --         { "<A-h>", "<CMD>NavigatorLeft<CR>" },
-    --         { "<A-l>", '<CMD>NavigatorRight<CR>' },
-    --         { "<A-k>", '<CMD>NavigatorUp<CR>' },
-    --         { "<A-j>", '<CMD>NavigatorDown<CR>' },
-    --         { "<A-p>", '<CMD>NavigatorPrevious<CR>' },
-    --     },
+    --     "windwp/nvim-autopairs",
+    --     event = "InsertEnter",
     --     config = true,
     -- },
     {
