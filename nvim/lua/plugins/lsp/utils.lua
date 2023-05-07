@@ -6,12 +6,12 @@ M.lsp_servers = {
     "marksman",
     "elmls",
     "astro",
-    -- "rust_analyzer",
 }
 
 M.mason_packages = {
     "black",
-    "prettier",
+    "prettierd",
+    "eslint_d",
     "elm-format",
 }
 
@@ -70,7 +70,7 @@ M.on_attach = function(_, bufnr)
         opts)
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, { focusable = false, border = "rounded" }
+        vim.lsp.handlers.hover, { border = "rounded" }
     )
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
