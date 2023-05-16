@@ -1,5 +1,6 @@
-TERM=wezterm
-#
+# TERM='wezterm'
+[[ $TMUX != "" ]] && TERM='screen-256color'
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.cargo/env:$PATH
 
@@ -10,8 +11,8 @@ export ZSH="$HOME/.config/zsh/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="gruvbox"
-SOLARIZED_THEME="dark"
+# ZSH_THEME="gruvbox"
+# SOLARIZED_THEME="dark"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -74,9 +75,9 @@ zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    git 
-    tmux 
-    vi-mode 
+    git
+    tmux
+    vi-mode
     fzf
     zsh-autosuggestions 
     zsh-syntax-highlighting 
@@ -85,6 +86,7 @@ plugins=(
 
 export STARSHIP_CONFIG=$HOME/.config/zsh/starship.toml
 export ZSH_TMUX_AUTOSTART=true
+# export ZSH_TMUX_AUTOQUIT=false
 export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
 export FZF_BASE=$(which fzf)
 
@@ -96,7 +98,6 @@ bindkey -v
 
 bindkey "" autosuggest-accept
 
-export TERM='xterm-256color'
 export MANPAGER='nvim +Man!'
 
 export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
@@ -118,7 +119,9 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -141,6 +144,7 @@ fi
 alias nv='nvim'
 alias python='python3'
 alias nuget='nuget.exe'
+alias tmux='tmux -u'
 
 # eval `dircolors --sh ~/.config/zsh/.gruvbox.dircolors`
 LS_COLORS=$LS_COLORS':di=36;01'

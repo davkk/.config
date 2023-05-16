@@ -6,6 +6,7 @@ M.lsp_servers = {
     "marksman",
     "elmls",
     "astro",
+    "pyright",
 }
 
 M.mason_packages = {

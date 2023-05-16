@@ -9,8 +9,8 @@ return {
             bold_vert_split = true,
             dim_nc_background = false,
             disable_background = true,
-            disable_float_background = true,
-            disable_italics = true,
+            disable_float_background = false,
+            disable_italics = false,
         },
         config = function(_, opts)
             require("rose-pine").setup(opts)

@@ -48,7 +48,9 @@ return {
                 },
                 formatting = {
                     format = require("lspkind").cmp_format({
-                        mode = "text",
+                        with_text = false,
+                        maxwidth = 30,
+                        ellipsis_char = "...",
                     })
                 }
             }

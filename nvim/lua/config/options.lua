@@ -41,7 +41,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 -- cursor line
-opt.cursorline = true
+-- opt.cursorline = true
 
 -- backspace
 opt.backspace = "indent,eol,start"
@@ -91,7 +91,7 @@ opt.isfname:append("@-@")
 opt.cmdheight = 1
 
 -- Don't pass messages to |ins-completion-menu|. // not mine, borrowed
-opt.shortmess:append("c")
+-- opt.shortmess:append("c")
 
 -- better experience
 opt.completeopt = 'menuone,noselect'

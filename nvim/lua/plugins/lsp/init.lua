@@ -111,6 +111,18 @@ return {
                         }
                     })
                 end,
+                ["pyright"] = function()
+                    utils.server_setup(lspconfig.pyright, {
+                        root_dir = lspconfig.util.root_pattern("pyproject.toml"),
+                        settings = {
+                            python = {
+                                analysis = {
+                                    typeCheckingMode = "strict"
+                                }
+                            }
+                        }
+                    })
+                end,
                 ["elmls"] = function()
                     utils.server_setup(lspconfig.elmls, {
                         root_dir = lspconfig.util.root_pattern("elm.json")
