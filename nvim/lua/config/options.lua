@@ -41,7 +41,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 -- cursor line
--- opt.cursorline = true
+opt.cursorline = true
 
 -- backspace
 opt.backspace = "indent,eol,start"
