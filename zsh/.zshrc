@@ -159,3 +159,6 @@ export FZF_DEFAULT_OPTS="
 	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
 
 eval "$(starship init zsh)"
+
+# opam configuration
+[[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
