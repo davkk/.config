@@ -1,9 +1,14 @@
 return {
     {
+        "iamcco/markdown-preview.nvim",
+        ft = "markdown",
+        build = function() vim.fn["mkdp#util#install"]() end,
+    },
+    {
         "Exafunction/codeium.vim",
         event = "BufReadPost",
         config = function()
-            vim.keymap.set('i', '<C-y>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+            vim.keymap.set('i', '<Tab>', function() return vim.fn['codeium#Accept']() end, { expr = true })
             vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
             vim.cmd([[ hi CodeiumSuggestion guifg=#6e6a86 ctermfg=8 ]])
         end
