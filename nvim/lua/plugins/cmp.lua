@@ -17,24 +17,34 @@ return {
         },
         opts = function()
             local cmp = require("cmp")
+            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+            local cmp_mapping = cmp.mapping.preset.insert({
+                ['<C-Space>'] = cmp.mapping.complete(),
+                ['<C-y>'] = cmp.mapping.confirm({
+                    behavior = cmp.ConfirmBehavior.Insert,
+                    select = true,
+                }),
+                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+            })
+            cmp_mapping['<Tab>'] = nil
+            cmp_mapping['<S-Tab>'] = nil
 
             return {
                 window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
+                    completion = cmp.config.window.bordered {
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+                    },
+                    documentation = cmp.config.window.bordered {
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+                    }
                 },
                 snippet = {
                     expand = function(args)
                         require('luasnip').lsp_expand(args.body)
                     end,
                 },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<CR>'] = cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Insert,
-                        select = true,
-                    }),
-                }),
+                mapping = cmp_mapping,
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "buffer" },
@@ -52,7 +62,7 @@ return {
                         maxwidth = 30,
                         ellipsis_char = "...",
                     })
-                }
+                },
             }
         end,
         config = function(_, opts)
