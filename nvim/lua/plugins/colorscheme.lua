@@ -16,7 +16,7 @@ return {
             require("rose-pine").setup(opts)
             vim.cmd([[colorscheme rose-pine]])
             vim.cmd [[hi WinSeparator guibg=None]]
-            vim.cmd [[hi CursorLine guibg=#26233a]]
+            -- vim.cmd [[hi CursorLine guibg=#26233a]]
         end,
     },
     -- {
