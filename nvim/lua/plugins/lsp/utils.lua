@@ -7,6 +7,7 @@ M.lsp_servers = {
     "elmls",
     "astro",
     "pyright",
+    "tsserver",
 }
 
 local c = vim.lsp.protocol.make_client_capabilities()

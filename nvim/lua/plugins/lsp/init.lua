@@ -29,6 +29,11 @@ return {
 
             mason_lspconfig.setup({
                 ensure_installed = utils.lsp_servers,
+                handlers = {
+                    function(server_name)
+                        utils.server_setup(lspconfig[server_name])
+                    end,
+                }
             })
 
             utils.server_setup(lspconfig.lua_ls, {
@@ -145,7 +150,7 @@ return {
                 cmd = {
                     "fsautocomplete",
                     "--project-graph-enabled",
-                    -- "--adaptive-lsp-server-enabled",
+                    "--adaptive-lsp-server-enabled",
                 },
                 root_dir = function(filename, _)
                     local root
@@ -179,6 +184,7 @@ return {
 
             {
                 "j-hui/fidget.nvim",
+                branch = "legacy",
                 opts = {
                     text = {
                         spinner = "line",
