@@ -141,7 +141,9 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias nv='nvim'
+alias l='ls --color -lhF --group-directories-first'
+alias vim='nvim'
+alias nv='echo you are stupid'
 alias python='python3'
 alias nuget='nuget.exe'
 alias tmux='tmux -u'
