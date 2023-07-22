@@ -4,10 +4,10 @@ M.lsp_servers = {
     "lua_ls",
     "pyright",
     "marksman",
-    "elmls",
     "astro",
     "pyright",
     "tsserver",
+    "angularls",
 }
 
 local c = vim.lsp.protocol.make_client_capabilities()

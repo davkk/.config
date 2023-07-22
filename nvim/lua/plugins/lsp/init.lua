@@ -65,15 +65,15 @@ return {
                 }
             })
 
-            utils.server_setup(lspconfig.elmls, {
-                root_dir = lspconfig.util.root_pattern("elm.json")
-            })
+            -- utils.server_setup(lspconfig.elmls, {
+            --     root_dir = lspconfig.util.root_pattern("elm.json")
+            -- })
 
-            utils.server_setup(lspconfig.tailwindcss, {
-                filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
-                    "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
-                    "rescript", "typescript", "typescriptreact", },
-            })
+            -- utils.server_setup(lspconfig.tailwindcss, {
+            --     filetypes = { "elm", "astro", "astro-markdown", "html", "jade", "markdown", "mdx",
+            --         "css", "less", "postcss", "sass", "scss", "stylus", "javascript", "javascriptreact",
+            --         "rescript", "typescript", "typescriptreact", },
+            -- })
 
             utils.server_setup(lspconfig.cssls, {
                 settings = {
