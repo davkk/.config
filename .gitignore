@@ -12,8 +12,8 @@
 !zsh/**
 .zsh_history
 
-!git/
-!git/**
+# !git/
+# !git/**
 
 plugins/
 .oh-my-zsh/

@@ -1,7 +1,0 @@
-[user]
-	email = dadulerk@gmail.com
-	name = Dawid Karp
-[core]
-	autocrlf = false
-[init]
-    defaultBranch = main
