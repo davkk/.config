@@ -8,15 +8,32 @@ return {
             dark_variant = 'main',
             bold_vert_split = true,
             dim_nc_background = false,
+
             disable_background = true,
             disable_float_background = true,
-            disable_italics = false,
+            disable_italics = true,
+            highlight_groups = {
+                WinSeparator = { bg = "None" },
+
+                CursorLine = { bg = "base", blend = 10 },
+                CursorLineNr = { bold = true },
+                LineNr = { fg = "highlight_med" },
+                ColorColumn = { bg = "base", blend = 10 },
+
+                SpellBad = { underline = true, undercurl = false },
+                SpellCap = { underline = true, undercurl = false },
+                SpellLocal = { underline = true, undercurl = false },
+                SpellRare = { underline = true, undercurl = false },
+
+                DiagnosticUnderlineError = { underline = true, undercurl = false },
+                DiagnosticUnderlineHint = { underline = true, undercurl = false },
+                DiagnosticUnderlineInfo = { underline = true, undercurl = false },
+                DiagnosticUnderlineWarn = { underline = true, undercurl = false },
+            }
         },
         config = function(_, opts)
             require("rose-pine").setup(opts)
             vim.cmd([[colorscheme rose-pine]])
-            vim.cmd [[hi WinSeparator guibg=None]]
-            -- vim.cmd [[hi CursorLine guibg=#26233a]]
         end,
     },
     -- {
@@ -26,19 +43,6 @@ return {
     --         transparent_mode = true,
     --         italic = false,
     --         dim_inactive = true,
-    --     }
-    -- },
-    -- {
-    --     'aktersnurra/no-clown-fiesta.nvim',
-    --     opts = {
-    --         transparent = true, -- Enable this to disable the bg color
-    --         styles = {
-    --             comments = {},
-    --             keywords = {},
-    --             functions = {},
-    --             variables = {},
-    --             type = { bold = true },
-    --         },
     --     }
     -- },
 }

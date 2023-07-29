@@ -15,6 +15,37 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         event = "BufReadPre",
-        config = true,
+        opts = {
+            signs = {
+                add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
+                change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr" },
+                delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr" },
+                topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr" },
+                changedelete = { hl = "GitSignsDelete", text = "~", numhl = "GitSignsChangeNr" },
+            },
+
+            numhl = true,
+
+            -- Highlights the _whole_ line.
+            --    Instead, use gitsigns.toggle_linehl()
+            linehl = false,
+
+            -- Highlights just the part of the line that has changed
+            --    Instead, use gitsigns.toggle_word_diff()
+            word_diff = false,
+
+            current_line_blame_opts = {
+                delay = 2000,
+                virt_text_pos = "eol",
+            },
+        },
+        config = function(_, opts)
+            local gs = require("gitsigns")
+            gs.setup(opts)
+
+            vim.cmd [[hi GitSignsAdd guibg=None]]
+            vim.cmd [[hi GitSignsChange guibg=None]]
+            vim.cmd [[hi GitSignsDelete guibg=None]]
+        end
     },
 }
