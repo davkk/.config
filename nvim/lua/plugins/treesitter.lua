@@ -51,11 +51,6 @@ return {
             indent = { enable = true },
             autotag = { enable = true, filetypes = { "html", "xml", "astro", "fsproj", "fsharp_project" }, },
             matchup = { enable = true, },
-            rainbow = {
-                enable = true,
-                extended_mode = true,
-                max_file_lines = 1000,
-            },
             context_commentstring = {
                 enable = true,
             }

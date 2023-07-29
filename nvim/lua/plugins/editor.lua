@@ -40,11 +40,6 @@ return {
         "gpanders/editorconfig.nvim",
         event = "BufReadPost"
     },
-    -- {
-    --     "windwp/nvim-autopairs",
-    --     event = "InsertEnter",
-    --     config = true,
-    -- },
     {
         "kylechui/nvim-surround",
         event = "VeryLazy",
