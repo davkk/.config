@@ -33,6 +33,14 @@ return {
             custom_rose_pine.command.c.bg = "None"
             custom_rose_pine.replace.c.bg = "None"
 
+            local signs = require("plugins.lsp.utils").signs
+            local symbols = {
+                error = signs.Error,
+                warn = signs.Warn,
+                hint = signs.Hint,
+                info = signs.Info,
+            }
+
             return {
                 options = {
                     icons_enabled = true,
@@ -78,7 +86,7 @@ return {
                         {
                             "diagnostics",
                             sources = { "nvim_diagnostic" },
-                            symbols = { error = " ", warn = " ", hint = " ", info = " " },
+                            symbols = symbols,
                             colored = true,
                             update_in_insert = true,
                         },

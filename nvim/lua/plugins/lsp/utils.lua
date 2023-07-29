@@ -22,9 +22,15 @@ c.textDocument.completion.completionItem.resolveSupport = {
 
 M.capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 
+M.signs = {
+    Error ="E ",
+    Warn = "W ",
+    Hint = "H ",
+    Info = "I ",
+}
+
 M.setup = function()
-    local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-    for type, icon in pairs(signs) do
+    for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
     end
@@ -33,7 +39,7 @@ M.setup = function()
         severity_sort = true,
         virtual_text = true,
         virtual_lines = false,
-        signs = { active = signs },
+        signs = { active = M.signs },
         underline = true,
         update_in_insert = false,
         float = {
@@ -65,50 +71,6 @@ M.create_codelens_autocmd = function(client, bufnr)
     end
 end
 
--- shamelessly stolen from TJ
--- M.refresh_virtlines = function()
---   local bufnr = vim.api.nvim_get_current_buf()
---   local params = { textDocument = vim.lsp.util.make_text_document_params() }
---
---   vim.lsp.buf_request(bufnr, "textDocument/codeLens", params, function(err, result, _, _)
---     if err then
---       return
---     end
---
---     local ns = vim.api.nvim_create_namespace "custom-lsp-codelens"
---     vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
---
---     for _, lens in ipairs(result) do
---       local title = lens.command.title
---       local range = lens.range
---       local prefix = string.rep(" ", lens.range.start.character)
---       local text = prefix .. title
---
---       local lines = { { { text, "NonText" } } }
---       if string.len(text) > 100 then
---         vim.g.something = true
---         lines = {}
---
---         -- TODO: If we're in ocaml only, do this...
---         local split_text = vim.split(text, "->")
---
---         for i, line in ipairs(split_text) do
---           if i ~= #split_text then
---             line = line .. " ->"
---           end
---
---           table.insert(lines, { { line, "NonText" } })
---         end
---       end
---
---       vim.api.nvim_buf_set_extmark(bufnr, ns, range.start.line, 0, {
---         virt_lines_above = true,
---         virt_lines = lines,
---       })
---     end
---   end)
--- end
-
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
 
@@ -120,8 +82,8 @@ M.setup_lsp_keybinds = function(bufnr)
     -- open detailed error message window
     vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, opts)
 
-    vim.keymap.set("n", "]e", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "[e", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts)
 
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
