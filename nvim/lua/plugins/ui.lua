@@ -2,22 +2,6 @@ return {
     "nvim-tree/nvim-web-devicons",
 
     {
-        "lukas-reineke/indent-blankline.nvim",
-        event = "BufReadPre",
-        opts = {
-            char = '▏',
-            context_char = '▏',
-            show_current_context = true,
-        },
-        config = function(_, opts)
-            require("indent_blankline").setup(opts)
-
-            vim.cmd [[highlight IndentBlanklineChar guifg=#1f1d2e gui=nocombine]]
-            vim.cmd [[highlight IndentBlanklineContextChar guifg=#6e6a86 gui=nocombine]]
-        end
-    },
-
-    {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         opts = function()
@@ -78,7 +62,11 @@ return {
                                 modified = { fg = "#6e6a86", bg = "None" },
                                 removed = { fg = "#6e6a86", bg = "None" },
                             },
-                            symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+                            symbols = {
+                                added = " ",
+                                modified = " ",
+                                removed = " "
+                            }, -- changes diff symbols
                             cond = hide_in_width,
                         },
                     },

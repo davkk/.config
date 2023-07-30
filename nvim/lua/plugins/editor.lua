@@ -37,10 +37,6 @@ return {
         end,
     },
     {
-        "gpanders/editorconfig.nvim",
-        event = "BufReadPost"
-    },
-    {
         "kylechui/nvim-surround",
         event = "VeryLazy",
         config = true,
