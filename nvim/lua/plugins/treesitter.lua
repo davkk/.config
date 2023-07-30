@@ -3,19 +3,15 @@ return {
         "nvim-treesitter/nvim-treesitter",
         dependencies = {
             "nvim-treesitter/playground",
-            "HiPhish/rainbow-delimiters.nvim",
-            "windwp/nvim-ts-autotag",
-            "andymass/vim-matchup",
             "JoosepAlviste/nvim-ts-context-commentstring",
             "nvim-treesitter/nvim-treesitter-context",
-            { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
+            "nvim-treesitter/nvim-treesitter-angular",
         },
         build = ":TSUpdate",
         lazy = false,
         opts = {
             ensure_installed = {
                 "vimdoc",
-                "elm",
                 "html",
                 "javascript",
                 "typescript",
@@ -32,10 +28,10 @@ return {
                 "markdown",
                 "python",
                 "yaml",
-                "angular",
+                "angular"
             },
             sync_install = true,
-            auto_install = true,
+            auto_install = false,
             playground = { enable = true },
             highlight = {
                 enable = true,
@@ -49,11 +45,7 @@ return {
                 additional_vim_regex_highlighting = false,
             },
             indent = { enable = true },
-            autotag = { enable = true, filetypes = { "html", "xml", "astro", "fsproj", "fsharp_project" }, },
-            matchup = { enable = true, },
-            context_commentstring = {
-                enable = true,
-            }
+            context_commentstring = { enable = true }
         },
         config = function(_, opts)
             local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
