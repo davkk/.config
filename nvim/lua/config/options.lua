@@ -19,11 +19,18 @@ opt.laststatus = 3
 opt.showmode = false
 
 -- tabs and indent
+opt.autoindent = true
+opt.cindent = true
+opt.wrap = true
+
 opt.tabstop = 4
+opt.softtabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = true
-opt.autoindent = true
+
 opt.breakindent = true
+opt.showbreak = string.rep(" ", 3) -- Make it so that long lines wrap smartly
+opt.linebreak = true
 
 -- text wrapping
 opt.wrap = false
@@ -91,13 +98,21 @@ opt.isfname:append("@-@")
 opt.cmdheight = 1
 
 -- Don't pass messages to |ins-completion-menu|. // not mine, borrowed
--- opt.shortmess:append("c")
+opt.shortmess:append("c")
 
 -- better experience
 opt.completeopt = 'menuone,noselect'
 
--- show whitespace
-opt.list = true
-
 -- save undo history
 opt.undofile = true
+
+-- show whitespace
+opt.list = true
+opt.listchars = {
+     tab = '» ',
+     trail = '·',
+     extends = '<',
+     precedes = '>',
+     conceal = '┊',
+     nbsp = '␣',
+}
