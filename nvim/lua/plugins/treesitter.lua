@@ -5,7 +5,7 @@ return {
             "nvim-treesitter/playground",
             "JoosepAlviste/nvim-ts-context-commentstring",
             "nvim-treesitter/nvim-treesitter-context",
-            "nvim-treesitter/nvim-treesitter-angular",
+            { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
         },
         build = ":TSUpdate",
         lazy = false,
