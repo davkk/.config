@@ -12,7 +12,7 @@ opt.relativenumber = true
 opt.number = true
 
 -- winbar
-opt.winbar = "%=%f %m%="
+opt.winbar = "%=%t %m%="
 
 -- global statusline
 opt.laststatus = 3
