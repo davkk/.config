@@ -10,16 +10,6 @@ return {
                 cond = vim.fn.executable "make" == 1,
             },
             "nvim-telescope/telescope-file-browser.nvim",
-            {
-                "ahmedkhalf/project.nvim",
-                opts = {
-                    patterns = { "*.fsproj", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
-                        ".editorconfig",
-                        "global.json", "package-lock.json", "yarn.lock", "*.sln", "=src", ".env", "Cargo.toml" },
-                    ignore_lsp = { "codeium", "lua_ls" },
-                },
-                config = function(_, opts) require("project_nvim").setup(opts) end,
-            },
             "nvim-telescope/telescope-ui-select.nvim",
         },
         keys = {
@@ -96,11 +86,16 @@ return {
                     file_ignore_patterns = { "^.git/" },
                     mappings = {
                         i = {
-                            ["<C-q>"] = actions.send_to_qflist,
-                            ["<CR>"] = actions.select_default,
+                            ["<C-y>"] = actions.select_default,
+                            ["<C-d>"] = actions.results_scrolling_down,
+                            ["<C-u>"] = actions.results_scrolling_up,
                         },
                         n = {
                             ["q"] = actions.close,
+                            ["<C-c>"] = actions.close,
+                            ["<C-y>"] = actions.select_default,
+                            ["<C-d>"] = actions.results_scrolling_down,
+                            ["<C-u>"] = actions.results_scrolling_up,
                         },
                     },
                 },
