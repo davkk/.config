@@ -13,12 +13,14 @@ return {
             {
                 "ahmedkhalf/project.nvim",
                 opts = {
-                    patterns = { "*.fsproj", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".editorconfig",
+                    patterns = { "*.fsproj", ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json",
+                        ".editorconfig",
                         "global.json", "package-lock.json", "yarn.lock", "*.sln", "=src", ".env", "Cargo.toml" },
                     ignore_lsp = { "codeium", "lua_ls" },
                 },
                 config = function(_, opts) require("project_nvim").setup(opts) end,
-            }
+            },
+            "nvim-telescope/telescope-ui-select.nvim",
         },
         keys = {
             {
@@ -30,6 +32,7 @@ return {
                         cwd = vim.fn.expand("%:p:h"),
                         respect_gitignore = false,
                         initial_mode = "normal",
+                        grouped = true,
                     })
                 end,
                 desc = "Browse Files",
@@ -93,11 +96,11 @@ return {
                     file_ignore_patterns = { "^.git/" },
                     mappings = {
                         i = {
-                                ["<C-q>"] = actions.send_to_qflist,
-                                ["<CR>"] = actions.select_default,
+                            ["<C-q>"] = actions.send_to_qflist,
+                            ["<CR>"] = actions.select_default,
                         },
                         n = {
-                                ["q"] = actions.close,
+                            ["q"] = actions.close,
                         },
                     },
                 },
@@ -132,7 +135,7 @@ return {
             telescope.setup(opts)
             telescope.load_extension("fzf")
             telescope.load_extension("file_browser")
-            telescope.load_extension("projects")
+            telescope.load_extension("ui-select")
         end,
     },
 }
