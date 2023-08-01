@@ -46,10 +46,16 @@ return {
             vim.keymap.set("n", "<leader>a", mark.add_file, { desc = "add file to Harpoon" })
             vim.keymap.set("n", "<leader>h", ui.toggle_quick_menu, { desc = "toggle Harpoon quick menu" })
 
-            vim.keymap.set("n", "<C-j>", function() ui.nav_file(1) end, { desc = "navigate to first file in Harpoon" })
-            vim.keymap.set("n", "<C-k>", function() ui.nav_file(2) end, { desc = "navigate to second file in Harpoon" })
-            vim.keymap.set("n", "<C-l>", function() ui.nav_file(3) end, { desc = "navigate to third file in Harpoon" })
-            vim.keymap.set("n", "<C-m>", function() ui.nav_file(4) end, { desc = "navigate to fourth file in Harpoon" })
+            for i = 1, 5 do
+                vim.keymap.set(
+                    "n",
+                    string.format("<space>%s", i),
+                    function()
+                        require("harpoon.ui").nav_file(i)
+                    end,
+                    { desc = string.format("Harpoon navigate to file %s", i) }
+                )
+            end
         end,
     },
     {
