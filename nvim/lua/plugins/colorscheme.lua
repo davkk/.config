@@ -15,6 +15,8 @@ return {
             highlight_groups = {
                 WinSeparator = { bg = "None" },
 
+                CodeiumSuggestion = { fg = "muted" },
+
                 CursorLine = { bg = "base", blend = 10 },
                 CursorLineNr = { bold = true },
                 LineNr = { fg = "highlight_med" },
@@ -29,6 +31,15 @@ return {
                 DiagnosticUnderlineHint = { underline = true, undercurl = false },
                 DiagnosticUnderlineInfo = { underline = true, undercurl = false },
                 DiagnosticUnderlineWarn = { underline = true, undercurl = false },
+
+                GitSignsAdd = { bg = "None" },
+                GitSignsChange = { bg = "None" },
+                GitSignsDelete = { bg = "None" },
+
+                FidgetTask = { fg = "highlight_med" },
+                FidgetTitle = { fg = "text" },
+
+                CmpItemKind = { link = "CmpItemMenuDefault" }
             }
         },
         config = function(_, opts)

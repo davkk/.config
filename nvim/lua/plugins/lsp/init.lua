@@ -198,11 +198,7 @@ return {
                         border = "rounded", -- style of border for the fidget window
                     },
                 },
-                config = function(_, opts)
-                    require("fidget").setup(opts)
-                    vim.cmd [[hi! link FidgetTask FloatBorder]]
-                    vim.cmd [[hi! link FidgetTitle Title]]
-                end
+                config = true
             },
 
             {

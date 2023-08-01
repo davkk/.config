@@ -70,10 +70,6 @@ return {
 
             cmp.setup(opts)
 
-            vim.cmd [[
-                highlight! default link CmpItemKind CmpItemMenuDefault
-            ]]
-
             cmp.setup.cmdline({ "/", "?" }, {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({

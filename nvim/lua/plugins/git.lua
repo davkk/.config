@@ -45,13 +45,6 @@ return {
                 virt_text_pos = "eol",
             },
         },
-        config = function(_, opts)
-            local gs = require("gitsigns")
-            gs.setup(opts)
-
-            vim.cmd [[hi GitSignsAdd guibg=None]]
-            vim.cmd [[hi GitSignsChange guibg=None]]
-            vim.cmd [[hi GitSignsDelete guibg=None]]
-        end
+        config = true
     },
 }
