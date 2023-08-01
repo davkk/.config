@@ -23,7 +23,14 @@ return {
     {
         "ThePrimeagen/harpoon",
         lazy = false,
-        config = function()
+        opts = {
+            menu = {
+                width = 90,
+                height = 20
+            }
+        },
+        config = function(_, opts)
+            require("harpoon").setup(opts)
             local mark = require("harpoon.mark")
             local ui = require("harpoon.ui")
 
