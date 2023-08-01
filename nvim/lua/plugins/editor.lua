@@ -1,5 +1,15 @@
 return {
     {
+        "nvim-tree/nvim-tree.lua",
+        event = "BufReadPost",
+        config = function()
+            require("nvim-tree").setup()
+
+            vim.keymap.set('n', '<leader>E', require('nvim-tree.api').tree.toggle,
+                { noremap = true, silent = true, nowait = true })
+        end
+    },
+    {
         "mbbill/undotree",
         event = "BufReadPost",
         config = function()
