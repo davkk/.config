@@ -39,7 +39,10 @@ return {
                 FidgetTask = { fg = "highlight_med" },
                 FidgetTitle = { fg = "text" },
 
-                CmpItemKind = { link = "CmpItemMenuDefault" }
+                CmpItemKind = { link = "CmpItemMenuDefault" },
+
+                FloatTitle = { fg = "highlight_med" },
+                FloatBorder = { fg = "highlight_med" },
             }
         },
         config = function(_, opts)
