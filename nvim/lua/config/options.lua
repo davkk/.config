@@ -109,10 +109,10 @@ opt.undofile = true
 -- show whitespace
 opt.list = true
 opt.listchars = {
-     tab = '» ',
+     tab = '»·',
      trail = '·',
-     extends = '<',
-     precedes = '>',
+     extends = '→',
+     precedes = '←',
      conceal = '┊',
      nbsp = '␣',
 }
