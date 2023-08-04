@@ -34,7 +34,6 @@ return {
                     require("telescope.builtin").find_files({
                         previewer = false,
                         hidden = true,
-                        winblend = 9,
                         -- path = "%:p:h",
                         -- cwd = vim.fn.expand("%:p:h"),
                     })

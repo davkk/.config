@@ -52,15 +52,6 @@ return {
                 max_width = 80,
                 max_height = 30,
                 border = "rounded",
-                win_options = {
-                    winblend = 9,
-                },
-                override = function (config)
-                    vim.tbl_deep_extend("force", {
-                        title_pos = "center",
-                    }, config)
-                    return config
-                end,
             },
         },
         dependencies = { "nvim-tree/nvim-web-devicons" },
