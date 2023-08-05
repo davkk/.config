@@ -29,7 +29,7 @@ return {
                 ["<CR>"] = "actions.select",
                 ["<C-v>"] = "actions.select_vsplit",
                 ["<C-x>"] = "actions.select_split",
-                ["<C-o>"] = "actions.refresh",
+                ["<C-r>"] = "actions.refresh",
                 ["<C-c>"] = "actions.close",
                 ["q"] = "actions.close",
                 ["-"] = "actions.parent",
@@ -37,12 +37,6 @@ return {
                 ["`"] = "actions.cd",
                 ["~"] = "actions.tcd",
                 ["g."] = "actions.toggle_hidden",
-                ["<leader>1"] = "",
-                ["<leader>2"] = "",
-                ["<leader>3"] = "",
-                ["<leader>4"] = "",
-                ["<leader>5"] = "",
-                ["<C-^>"] = "",
             },
             use_default_keymaps = false,
             view_options = {
@@ -62,7 +56,7 @@ return {
             local oil = require("oil")
             oil.setup(opts)
 
-            vim.keymap.set("n", "<C-e>", oil.open_float, { noremap = true, silent = true })
+            vim.keymap.set("n", "<C-e>", oil.open, { noremap = true, silent = true })
         end,
     },
     {
