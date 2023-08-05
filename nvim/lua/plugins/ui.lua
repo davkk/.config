@@ -3,6 +3,7 @@ return {
 
     {
         "nvim-lualine/lualine.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         event = "VeryLazy",
         opts = function()
             local hide_in_width = function()
@@ -16,6 +17,10 @@ return {
             custom_rose_pine.visual.c.bg = "None"
             custom_rose_pine.command.c.bg = "None"
             custom_rose_pine.replace.c.bg = "None"
+
+            local my_filename = require('lualine.components.filename'):extend()
+            my_filename.apply_icon = require('lualine.components.filetype').apply_icon
+            my_filename.icon_hl_cache = {}
 
             local signs = require("plugins.lsp.utils").signs
             local symbols = {
@@ -35,6 +40,25 @@ return {
                         statusline = { "dashboard", "NvimTree", "Outline" },
                     },
                 },
+                winbar = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {
+                        {
+                            my_filename,
+                            color = { gui = "bold" },
+
+                            file_status = true,
+                            newfile_status = false,
+                            path = 1,
+
+                            shorting_target = 40,
+                        }
+                    },
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {},
+                },
                 sections = {
                     lualine_a = {
                         {
@@ -51,8 +75,6 @@ return {
                             color = { bg = "none" },
                             padding = { left = 2, right = 1 },
                         },
-                    },
-                    lualine_c = {
                         {
                             "diff",
                             colored = true,
@@ -70,6 +92,7 @@ return {
                             cond = hide_in_width,
                         },
                     },
+                    lualine_c = {},
                     lualine_x = {
                         {
                             "diagnostics",
