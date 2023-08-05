@@ -164,19 +164,19 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
 
-            {
-                "ErichDonGubler/lsp_lines.nvim",
-                config = function()
-                    require("lsp_lines").setup()
-
-                    vim.keymap.set("n", "<leader>e", function()
-                        vim.diagnostic.config({
-                            virtual_text = not vim.diagnostic.config().virtual_text,
-                            virtual_lines = not vim.diagnostic.config().virtual_lines,
-                        })
-                    end)
-                end,
-            },
+            -- {
+            --     "ErichDonGubler/lsp_lines.nvim",
+            --     config = function()
+            --         require("lsp_lines").setup()
+            --
+            --         vim.keymap.set("n", "<leader>e", function()
+            --             vim.diagnostic.config({
+            --                 virtual_text = not vim.diagnostic.config().virtual_text,
+            --                 virtual_lines = not vim.diagnostic.config().virtual_lines,
+            --             })
+            --         end)
+            --     end,
+            -- },
 
             {
                 "j-hui/fidget.nvim",

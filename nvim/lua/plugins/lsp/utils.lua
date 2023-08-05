@@ -23,10 +23,10 @@ c.textDocument.completion.completionItem.resolveSupport = {
 M.capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 
 M.signs = {
-    Error ="E ",
-    Warn = "W ",
-    Hint = "H ",
-    Info = "I ",
+    Error ="󱓻 ",
+    Warn = "󱓻 ",
+    Hint = "󱓻 ",
+    Info = "󱓻 ",
 }
 
 M.setup = function()
@@ -37,7 +37,9 @@ M.setup = function()
 
     vim.diagnostic.config({
         severity_sort = true,
-        virtual_text = true,
+        virtual_text = {
+            prefix = "󱓻",
+        },
         virtual_lines = false,
         signs = { active = M.signs },
         underline = true,
@@ -80,7 +82,7 @@ M.setup_lsp_keybinds = function(bufnr)
     vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
 
     -- open detailed error message window
-    vim.keymap.set("n", "<leader>de", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
 
     vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, opts)
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts)
