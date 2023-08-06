@@ -73,23 +73,57 @@ M.create_codelens_autocmd = function(client, bufnr)
     end
 end
 
+local get_highest_error_severity = function()
+    -- Go to the next diagnostic, but prefer going to errors first
+    -- In general, I pretty much never want to go to the next hint
+    local severity_levels = {
+        vim.diagnostic.severity.ERROR,
+        vim.diagnostic.severity.WARN,
+        vim.diagnostic.severity.INFO,
+        vim.diagnostic.severity.HINT,
+    }
+    for _, level in ipairs(severity_levels) do
+        local diags = vim.diagnostic.get(0, { severity = { min = level } })
+        if #diags > 0 then
+            return level, diags
+        end
+    end
+end
+
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
 
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "<leader>gT", vim.lsp.buf.type_definition, opts)
+    vim.keymap.set("n", "<leader>gI", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
 
-    -- open detailed error message window
-    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
-    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, opts)
-    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts) -- open detailed error message window
+
+    vim.keymap.set("n", "<leader>dn", function()
+        vim.diagnostic.goto_next {
+            severity = get_highest_error_severity(),
+            wrap = true,
+            float = true,
+        }
+    end, opts)
+    vim.keymap.set("n", "<leader>dp", function()
+        vim.diagnostic.goto_prev {
+            severity = get_highest_error_severity(),
+            wrap = true,
+            float = true,
+        }
+    end, opts)
 
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+
+    vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+    vim.keymap.set("v", "<leader>f", vim.lsp.buf.format, opts)
 
     vim.keymap.set("i", "<C-h>",
         function()

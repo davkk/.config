@@ -35,4 +35,3 @@ keymap.set('t', '<Esc>', '<C-\\><C-n>')
 -- select all
 keymap.set('n', '<C-a>', 'gg<S-V>G', opts)
 
-keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
