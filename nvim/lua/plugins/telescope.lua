@@ -9,25 +9,8 @@ return {
                 build = "make",
                 cond = vim.fn.executable "make" == 1,
             },
-            -- "nvim-telescope/telescope-file-browser.nvim",
-            -- "nvim-telescope/telescope-ui-select.nvim",
         },
         keys = {
-            -- {
-            --     "<C-e>",
-            --     function()
-            --         require("telescope").extensions.file_browser.file_browser({
-            --             hidden = true,
-            --             path = "%:p:h",
-            --             cwd = vim.fn.expand("%:p:h"),
-            --             respect_gitignore = false,
-            --             initial_mode = "normal",
-            --             grouped = true,
-            --         })
-            --     end,
-            --     desc = "Browse Files",
-            -- },
-
             {
                 "<C-p>",
                 function()
@@ -51,7 +34,7 @@ return {
             },
 
             {
-                "<leader>gs",
+                "<leader>gw", -- grep word
                 function()
                     require("telescope.builtin").grep_string({
                         search = vim.fn.input "Grep String > ",
@@ -69,8 +52,6 @@ return {
         },
         opts = function()
             local actions = require("telescope.actions")
-
-            -- local fb_actions = require("telescope").extensions.file_browser.actions
 
             return {
                 defaults = {
@@ -108,21 +89,6 @@ return {
                         override_file_sorter = true,
                         case_mode = "smart_case",
                     },
-                    -- file_browser = {
-                    --     hidden = true,
-                    --     hijack_netrw = true,
-                    --     file_ignore_patterns = { "^.git/", "^node_modules/", "^.vscode/" },
-                    --     initial_mode = "normal",
-                    --     mappings = {
-                    --         ["n"] = {
-                    --             ["%"] = fb_actions.create,
-                    --             ["-"] = fb_actions.goto_parent_dir,
-                    --             ["D"] = fb_actions.remove,
-                    --             ["R"] = fb_actions.rename,
-                    --             ["g."] = fb_actions.toggle_hidden,
-                    --         },
-                    --     },
-                    -- },
                 },
             }
         end,
@@ -131,8 +97,6 @@ return {
 
             telescope.setup(opts)
             telescope.load_extension("fzf")
-            -- telescope.load_extension("file_browser")
-            -- telescope.load_extension("ui-select")
         end,
     },
 }

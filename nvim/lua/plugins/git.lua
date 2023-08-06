@@ -7,9 +7,9 @@ return {
             local keymap = vim.keymap
             local opts = { noremap = true, silent = true }
 
-            keymap.set("n", "<leader>gg", "<cmd>:vertical G<CR>", opts)
+            keymap.set("n", "<leader>gs", "<cmd>:vertical G<CR>", opts)
             keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
-            keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase<CR>", opts)
+            keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase=preserve<CR>", opts)
 
             -- do git merges easily
             -- gh = choose left
