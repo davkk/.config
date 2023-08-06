@@ -51,19 +51,20 @@ return {
             },
 
             {
-                "<leader>lg",
+                "<leader>gs",
                 function()
-                    require("telescope.builtin").live_grep()
+                    require("telescope.builtin").grep_string({
+                        search = vim.fn.input "Grep String > ",
+                        initial_mode = "normal",
+                    })
                 end,
             },
 
             {
-                "\\\\",
+                "<leader>lg",
                 function()
-                    require 'telescope'.extensions.projects.projects({
-                        initial_mode = "normal",
-                    })
-                end
+                    require("telescope.builtin").live_grep()
+                end,
             },
         },
         opts = function()
@@ -80,6 +81,7 @@ return {
                         width = 0.6,
                         height = 30,
                     },
+                    path_display = { smart = true },
                     preview = { hide_on_startup = false },
                     results_title = false,
                     sorting_strategy = 'ascending',
