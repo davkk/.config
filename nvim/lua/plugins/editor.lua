@@ -139,9 +139,4 @@ return {
         event = "BufReadPost",
         config = true,
     },
-    {
-        "m4xshen/smartcolumn.nvim",
-        event = "BufReadPost",
-        config = true,
-    },
 }

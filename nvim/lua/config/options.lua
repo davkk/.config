@@ -75,7 +75,7 @@ opt.splitbelow = true
 opt.iskeyword:append("-")
 
 -- mark 80th column
-opt.colorcolumn = "80"
+-- opt.colorcolumn = "80"
 
 -- faster completion
 opt.updatetime = 50
