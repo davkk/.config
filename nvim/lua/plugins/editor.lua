@@ -92,7 +92,15 @@ return {
     },
     {
         "ThePrimeagen/harpoon",
-        lazy = false,
+        keys = {
+            "<leader>a",
+            "<leader>h",
+            "<leader>1",
+            "<leader>2",
+            "<leader>3",
+            "<leader>4",
+            "<leader>5",
+        },
         opts = {
             menu = {
                 width = 90,
