@@ -3,12 +3,22 @@ return {
         "nvim-telescope/telescope.nvim",
         lazy = false,
         dependencies = {
+            "stevearc/oil.nvim",
             { "nvim-lua/plenary.nvim" },
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
                 cond = vim.fn.executable "make" == 1,
             },
+            {
+                "ThePrimeagen/git-worktree.nvim",
+                opts = {
+                    update_on_change_command = "Oil ."
+                },
+                config = function (_, opts)
+                    require("git-worktree").setup(opts)
+                end
+            }
         },
         keys = {
             {
@@ -47,6 +57,13 @@ return {
                 "<leader>lg",
                 function()
                     require("telescope.builtin").live_grep()
+                end,
+            },
+
+            {
+                "<leader>wt",
+                function()
+                    require('telescope').extensions.git_worktree.git_worktrees()
                 end,
             },
         },
@@ -97,6 +114,7 @@ return {
 
             telescope.setup(opts)
             telescope.load_extension("fzf")
+            telescope.load_extension("git_worktree")
         end,
     },
 }

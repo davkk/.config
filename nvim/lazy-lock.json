@@ -10,6 +10,7 @@
   "codeium.vim": { "branch": "main", "commit": "3387991fc87288ed4281ff665645c11de5833cf5" },
   "deferred-clipboard.nvim": { "branch": "master", "commit": "810a29d166eaa41afc220cc7cd85eeaa3c43b37f" },
   "fidget.nvim": { "branch": "legacy", "commit": "90c22e47be057562ee9566bad313ad42d622c1d3" },
+  "git-worktree.nvim": { "branch": "master", "commit": "d7f4e2584e81670154f07ca9fa5dd791d9c1b458" },
   "gitsigns.nvim": { "branch": "main", "commit": "31178496552584e84fa9e74e087dec1f6c347f5d" },
   "harpoon": { "branch": "master", "commit": "21f4c47c6803d64ddb934a5b314dcb1b8e7365dc" },
   "lazy.nvim": { "branch": "main", "commit": "dac844ed617dda4f9ec85eb88e9629ad2add5e05" },

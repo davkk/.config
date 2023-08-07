@@ -1,7 +1,7 @@
 return {
     {
-        'stevearc/oil.nvim',
-        keys = { "<C-e>" },
+        "stevearc/oil.nvim",
+        lazy = false,
         opts = {
             columns = {
                 "icon",
