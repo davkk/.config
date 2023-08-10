@@ -4,7 +4,10 @@ return {
         lazy = false,
         opts = {
             columns = {
-                "icon",
+                {
+                    "icon",
+                    add_padding = false,
+                },
             },
             win_options = {
                 wrap = false,
@@ -52,7 +55,7 @@ return {
             },
         },
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function(_, opts) 
+        config = function(_, opts)
             local oil = require("oil")
             oil.setup(opts)
 
