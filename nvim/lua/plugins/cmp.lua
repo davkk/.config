@@ -46,14 +46,13 @@ return {
                 },
                 mapping = cmp_mapping,
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
+                    { name = "nvim_lsp", keyword_length = 6, group_index = 1, max_item_count = 30 },
                     { name = "buffer" },
                     { name = "luasnip" },
                     { name = "path" },
                 }),
                 performance = {
                     trigger_debounce_time = 500,
-                    throttle = 550,
                     fetching_timeout = 80
                 },
                 formatting = {
