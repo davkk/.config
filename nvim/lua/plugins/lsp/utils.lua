@@ -23,32 +23,33 @@ c.textDocument.completion.completionItem.resolveSupport = {
 M.capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 
 M.signs = {
-    Error ="󱓻 ",
-    Warn = "󱓻 ",
-    Hint = "󱓻 ",
-    Info = "󱓻 ",
+    Error = " ",
+    Warn = " ",
+    Hint = " ",
+    Info = " ",
 }
 
 M.setup = function()
     for type, icon in pairs(M.signs) do
         local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
 
     vim.diagnostic.config({
         severity_sort = true,
         virtual_text = {
             prefix = "󱓻",
+            source = "if_many",
         },
         virtual_lines = false,
         signs = { active = M.signs },
         underline = true,
         update_in_insert = false,
         float = {
-            focusable = false,
+            show_header = true,
             style = 'minimal',
             border = 'rounded',
-            source = 'always',
+            source = 'if_many',
             header = '',
             prefix = '',
         },

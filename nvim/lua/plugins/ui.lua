@@ -22,12 +22,11 @@ return {
             my_filename.apply_icon = require('lualine.components.filetype').apply_icon
             my_filename.icon_hl_cache = {}
 
-            local signs = require("plugins.lsp.utils").signs
             local symbols = {
-                error = signs.Error,
-                warn = signs.Warn,
-                hint = signs.Hint,
-                info = signs.Info,
+                error = " ",
+                warn = "󱈸 ",
+                hint = "󱠂 ",
+                info = " ",
             }
 
             return {
