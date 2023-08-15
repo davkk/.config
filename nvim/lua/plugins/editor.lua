@@ -86,12 +86,19 @@ return {
         build = function() vim.fn["mkdp#util#install"]() end,
     },
     {
-        "Exafunction/codeium.vim",
-        event = "BufReadPost",
-        config = function()
-            vim.keymap.set('i', '<Tab>', function() return vim.fn['codeium#Accept']() end, { expr = true })
-            vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-        end
+        "codota/tabnine-nvim",
+        event = "VeryLazy",
+        build = "./dl_binaries.sh",
+        opts = {
+            disable_auto_comment = true,
+            accept_keymap = "<Tab>",
+            dismiss_keymap = "<C-x>",
+            debounce_ms = 500,
+            exclude_filetypes = { "TelescopePrompt", "Oil", "Harpoon" },
+        },
+        config = function(_, opts)
+            require("tabnine").setup(opts)
+        end,
     },
     {
         "ThePrimeagen/harpoon",
