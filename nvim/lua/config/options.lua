@@ -16,7 +16,7 @@ opt.winbar = "%m %t"
 
 -- global statusline
 opt.laststatus = 3
-opt.showmode = false
+-- opt.showmode = false
 
 -- tabs and indent
 opt.autoindent = true
@@ -75,7 +75,7 @@ opt.splitbelow = true
 opt.iskeyword:append("-")
 
 -- mark 80th column
--- opt.colorcolumn = "80"
+opt.colorcolumn = "80"
 
 -- faster completion
 opt.updatetime = 50

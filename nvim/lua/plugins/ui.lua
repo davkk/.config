@@ -35,9 +35,6 @@ return {
                     theme = custom_rose_pine,
                     section_separators = "",
                     component_separators = "",
-                    disabled_filetypes = {
-                        statusline = { "dashboard", "NvimTree", "Outline" },
-                    },
                 },
                 winbar = {
                     lualine_a = {},
@@ -60,24 +57,23 @@ return {
                 },
                 sections = {
                     lualine_a = {
-                        {
-                            "mode",
-                            separator = { left = "", right = "", },
-                            padding = 1,
-                        }
+                        -- {
+                        --     "mode",
+                        --     color = { bg = "none", gui = "bold" },
+                        --     separator = { left = "", right = "", },
+                        --     padding = 1,
+                        -- },
                     },
                     lualine_b = {
                         {
                             "branch",
-                            icons_enabled = true,
                             icon = "",
-                            color = { bg = "none" },
-                            padding = { left = 2, right = 1 },
+                            color = { bg = "none", gui = "bold" },
+                            padding = { right = 1 },
                         },
                         {
                             "diff",
                             colored = true,
-                            separator = { left = "", right = "", },
                             diff_color = {
                                 added = { fg = "#6e6a86", bg = "None" },
                                 modified = { fg = "#6e6a86", bg = "None" },
@@ -98,7 +94,7 @@ return {
                             sources = { "nvim_diagnostic" },
                             symbols = symbols,
                             colored = true,
-                            update_in_insert = true,
+                            update_in_insert = false,
                         },
                     },
                     lualine_y = {},
