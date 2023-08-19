@@ -94,7 +94,7 @@ return {
             accept_keymap = "<Tab>",
             dismiss_keymap = "<C-x>",
             debounce_ms = 500,
-            exclude_filetypes = { "TelescopePrompt", "Oil", "Harpoon" },
+            exclude_filetypes = { "TelescopePrompt", "oil", "harpoon", "gitcommit" },
         },
         config = function(_, opts)
             require("tabnine").setup(opts)
