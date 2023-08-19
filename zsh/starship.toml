@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory$git_branch $python $fill $time
+$directory$git_branch
 $character
 """
 
@@ -14,12 +14,12 @@ add_newline = false
 disabled = true
 
 [character]
-success_symbol = "[](bold)"
-error_symbol = "[](bold red)"
-vimcmd_symbol = "[](bold)"
-vimcmd_replace_one_symbol = "[](bold yellow)"
-vimcmd_replace_symbol = "[](bold yellow)"
-vimcmd_visual_symbol = "[](bold orange)"
+success_symbol = "[](bold)"
+error_symbol = "[](bold red)"
+vimcmd_symbol = "[](bold)"
+vimcmd_replace_one_symbol = "[](bold yellow)"
+vimcmd_replace_symbol = "[](bold yellow)"
+vimcmd_visual_symbol = "[](bold orange)"
 
 [directory]
 style = "cyan"
