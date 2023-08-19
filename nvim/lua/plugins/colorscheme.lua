@@ -15,7 +15,7 @@ return {
             highlight_groups = {
                 WinSeparator = { bg = "None" },
 
-                TabnineSuggestion = { fg = "muted", bg = "none" },
+                TabnineSuggestion = { fg = "muted", bg = "none", blend = 10 },
 
                 CursorLine = { bg = "base", blend = 10 },
                 CursorLineNr = { bold = true },
