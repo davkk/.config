@@ -16,13 +16,13 @@ disabled = true
 [character]
 success_symbol = "[](bold)"
 error_symbol = "[](bold red)"
-vimcmd_symbol = "[](bold)"
-vimcmd_replace_one_symbol = "[](bold yellow)"
-vimcmd_replace_symbol = "[](bold yellow)"
-vimcmd_visual_symbol = "[](bold orange)"
+vimcmd_symbol = "[](bold)"
+vimcmd_replace_one_symbol = "[](bold)"
+vimcmd_replace_symbol = "[](bold)"
+vimcmd_visual_symbol = "[](bold)"
 
 [directory]
-style = "cyan"
+style = "cyan bold"
 truncate_to_repo = true
 truncation_length = 3
 
@@ -35,17 +35,12 @@ use_12hr = true
 [git_branch]
 style = "purple"
 symbol = " "
-format = "[:](bright-black) [$symbol$branch(:$remote_branch)]($style)"
+format = "[|](#26233a) [$symbol$branch(:$remote_branch)]($style)"
+truncation_length = 30
 
-# [git_metrics]
-# disabled = false
-# added_style = "bright-green"
-# deleted_style = "bright-red"
-# format = "([[:](bright-black) +$added]($added_style)) ([-$deleted]($deleted_style))"
-
-[python]
-style = "yellow"
-format = "[:](bright-black) [$symbol$virtualenv]($style)"
+# [python]
+# style = "yellow"
+# format = "[:](bright-black) [$symbol$virtualenv]($style)"
 
 [fill]
 symbol = " "
