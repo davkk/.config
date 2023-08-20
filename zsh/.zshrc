@@ -87,6 +87,8 @@ plugins=(
     web-search
 )
 
+export VI_MODE_SET_CURSOR=true
+
 export STARSHIP_CONFIG=$HOME/.config/zsh/starship.toml
 export ZSH_TMUX_AUTOSTART=true
 # export ZSH_TMUX_AUTOQUIT=false
