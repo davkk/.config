@@ -75,9 +75,9 @@ return {
                             "diff",
                             colored = true,
                             diff_color = {
-                                added = { fg = "#6e6a86", bg = "None" },
-                                modified = { fg = "#6e6a86", bg = "None" },
-                                removed = { fg = "#6e6a86", bg = "None" },
+                                added = { fg = "#908caa", bg = "None" },
+                                modified = { fg = "#908caa", bg = "None" },
+                                removed = { fg = "#908caa", bg = "None" },
                             },
                             symbols = {
                                 added = " ",

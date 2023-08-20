@@ -14,6 +14,7 @@ return {
             disable_italics = true,
             highlight_groups = {
                 WinSeparator = { bg = "None" },
+                ModeMsg = { fg = "overlay", bold = true },
 
                 TabnineSuggestion = { fg = "muted", bg = "none", blend = 10 },
 
