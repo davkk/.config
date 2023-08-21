@@ -23,7 +23,7 @@ return {
             my_filename.icon_hl_cache = {}
 
             local symbols = {
-                error = " ",
+                error = "󱎘 ",
                 warn = "󱈸 ",
                 hint = "󱠂 ",
                 info = " ",
