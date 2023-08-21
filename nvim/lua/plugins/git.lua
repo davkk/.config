@@ -45,6 +45,10 @@ return {
                 virt_text_pos = "eol",
             },
         },
-        config = true
+        config = function (_, opts)
+            local gs = require("gitsigns").setup(opts)
+
+            vim.keymap.set("n", "<leader>gb", gs.blame_line);
+        end
     },
 }
