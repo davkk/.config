@@ -23,10 +23,10 @@ c.textDocument.completion.completionItem.resolveSupport = {
 M.capabilities = require("cmp_nvim_lsp").default_capabilities(c)
 
 M.signs = {
-    Error = " ",
-    Warn = " ",
-    Hint = " ",
-    Info = " ",
+    Error = "󰅂 ",
+    Warn = "󰅂 ",
+    Hint = "󰅂 ",
+    Info = "󰅂 ",
 }
 
 M.setup = function()
