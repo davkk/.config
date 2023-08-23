@@ -46,7 +46,8 @@ return {
             },
         },
         config = function (_, opts)
-            local gs = require("gitsigns").setup(opts)
+            local gs = require("gitsigns")
+            gs.setup(opts)
 
             vim.keymap.set("n", "<leader>gb", gs.blame_line);
         end
