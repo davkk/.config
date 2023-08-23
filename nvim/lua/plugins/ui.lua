@@ -51,7 +51,12 @@ return {
                             shorting_target = 40,
                         }
                     },
-                    lualine_x = {},
+                    lualine_x = {
+                        {
+                            "location",
+                            color = { fg = "#6e6a86", gui = "bold" },
+                        },
+                    },
                     lualine_y = {},
                     lualine_z = {},
                 },
