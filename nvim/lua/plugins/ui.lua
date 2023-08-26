@@ -1,15 +1,16 @@
-return {
-    "nvim-tree/nvim-web-devicons",
+local symbols = {
+    error = "󱎘 ",
+    warn = "󱈸 ",
+    hint = "󱠂 ",
+    info = " ",
+}
 
+return {
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VeryLazy",
+        lazy = false,
         opts = function()
-            local hide_in_width = function()
-                return vim.fn.winwidth(0) > 80
-            end
-
             local custom_rose_pine = require("lualine.themes.rose-pine")
 
             custom_rose_pine.normal.c.bg = "None"
@@ -21,13 +22,6 @@ return {
             local my_filename = require('lualine.components.filename'):extend()
             my_filename.apply_icon = require('lualine.components.filetype').apply_icon
             my_filename.icon_hl_cache = {}
-
-            local symbols = {
-                error = "󱎘 ",
-                warn = "󱈸 ",
-                hint = "󱠂 ",
-                info = " ",
-            }
 
             return {
                 options = {
@@ -61,14 +55,7 @@ return {
                     lualine_z = {},
                 },
                 sections = {
-                    lualine_a = {
-                        -- {
-                        --     "mode",
-                        --     color = { bg = "none", gui = "bold" },
-                        --     separator = { left = "", right = "", },
-                        --     padding = 1,
-                        -- },
-                    },
+                    lualine_a = {},
                     lualine_b = {
                         {
                             "branch",
@@ -88,8 +75,10 @@ return {
                                 added = " ",
                                 modified = " ",
                                 removed = " "
-                            }, -- changes diff symbols
-                            cond = hide_in_width,
+                            },
+                            cond = function ()
+                                return vim.fn.winwidth(0) > 80
+                            end
                         },
                     },
                     lualine_c = {},

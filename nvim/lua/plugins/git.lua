@@ -2,7 +2,7 @@ return {
     {
         "tpope/vim-fugitive",
         cmd = { "G", "Git" },
-        keys = { "<leader>g", },
+        keys = { "<leader>g", "gl", "gh" },
         config = function()
             local keymap = vim.keymap
             local opts = { noremap = true, silent = true }
@@ -20,7 +20,7 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
-        event = "BufReadPre",
+        event = "BufReadPost",
         opts = {
             signs = {
                 add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
@@ -45,11 +45,21 @@ return {
                 virt_text_pos = "eol",
             },
         },
-        config = function (_, opts)
+        config = function(_, opts)
             local gs = require("gitsigns")
             gs.setup(opts)
 
             vim.keymap.set("n", "<leader>gb", gs.blame_line);
         end
     },
+    {
+        "ThePrimeagen/git-worktree.nvim",
+        dependencies = { "stevearc/oil.nvim" },
+        opts = {
+            update_on_change_command = "Oil ."
+        },
+        config = function(_, opts)
+            require("git-worktree").setup(opts)
+        end
+    }
 }

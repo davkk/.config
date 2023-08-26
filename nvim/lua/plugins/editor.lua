@@ -2,6 +2,7 @@ return {
     {
         "stevearc/oil.nvim",
         lazy = false,
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = {
             columns = {
                 {
@@ -54,7 +55,6 @@ return {
                 },
             },
         },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function(_, opts)
             local oil = require("oil")
             oil.setup(opts)
@@ -64,9 +64,7 @@ return {
     },
     {
         "nvim-tree/nvim-tree.lua",
-        keys = {
-            "<leader>E",
-        },
+        keys = { "<leader>E" },
         config = function()
             require("nvim-tree").setup()
 
@@ -81,13 +79,8 @@ return {
         },
     },
     {
-        "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = function() vim.fn["mkdp#util#install"]() end,
-    },
-    {
         "codota/tabnine-nvim",
-        event = "VeryLazy",
+        event = "BufReadPost",
         build = "./dl_binaries.sh",
         opts = {
             disable_auto_comment = true,
@@ -138,19 +131,22 @@ return {
         end,
     },
     {
-        "kylechui/nvim-surround",
-        event = "VeryLazy",
-        config = true,
-    },
-    {
         "numToStr/Comment.nvim",
-        event = "VeryLazy",
+        event = "BufReadPost",
         dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
         config = function()
             require("Comment").setup({
-                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
             })
         end
+    },
+    {
+        "Wansmer/treesj",
+        keys = { "<space>m", "<space>j", "<space>s" },
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("treesj").setup()
+        end,
     },
     {
         "EtiamNullam/deferred-clipboard.nvim",

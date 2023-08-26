@@ -1,14 +1,15 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        lazy = false,
         dependencies = {
             "nvim-treesitter/playground",
             "JoosepAlviste/nvim-ts-context-commentstring",
             "nvim-treesitter/nvim-treesitter-context",
             { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
+            "nkrkv/nvim-treesitter-rescript",
         },
         build = ":TSUpdate",
-        lazy = false,
         opts = {
             ensure_installed = {
                 "vimdoc",
@@ -48,29 +49,6 @@ return {
             context_commentstring = { enable = true, enable_autocmd = false }
         },
         config = function(_, opts)
-            local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-
-            parser_config.fsharp = {
-                install_info = {
-                    url = "https://github.com/Nsidorenco/tree-sitter-fsharp",
-                    branch = "develop",
-                    files = { "src/scanner.cc", "src/parser.c" },
-                    generate_requires_npm = true,
-                    requires_generate_from_grammar = true
-                },
-                filetype = "fsharp",
-            }
-
-            parser_config.xml = {
-                install_info = {
-                    url = "https://github.com/dorgnarg/tree-sitter-xml",
-                    branch = "main",
-                    files = { "src/parser.c" },
-                    requires_generate_from_grammar = true,
-                },
-                filetype = "xml",
-            }
-
             require("nvim-treesitter.configs").setup(opts)
 
             require("treesitter-context").setup({

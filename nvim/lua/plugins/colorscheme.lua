@@ -71,13 +71,4 @@ return {
             vim.cmd([[colorscheme rose-pine]])
         end,
     },
-    -- {
-    --     'ellisonleao/gruvbox.nvim',
-    --     opts = {
-    --         contrast = "hard", -- can be "hard", "soft" or empty string
-    --         transparent_mode = true,
-    --         italic = false,
-    --         dim_inactive = true,
-    --     }
-    -- },
 }

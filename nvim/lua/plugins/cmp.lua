@@ -1,8 +1,7 @@
 return {
     {
-        -- Autocompletion,
         "hrsh7th/nvim-cmp",
-        event = "BufReadPre",
+        event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
 
