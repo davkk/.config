@@ -4,12 +4,12 @@ return {
         ft = { "fs", "fsx", "fsproj" },
         config = function()
             vim.cmd [[
-                        let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
-                        let g:fsharp#fsi_extra_parameters = ["--warn:5"]
-                        let g:fsharp#lsp_recommended_colorscheme = 0
-                        let g:fsharp#exclude_project_directories = ['paket-files']
-                        let g:fsharp#recommended_colorscheme = 0
-                    ]]
+                let g:fsharp#fsi_window_command = "botright vnew | lcd #:p:h"
+                let g:fsharp#fsi_extra_parameters = ["--warn:5"]
+                let g:fsharp#lsp_recommended_colorscheme = 0
+                let g:fsharp#exclude_project_directories = ['paket-files']
+                let g:fsharp#recommended_colorscheme = 0
+            ]]
 
             -- change filetype of fsproj files
             vim.api.nvim_create_autocmd(
