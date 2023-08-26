@@ -13,9 +13,18 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins", {
-    install = { colorscheme = { "rose-pine" }, missing = false },
+    install = {
+        colorscheme = { "rose-pine" },
+        missing = false,
+    },
     defaults = { lazy = true },
     ui = { border = "rounded" },
-    checker = { enabled = false, notify = false },
+    checker = {
+        enabled = false,
+        notify = false,
+    },
+    change_detection = {
+        notify = false,
+    },
     debug = false,
 })
