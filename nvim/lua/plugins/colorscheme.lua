@@ -60,7 +60,8 @@ return {
                 FidgetTask = { fg = "highlight_med" },
                 FidgetTitle = { fg = "text" },
 
-                CmpItemKind = { link = "CmpItemMenuDefault" },
+                CmpItemMenu = { fg = "highlight_med" },
+                CmpItemAbbrMatchFuzzy = { fg = "rose" },
 
                 FloatTitle = { fg = "highlight_med" },
                 FloatBorder = { fg = "highlight_med" },
