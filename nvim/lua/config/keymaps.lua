@@ -32,9 +32,6 @@ keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true }
 -- exit teminal with Esc
 keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
--- select all
-keymap.set('n', '<C-a>', 'gg<S-V>G', opts)
-
 -- quickfix list navigation
 keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
 keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
