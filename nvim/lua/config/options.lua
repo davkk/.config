@@ -51,7 +51,7 @@ vim.g.netrw_winsize = 25
 opt.cursorline = true
 
 -- backspace
-opt.backspace = "indent,eol,start"
+opt.backspace = { "indent", "eol", "start" }
 
 -- clipboard
 vim.g.clipboard = {
@@ -101,7 +101,7 @@ opt.cmdheight = 1
 opt.shortmess:append("c")
 
 -- better experience
-opt.completeopt = 'menuone,noselect'
+opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- save undo history
 opt.undofile = true
@@ -109,10 +109,10 @@ opt.undofile = true
 -- show whitespace
 opt.list = true
 opt.listchars = {
-     tab = '»·',
-     trail = '·',
-     extends = '→',
-     precedes = '←',
-     conceal = '┊',
-     nbsp = '␣',
+    tab = '»·',
+    trail = '·',
+    extends = '→',
+    precedes = '←',
+    conceal = '┊',
+    nbsp = '␣',
 }
