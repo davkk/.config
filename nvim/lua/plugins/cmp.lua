@@ -32,10 +32,14 @@ return {
             return {
                 window = {
                     completion = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+                        side_padding = 0,
+                        col_offset = -2,
                     },
                     documentation = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+                        side_padding = 0,
+                        col_offset = -2,
                     }
                 },
                 snippet = {
@@ -45,7 +49,12 @@ return {
                 },
                 mapping = cmp_mapping,
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp", group_index = 1, max_item_count = 20 },
+                    {
+                        name = "nvim_lsp",
+                        group_index = 1,
+                        max_item_count = 20,
+                        keyword_length = 2,
+                    },
                     { name = "buffer" },
                     { name = "luasnip" },
                     { name = "path" },
@@ -55,11 +64,21 @@ return {
                     fetching_timeout = 80
                 },
                 formatting = {
+                    fields = { "kind", "abbr", "menu" },
                     format = require("lspkind").cmp_format({
-                        with_text = false,
-                        maxwidth = 30,
-                        ellipsis_char = "...",
-                    })
+                        mode = "symbol",
+                        ellipsis_char = "…",
+                        before = function(_, vim_item)
+                            vim_item.abbr = vim_item.abbr:match("[^(]+")
+                            return vim_item
+                        end,
+                        menu = {
+                            buffer = "[buf]",
+                            nvim_lsp = "[LSP]",
+                            path = "[path]",
+                            luasnip = "[snip]",
+                        },
+                    }),
                 },
             }
         end,
