@@ -6,7 +6,6 @@ local lsp_servers = {
     "marksman",
     "astro",
     "pyright",
-    "tsserver",
     "angularls",
 }
 
@@ -78,7 +77,15 @@ M.plugins = {
             "hrsh7th/cmp-nvim-lsp",
 
             "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim"
+            "williamboman/mason-lspconfig.nvim",
+
+            {
+                "pmizio/typescript-tools.nvim",
+                dependencies = {
+                    "nvim-lua/plenary.nvim",
+                    "neovim/nvim-lspconfig",
+                },
+            }
         },
         config = function()
             local mason = require("mason")
@@ -110,6 +117,10 @@ M.plugins = {
                         M.server_setup(lspconfig[server_name])
                     end,
                 }
+            })
+
+            M.server_setup(require("typescript-tools"), {
+                on_attach = M.on_attach,
             })
 
             M.server_setup(lspconfig.lua_ls, {
