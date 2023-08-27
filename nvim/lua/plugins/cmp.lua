@@ -55,9 +55,12 @@ return {
                         max_item_count = 20,
                         keyword_length = 2,
                     },
-                    { name = "buffer" },
-                    { name = "luasnip" },
                     { name = "path" },
+                    { name = "luasnip" },
+                    {
+                        name = "buffer",
+                        keyword_length = 5,
+                    },
                 }),
                 performance = {
                     trigger_debounce_time = 300,
