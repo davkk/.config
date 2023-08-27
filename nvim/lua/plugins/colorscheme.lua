@@ -1,6 +1,6 @@
 return {
     {
-        'rose-pine/neovim',
+        dir = '~/.config/nvim/lua/plugins/custom/rose-pine-tinted',
         name = 'rose-pine',
         lazy = false,
         priority = 1000,
