@@ -95,6 +95,12 @@ export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
 export FZF_BASE=$(which fzf)
 
+typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=blue,underline
+ZSH_HIGHLIGHT_STYLES[precommand]=fg=blue,underline
+ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
+ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
