@@ -22,7 +22,7 @@ vimcmd_replace_symbol = "[󰅁](bold)"
 vimcmd_visual_symbol = "[󰅁](bold)"
 
 [directory]
-style = "cyan bold"
+style = "green bold"
 truncate_to_repo = true
 truncation_length = 3
 
