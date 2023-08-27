@@ -28,30 +28,15 @@ return {
                 SpellLocal = { underline = true, undercurl = false },
                 SpellRare = { underline = true, undercurl = false },
 
-                DiagnosticError = { fg = "#e65656" },
                 DiagnosticWarn = { fg = "#ea9d34" },
-                DiagnosticInfo = { fg = "#56949f" },
-                DiagnosticHint = { fg = "#79658F" },
-
-                DiagnosticSignError = { link = "DiagnosticError" },
                 DiagnosticSignWarn = { link = "DiagnosticWarn" },
-                DiagnosticSignInfo = { link = "DiagnosticInfo" },
-                DiagnosticSignHint = { link = "DiagnosticHint" },
-
-                DiagnosticVirtualTextError = { link = "DiagnosticError" },
                 DiagnosticVirtualTextWarn = { link = "DiagnosticWarn" },
-                DiagnosticVirtualTextInfo = { link = "DiagnosticInfo" },
-                DiagnosticVirtualTextHint = { link = "DiagnosticHint" },
-
-                DiagnosticFloatingError = { link = "DiagnosticError" },
                 DiagnosticFloatingWarn = { link = "DiagnosticWarn" },
-                DiagnosticFloatingInfo = { link = "DiagnosticInfo" },
-                DiagnosticFloatingHint = { link = "DiagnosticHint" },
 
-                DiagnosticUnderlineError = { underline = true, undercurl = false, sp = "#e65656" },
+                DiagnosticUnderlineError = { underline = true, undercurl = false },
                 DiagnosticUnderlineWarn = { underline = true, undercurl = false, sp = "#ea9d34" },
-                DiagnosticUnderlineInfo = { underline = true, undercurl = false, sp = "#56949f" },
-                DiagnosticUnderlineHint = { underline = true, undercurl = false, sp = "#79658F" },
+                DiagnosticUnderlineInfo = { underline = true, undercurl = false },
+                DiagnosticUnderlineHint = { underline = true, undercurl = false },
 
                 GitSignsAdd = { bg = "None" },
                 GitSignsChange = { bg = "None" },
