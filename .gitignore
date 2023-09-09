@@ -12,6 +12,11 @@
 !zsh/**
 .zsh_history
 
+!i3/
+!i3/**
+!i3status/
+!i3status/**
+
 # !git/
 # !git/**
 
@@ -21,7 +26,8 @@ plugins/
 !nvim/lua/plugins/
 !nvim/lua/plugins/**
 
-!.scripts/*
+!.scripts/
+!.scripts/**
 
 # nvm/
 # astro/
