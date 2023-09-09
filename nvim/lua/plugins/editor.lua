@@ -63,16 +63,6 @@ return {
         end,
     },
     {
-        "nvim-tree/nvim-tree.lua",
-        keys = { "<leader>E" },
-        config = function()
-            require("nvim-tree").setup()
-
-            vim.keymap.set('n', '<leader>E', require('nvim-tree.api').tree.toggle,
-                { noremap = true, silent = true, nowait = true })
-        end
-    },
-    {
         "mbbill/undotree",
         keys = {
             { "<leader>u", vim.cmd.UndotreeToggle },
