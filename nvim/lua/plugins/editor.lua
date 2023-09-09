@@ -146,9 +146,4 @@ return {
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         config = true,
     },
-    {
-        "EtiamNullam/deferred-clipboard.nvim",
-        event = "BufReadPost",
-        config = true,
-    },
 }
