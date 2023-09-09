@@ -21,6 +21,8 @@ plugins/
 !nvim/lua/plugins/
 !nvim/lua/plugins/**
 
+!.scripts/*
+
 # nvm/
 # astro/
 #
