@@ -48,8 +48,11 @@ M.setup_lsp_keybinds = function(bufnr)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-    vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
-    vim.keymap.set("v", "<leader>f", vim.lsp.buf.format, opts)
+    local format = function ()
+        vim.lsp.buf.format({ timeout_ms = 4000 })
+    end
+    vim.keymap.set("n", "<leader>f", format, opts)
+    vim.keymap.set("v", "<leader>f", format, opts)
 
     vim.keymap.set("i", "<C-h>",
         function()
