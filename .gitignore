@@ -17,6 +17,14 @@
 !i3status/
 !i3status/**
 
+!sway/
+!sway/**
+
+!gtk-3.0/
+!gtk-3.0/**
+!gtk-4.0/
+!gtk-4.0/**
+
 plugins/
 .oh-my-zsh/
 
