@@ -245,6 +245,11 @@ bindsym XF86MonBrightnessDown exec light -U 10
 # Toggle touchpad
 bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 
+### App settings
+
+for_window [class="1Password"] floating enable
+for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 600 px height 300 px, move position 830 px 565 px, sticky on
+
 ### Startup
 
 exec nm-applet
