@@ -214,13 +214,11 @@ bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position bottom
-
     status_command i3status
-
+    position bottom
     colors {
         statusline #ffffff
-        background #00000099
+        background #000000
         inactive_workspace #323232 #323232 #5c5c5c
     }
 }
@@ -230,7 +228,6 @@ exec {
     gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 }
-
 
 ### FKeys
 
