@@ -206,6 +206,9 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+### Screeshots
+bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot
+
 #
 # Status Bar:
 #

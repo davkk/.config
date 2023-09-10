@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+path=$HOME/Pictures/screenshots
+file=$path/screenshot-`date +%s`.png
+
+mkdir -p $path
+grimshot save area $file
+cat $file | wl-copy
