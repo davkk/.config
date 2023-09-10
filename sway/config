@@ -63,7 +63,7 @@ exec swayidle -w \
 input "type:touchpad" {
   dwt enabled
   tap enabled
-  scroll_factor 0.2
+  scroll_factor 0.15
   pointer_accel 0.6
   accel_profile "flat"
   natural_scroll enabled
