@@ -16,6 +16,10 @@ local signs = {
     Info = "󰅂 ",
 }
 
+M.format = function()
+    vim.lsp.buf.format({ timeout_ms = 4000 })
+end
+
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
 
@@ -48,11 +52,8 @@ M.setup_lsp_keybinds = function(bufnr)
     vim.keymap.set("n", "<leader>rr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-    local format = function ()
-        vim.lsp.buf.format({ timeout_ms = 4000 })
-    end
-    vim.keymap.set("n", "<leader>f", format, opts)
-    vim.keymap.set("v", "<leader>f", format, opts)
+    vim.keymap.set("n", "<leader>f", M.format, opts)
+    vim.keymap.set("v", "<leader>f", M.format, opts)
 
     vim.keymap.set("i", "<C-h>",
         function()
@@ -122,9 +123,7 @@ M.plugins = {
                 }
             })
 
-            M.server_setup(require("typescript-tools"), {
-                on_attach = M.on_attach,
-            })
+            M.server_setup(require("typescript-tools"))
 
             M.server_setup(lspconfig.lua_ls, {
                 -- Fix Undefined global 'vim'
