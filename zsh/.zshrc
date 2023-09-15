@@ -40,15 +40,22 @@ source $ZSH/oh-my-zsh.sh
 # -- USER CONFIGURATION
 export VOLTA_HOME=$HOME/.volta
 export PNPM_HOME=$HOME/.local/share/pnpm
+export BUN_INSTALL=$HOME/.bun
+export ANDROID_SDK_ROOT=$HOME/.android
+export ANDROID_AVD_HOME=$HOME/.android
 
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.dotnet/tools
+export PATH=$PATH:$HOME/.android/cmdline-tools/latest/bin
+export PATH=$PATH:$HOME/.android/emulator
+export PATH=$PATH:$HOME/.android/platform-tools
 export PATH=$PATH:$HOME/.cargo/env
 export PATH=$PATH:$VOLTA_HOME/bin
 export PATH=$PATH:$PNPM_HOME
+export PATH=$PATH:$BUN_INSTALL/bin
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
