@@ -33,6 +33,7 @@ return {
                 ["<CR>"] = "actions.select",
                 ["<C-v>"] = "actions.select_vsplit",
                 ["<C-x>"] = "actions.select_split",
+                ["<C-t>"] = "actions.select_tab",
                 ["<C-r>"] = "actions.refresh",
                 ["<C-c>"] = "actions.close",
                 ["q"] = "actions.close",
@@ -129,11 +130,5 @@ return {
                 pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
             })
         end
-    },
-    {
-        "Wansmer/treesj",
-        keys = { "<space>m", "<space>j", "<space>s" },
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
-        config = true,
-    },
+    }
 }
