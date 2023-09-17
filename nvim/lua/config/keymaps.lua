@@ -35,3 +35,14 @@ keymap.set('t', '<Esc>', '<C-\\><C-n>')
 -- quickfix list navigation
 keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
 keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
+
+-- Switch between tabs
+keymap.set("n", "<Right>", function()
+  pcall(vim.cmd, [[checktime]])
+  vim.api.nvim_feedkeys("gt", "n", true)
+end)
+
+keymap.set("n", "<Left>", function()
+  pcall(vim.cmd, [[checktime]])
+  vim.api.nvim_feedkeys("gT", "n", true)
+end)
