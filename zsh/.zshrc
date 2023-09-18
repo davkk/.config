@@ -23,7 +23,7 @@ plugins=(
 
 export VI_MODE_SET_CURSOR=true
 
-# export ZSH_TMUX_AUTOQUIT=false
+export ZSH_TMUX_AUTOQUIT=false
 export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_CONFIG=$HOME/.config/tmux/tmux.conf
 
