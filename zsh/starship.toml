@@ -36,7 +36,7 @@ use_12hr = true
 style = "purple"
 symbol = " "
 format = "[|](#26233a) [$symbol$branch(:$remote_branch)]($style)"
-truncation_length = 30
+truncation_length = 25
 
 [python]
 style = "yellow"
