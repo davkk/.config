@@ -49,6 +49,7 @@ return {
                     lualine_c = {
                         {
                             "tabs",
+                            max_length = vim.o.columns * 4 / 5,
                             mode = 1,
                             tabs_color = {
                                 active = { gui = "bold" },
