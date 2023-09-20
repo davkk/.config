@@ -1,5 +1,7 @@
 local opt = vim.opt
 
+opt.shell = "/usr/bin/zsh"
+
 -- colors
 opt.background = "dark"
 opt.termguicolors = true
@@ -16,7 +18,6 @@ opt.winbar = "%m %t"
 
 -- global statusline
 opt.laststatus = 3
--- opt.showmode = false
 
 -- tabs and indent
 opt.autoindent = true
