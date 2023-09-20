@@ -52,8 +52,8 @@ keymap.set("n", "<Left>", function()
     vim.api.nvim_feedkeys("gT", "n", true)
 end)
 
-keymap.set({ 'n', 't' }, "<C-w>t", "<cmd>tabnew<CR>", opts)
-keymap.set({ 'n', 't' }, "<C-w>T", "<cmd>tabclose<CR>", opts)
+keymap.set('n', "<C-w>t", "<cmd>tabnew<CR>", opts)
+keymap.set('n', "<C-w>T", "<cmd>tabclose<CR>", opts)
 
 for i = 1, 9 do
     keymap.set("n", string.format("%s<tab>", i), function()
