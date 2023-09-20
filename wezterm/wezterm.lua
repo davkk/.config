@@ -123,12 +123,12 @@ config.keys = {
     },
 }
 config.mouse_bindings = {
-    -- Change the default click behavior so that it only selects
+        -- Change the default click behavior so that it only selects
     -- text and doesn"t open hyperlinks
     {
         event = { Up = { streak = 1, button = "Left" } },
         mods = "NONE",
-        action = wezterm.action.CompleteSelection "PrimarySelection",
+        action = wezterm.action.CompleteSelection "Clipboard",
     },
 
     -- Bind 'Up' event of CTRL-Click to open hyperlinks
