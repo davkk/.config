@@ -36,13 +36,28 @@ keymap.set('t', '<Esc>', '<C-\\><C-n>')
 keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
 keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
 
+-- terminal
+keymap.set("n", "<leader>t", "<cmd>term<cr>", opts)
+keymap.set("n", "<leader>st", "<cmd>12 split<cr>:se wfh<cr>:term<cr>", opts)
+keymap.set("n", "<leader>vst", "<cmd>45 vsplit<cr>:se wfw<cr>:term<cr>", opts)
+
 -- Switch between tabs
 keymap.set("n", "<Right>", function()
-  pcall(vim.cmd, [[checktime]])
-  vim.api.nvim_feedkeys("gt", "n", true)
+    pcall(vim.cmd, [[checktime]])
+    vim.api.nvim_feedkeys("gt", "n", true)
 end)
 
 keymap.set("n", "<Left>", function()
-  pcall(vim.cmd, [[checktime]])
-  vim.api.nvim_feedkeys("gT", "n", true)
+    pcall(vim.cmd, [[checktime]])
+    vim.api.nvim_feedkeys("gT", "n", true)
 end)
+
+keymap.set({ 'n', 't' }, "<C-w>t", "<cmd>tabnew<CR>", opts)
+keymap.set({ 'n', 't' }, "<C-w>T", "<cmd>tabclose<CR>", opts)
+
+for i = 1, 9 do
+    keymap.set("n", string.format("%s<tab>", i), function()
+        pcall(vim.cmd, [[checktime]])
+        vim.api.nvim_feedkeys(string.format("%sgt", i), "n", true)
+    end, { desc = string.format("Switch to tab nr %s", i), silent = true, noremap = true })
+end
