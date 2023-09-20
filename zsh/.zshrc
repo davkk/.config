@@ -3,6 +3,8 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
 # -- ZSH OPTIONS
+bindkey -e
+
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt PROMPT_SUBST
