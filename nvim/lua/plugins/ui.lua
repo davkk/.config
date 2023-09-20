@@ -6,7 +6,6 @@ local symbols = {
 }
 
 return {
-    "mkitt/tabline.vim",
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
