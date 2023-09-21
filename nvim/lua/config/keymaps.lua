@@ -52,11 +52,11 @@ keymap.set("n", "<Left>", function()
     vim.api.nvim_feedkeys("gT", "n", true)
 end)
 
-keymap.set('n', "<C-w>t", "<cmd>tabnew<CR>", opts)
-keymap.set('n', "<C-w>T", "<cmd>tabclose<CR>", opts)
+keymap.set('n', "<C-t>n", "<cmd>tabnew<CR>", opts)
+keymap.set('n', "<C-t>c", "<cmd>tabclose<CR>", opts)
 
 for i = 1, 9 do
-    keymap.set("n", string.format("%s<tab>", i), function()
+    keymap.set("n", string.format("<C-t>%i", i), function()
         pcall(vim.cmd, [[checktime]])
         vim.api.nvim_feedkeys(string.format("%sgt", i), "n", true)
     end, { desc = string.format("Switch to tab nr %s", i), silent = true, noremap = true })
