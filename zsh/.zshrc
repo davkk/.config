@@ -3,13 +3,33 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
 # -- ZSH OPTIONS
-bindkey -e
 
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
+
+
+# -- CUSTOM FUNCTIONS
+pop() {
+    if [[ $# -eq 1 ]]; then
+        selected=$1
+    else
+        selected=$(find ~/projects ~/work ~/personal -mindepth 1 -maxdepth 1 -type d 2&>/dev/null | fzf )
+    fi
+    if [[ -n "$selected" ]]; then
+        cd "$selected"
+        zle reset-prompt
+    fi
+}
+
+
+# -- BINDKEYS
+bindkey -e
+
+zle -N pop
+bindkey '^f' pop
 
 # ctrl+arrows
 bindkey "\e[1;5C" forward-word
