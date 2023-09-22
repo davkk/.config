@@ -31,7 +31,7 @@ return {
                 newfile_status = false,
                 path = 1,
 
-                shorting_target = 30,
+                shorting_target = 20,
             }
 
             return {
@@ -47,6 +47,9 @@ return {
                     lualine_a = {},
                     lualine_b = {},
                     lualine_c = {
+                        custom_filename,
+                    },
+                    lualine_x = {
                         {
                             "tabs",
                             max_length = vim.o.columns * 4 / 5,
@@ -58,14 +61,8 @@ return {
                             fmt = function(name, context)
                                 return string.format("%s:[%s]", context.tabnr, name)
                             end,
-                        },
-                    },
-                    lualine_x = {
-                        {
-                            "location",
-                            color = { fg = "#908caa", gui = "bold" },
-                            cond = function()
-                                return vim.fn.winwidth(0) > 80
+                            cond = function ()
+                                return #vim.api.nvim_list_tabpages() > 1
                             end
                         },
                     },
@@ -109,13 +106,19 @@ return {
                     },
                     lualine_c = {},
                     lualine_x = {
-                        custom_filename,
                         {
                             "diagnostics",
                             sources = { "nvim_diagnostic" },
                             symbols = symbols,
                             colored = true,
                             update_in_insert = false,
+                        },
+                        {
+                            "location",
+                            color = { fg = "#908caa", gui = "bold" },
+                            cond = function()
+                                return vim.fn.winwidth(0) > 80
+                            end
                         },
                     },
                     lualine_y = {},
