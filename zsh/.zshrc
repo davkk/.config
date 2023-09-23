@@ -12,6 +12,14 @@ HYPHEN_INSENSITIVE="true"
 
 
 # -- CUSTOM FUNCTIONS
+vimcd() {
+    if [ ! -z $NVIM ] && [ -e /tmp/nvim.pipe ]; then
+        nvim --server /tmp/nvim.pipe --remote-send "<C-\\><C-N>:tcd $(realpath ${1:-.})<CR>"
+    else
+        echo "cannot run vimcd"
+    fi
+}
+
 pop() {
     if [[ $# -eq 1 ]]; then
         selected=$1
@@ -21,6 +29,18 @@ pop() {
     if [[ -n "$selected" ]]; then
         cd "$selected"
         zle reset-prompt
+
+        vimcd $selected
+    fi
+}
+
+vim() {
+    if [ -z $NVIM ]; then
+        nvim --listen /tmp/nvim.pipe $@
+    elif [[ $# -le 1 ]]; then
+        nvim --server /tmp/nvim.pipe --remote-silent $(realpath ${1:-.})
+    else
+        echo "sir, this is wendy's"
     fi
 }
 
@@ -54,16 +74,6 @@ alias l='ls --color -lhF --group-directories-first'
 alias nv='echo you are stupid'
 alias python='python3'
 alias tmux='tmux -u'
-
-vim() {
-    if [ -z $NVIM ]; then
-        nvim --listen /tmp/nvim.pipe $@
-    elif [[ $# -le 1 ]]; then
-        nvim --server /tmp/nvim.pipe --remote-silent $(realpath ${1:-.})
-    else
-        echo "sir, this is wendy's"
-    fi
-}
 
 
 # -- PLUGINS
