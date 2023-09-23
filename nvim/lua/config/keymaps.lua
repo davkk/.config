@@ -61,3 +61,5 @@ for i = 1, 9 do
         vim.api.nvim_feedkeys(string.format("%sgt", i), "n", true)
     end, { desc = string.format("Switch to tab nr %s", i), silent = true, noremap = true })
 end
+
+keymap.set("n", "<C-f>", ":tabnew<cr>:term<cr>i<C-f>", opts)
