@@ -62,4 +62,4 @@ for i = 1, 9 do
     end, { desc = string.format("Switch to tab nr %s", i), silent = true, noremap = true })
 end
 
-keymap.set("n", "<C-f>", ":tabnew<cr>:term<cr>i<C-f>", opts)
+keymap.set("n", "<C-f>", ":$tabnew<cr>:term<cr>i<C-f>", opts)
