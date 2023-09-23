@@ -36,18 +36,18 @@ config.window_padding = {
 
 -- COLORS
 local palette = {
-    base = "#1a1821",
-    overlay = "#282333",
-    subtle = "#5A5365",
-    muted = "#707a7d",
-    text = "#dad6e9",
-    love = "#f56389",
-    gold = "#ffb083",
-    rose = "#edb2b5",
-    pine = "#628079",
-    foam = "#b7d7d5",
-    iris = "#d7afd8",
-    highlight_high = "#524f67"
+    base = '#1a1821',
+    overlay = '#2F2B3B',
+    muted = '#645C70',
+    subtle = '#8D849A',
+    text = '#dad6e9',
+    love = '#f56389',
+    gold = '#ffb083',
+    rose = '#edb2b5',
+    pine = '#628079',
+    foam = '#b7d7d5',
+    iris = '#d2b1d6',
+    highlight_high = '#545161',
 }
 
 config.colors = {
@@ -56,7 +56,7 @@ config.colors = {
     cursor_fg = palette.base,
     cursor_border = palette.text,
     cursor_bg = palette.text,
-    selection_bg = "#2a283e",
+    selection_bg = "#2F2B3B",
     selection_fg = palette.text,
 
     ansi = {

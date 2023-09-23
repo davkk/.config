@@ -46,7 +46,7 @@ return {
                             mode = 1,
                             tabs_color = {
                                 active = { gui = "bold" },
-                                inactive = { fg = "#707a7d" },
+                                inactive = { fg = "#8D849A" },
                             },
                             fmt = function(name, context)
                                 return string.format("%s: %s", context.tabnr, name)
@@ -84,9 +84,9 @@ return {
                             "diff",
                             colored = true,
                             diff_color = {
-                                added = { fg = "#707a7d", bg = "None" },
-                                modified = { fg = "#707a7d", bg = "None" },
-                                removed = { fg = "#707a7d", bg = "None" },
+                                added = { fg = "#8D849A", bg = "None" },
+                                modified = { fg = "#8D849A", bg = "None" },
+                                removed = { fg = "#8D849A", bg = "None" },
                             },
                             symbols = {
                                 added = " ",
@@ -109,7 +109,7 @@ return {
                         },
                         {
                             "location",
-                            color = { fg = "#707a7d", gui = "bold" },
+                            color = { fg = "#8D849A", gui = "bold" },
                             cond = function()
                                 return vim.fn.winwidth(0) > 80
                             end
