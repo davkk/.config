@@ -49,7 +49,7 @@ return {
                                 inactive = { fg = "#8D849A" },
                             },
                             fmt = function(name, context)
-                                return string.format("%s: %s", context.tabnr, name)
+                                return string.format("%s:[%s]", context.tabnr, name)
                             end,
                             cond = function()
                                 return #vim.api.nvim_list_tabpages() > 1
