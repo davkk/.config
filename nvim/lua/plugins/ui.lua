@@ -11,9 +11,20 @@ return {
         dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = false,
         opts = function()
-            local extend_filename = require('lualine.components.filename'):extend()
-            extend_filename.apply_icon = require('lualine.components.filetype').apply_icon
-            extend_filename.icon_hl_cache = {}
+            local icon_filename = require('lualine.components.filename'):extend()
+            icon_filename.apply_icon = require('lualine.components.filetype').apply_icon
+            icon_filename.icon_hl_cache = {}
+
+            local custom_filename = {
+                "filename",
+                color = { gui = "bold" },
+
+                file_status = true,
+                newfile_status = true,
+                path = 1,
+
+                shorting_target = vim.o.columns * 1 / 3,
+            }
 
             return {
                 options = {
@@ -25,38 +36,47 @@ return {
                 },
                 tabline = {
                     lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {
-                        {
-                            extend_filename,
-                            color = { gui = "bold" },
-
-                            file_status = true,
-                            newfile_status = true,
-                            path = 3,
-
-                            shorting_target = vim.o.columns * 3 / 5,
-                        }
-                    },
-                    lualine_x = {},
-                    lualine_y = {
+                    lualine_b = {
                         {
                             "tabs",
-                            max_length = vim.o.columns * 2 / 5,
+                            max_length = vim.o.columns,
                             mode = 1,
+                            padding = { left = 1, right = 0 },
                             tabs_color = {
                                 active = { gui = "bold" },
-                                inactive = { fg = "#8D849A" },
+                                inactive = { fg = "#8D849A", gui = "bold" },
                             },
-                            fmt = function(name, context)
-                                return string.format("%s:[%s]", context.tabnr, name)
+                            fmt = function(_, context)
+                                return string.format("(%s)", context.tabnr)
                             end,
-                            cond = function()
-                                return #vim.api.nvim_list_tabpages() > 1
-                            end
                         },
                     },
-                    lualine_z = {}
+                    lualine_c = {},
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+                winbar = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = { custom_filename },
+                    lualine_x = {
+                        {
+                            "location",
+                            color = { fg = "#8D849A", gui = "bold" },
+                            padding = 0,
+                        },
+                    },
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+                inactive_winbar = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = { custom_filename },
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {},
                 },
                 sections = {
                     lualine_a = {
@@ -70,6 +90,7 @@ return {
                         {
                             "branch",
                             icon = "",
+                            color = { gui = "bold" },
                             padding = { left = 2, right = 1 },
                             fmt = function(str)
                                 local limit = 25
@@ -108,12 +129,10 @@ return {
                             update_in_insert = false,
                         },
                         {
-                            "location",
+                            "filetype",
                             color = { fg = "#8D849A", gui = "bold" },
-                            cond = function()
-                                return vim.fn.winwidth(0) > 80
-                            end
-                        },
+                            colored = false,
+                        }
                     },
                     lualine_y = {},
                     lualine_z = {},
