@@ -19,6 +19,7 @@ return {
                     require("telescope.builtin").find_files({
                         previewer = false,
                         hidden = true,
+                        path_display = { truncate = 5 }
                     })
                 end,
                 desc = "Find Files",
@@ -56,24 +57,39 @@ return {
                     require('telescope').extensions.git_worktree.git_worktrees()
                 end,
             },
+
+            {
+                "\\\\",
+                function()
+                    require("telescope.builtin").find_files({
+                        shorten_path = false,
+                        path_display = { truncate = 3 },
+                        cwd = "~/.config",
+                        prompt_title = ".config files",
+                        hidden = true,
+                    })
+                end,
+                desc = "Find .config Files",
+            },
         },
         opts = function()
+            local telescope = require("telescope")
             local actions = require("telescope.actions")
 
-            return {
+            telescope.setup({
                 defaults = {
-                    layout_strategy = "vertical",
+                    layout_strategy = "flex",
                     layout_config = {
-                        mirror = true,
                         prompt_position = "top",
-                        width = 0.6,
-                        height = 30,
+                        width = 0.9,
+                        height = 0.99,
                     },
                     path_display = { smart = true },
+                    sorting_strategy = "ascending",
+                    scroll_strategy = "cycle",
                     preview = { hide_on_startup = false },
                     results_title = false,
-                    sorting_strategy = 'ascending',
-                    file_ignore_patterns = { "^.git/" },
+                    file_ignore_patterns = { "^.git/", "^.bare/" },
                     mappings = {
                         i = {
                             ["<C-y>"] = actions.select_default,
@@ -97,12 +113,8 @@ return {
                         case_mode = "smart_case",
                     },
                 },
-            }
-        end,
-        config = function(_, opts)
-            local telescope = require("telescope")
+            })
 
-            telescope.setup(opts)
             telescope.load_extension("fzf")
             telescope.load_extension("git_worktree")
         end,
