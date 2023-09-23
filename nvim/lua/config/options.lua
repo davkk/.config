@@ -13,8 +13,8 @@ opt.fileencoding = "utf-8"
 opt.relativenumber = true
 opt.number = true
 
--- winbar
--- opt.winbar = "%m %t"
+-- hide mode
+opt.showmode = false
 
 -- global statusline
 opt.laststatus = 3
