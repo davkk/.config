@@ -51,10 +51,19 @@ bindkey "\e[3@" kill-line
 
 # -- ALIASES
 alias l='ls --color -lhF --group-directories-first'
-alias vim='nvim'
 alias nv='echo you are stupid'
 alias python='python3'
 alias tmux='tmux -u'
+
+vim() {
+    if [ -z $NVIM ]; then
+        nvim --listen /tmp/nvim.pipe $@
+    elif [[ $# -le 1 ]]; then
+        nvim --server /tmp/nvim.pipe --remote-silent $(realpath ${1:-.})
+    else
+        echo "sir, this is wendy's"
+    fi
+}
 
 
 # -- PLUGINS
