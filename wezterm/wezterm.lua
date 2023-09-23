@@ -93,7 +93,6 @@ config.colors = {
         inactive_tab = {
             bg_color = "none",
             fg_color = palette.muted,
-            intensity = "Bold",
         },
 
         inactive_tab_hover = {
