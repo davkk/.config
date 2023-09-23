@@ -22,20 +22,12 @@ return {
                 LineNr = { fg = "highlight_med" },
                 ColorColumn = { bg = "base", blend = 10 },
 
-                SpellBad = { underline = true, undercurl = false },
-                SpellCap = { underline = true, undercurl = false },
-                SpellLocal = { underline = true, undercurl = false },
-                SpellRare = { underline = true, undercurl = false },
-
                 DiagnosticWarn = { fg = "#ea9d34" },
                 DiagnosticSignWarn = { link = "DiagnosticWarn" },
                 DiagnosticVirtualTextWarn = { link = "DiagnosticWarn" },
                 DiagnosticFloatingWarn = { link = "DiagnosticWarn" },
 
-                DiagnosticUnderlineError = { underline = true, undercurl = false },
-                DiagnosticUnderlineWarn = { underline = true, undercurl = false, sp = "#ea9d34" },
-                DiagnosticUnderlineInfo = { underline = true, undercurl = false },
-                DiagnosticUnderlineHint = { underline = true, undercurl = false },
+                DiagnosticUnderlineWarn = { sp = "#ea9d34" },
 
                 GitSignsAdd = { bg = "None" },
                 GitSignsChange = { bg = "None" },
