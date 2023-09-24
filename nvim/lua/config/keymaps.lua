@@ -53,6 +53,8 @@ keymap.set("n", "<Left>", function()
 end)
 
 keymap.set('n', "<C-t>n", "<cmd>tabnew<CR>", opts)
+keymap.set('n', "<C-t>t", "<cmd>tabnew<CR>:term<CR>", opts)
+
 keymap.set('n', "<C-t>c", "<cmd>tabclose<CR>", opts)
 
 for i = 1, 9 do
