@@ -240,10 +240,22 @@ bar {
 # GTK
 ##
 
-exec {
+set $gnome-schema org.gnome.desktop.interface
+set $system_theme 'Adwaita-dark'
+set $system_dpi_scaling_factor 1.1
+set $cursor_size 27
+set $cursor_theme Adwaita
+
+exec_always {
     gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+    gsettings set $gnome-schema gtk-theme $system_theme
+    gsettings set $gnome-schema text-scaling-factor $system_dpi_scaling_factor
+    gsettings set $gnome-schema cursor-theme $cursor_theme
+    gsettings set $gnome-schema cursor-size $cursor_size
 }
+
+# Mouse
+seat seat0 xcursor_theme $cursor_theme $cursor_size
 
 
 ##
