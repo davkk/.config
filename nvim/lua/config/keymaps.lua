@@ -41,17 +41,8 @@ keymap.set("n", "<leader>t", "<cmd>term<cr>", opts)
 keymap.set("n", "<leader>st", "<cmd>12 split<cr>:se wfh<cr>:term<cr>", opts)
 keymap.set("n", "<leader>vst", "<cmd>45 vsplit<cr>:se wfw<cr>:term<cr>", opts)
 
--- Switch between tabs
-keymap.set("n", "<Right>", function()
-    pcall(vim.cmd, [[checktime]])
-    vim.api.nvim_feedkeys("gt", "n", true)
-end)
-
-keymap.set("n", "<Left>", function()
-    pcall(vim.cmd, [[checktime]])
-    vim.api.nvim_feedkeys("gT", "n", true)
-end)
-
+-- tabs
+keymap.set('n', "<C-t>", "<Nop>", opts) -- disable default tagstack keymap
 keymap.set('n', "<C-t>n", "<cmd>tabnew<CR>", opts)
 keymap.set('n', "<C-t>t", "<cmd>tabnew<CR>:term<CR>", opts)
 
