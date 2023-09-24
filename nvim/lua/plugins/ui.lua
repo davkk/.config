@@ -41,7 +41,7 @@ return {
                             "tabs",
                             max_length = vim.o.columns,
                             mode = 1,
-                            padding = { left = 1, right = 0 },
+                            padding = { left = 0, right = 1 },
                             tabs_color = {
                                 active = { gui = "bold" },
                                 inactive = { fg = "#8D849A", gui = "bold" },
