@@ -97,8 +97,8 @@ return {
         },
         opts = {
             menu = {
-                width = 90,
-                height = 20
+                width = math.floor(vim.o.columns * 4 / 5),
+                height = math.floor(vim.o.lines * 3 / 5),
             }
         },
         config = function(_, opts)
