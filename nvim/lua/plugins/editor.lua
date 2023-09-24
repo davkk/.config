@@ -99,7 +99,8 @@ return {
             menu = {
                 width = math.floor(vim.o.columns * 4 / 5),
                 height = math.floor(vim.o.lines * 3 / 5),
-            }
+            },
+            excluded_filetypes = { "harpoon", "oil", "term" },
         },
         config = function(_, opts)
             require("harpoon").setup(opts)
