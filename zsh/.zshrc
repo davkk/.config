@@ -15,8 +15,6 @@ HYPHEN_INSENSITIVE="true"
 vimcd() {
     if [ ! -z $NVIM ] && [ -e /tmp/nvim.pipe ]; then
         nvim --server /tmp/nvim.pipe --remote-send "<C-\\><C-N>:tcd $(realpath ${1:-.})<CR>"
-    else
-        echo "cannot run vimcd"
     fi
 }
 
