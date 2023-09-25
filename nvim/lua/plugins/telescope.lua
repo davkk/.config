@@ -16,11 +16,7 @@ return {
             {
                 "<C-p>",
                 function()
-                    require("telescope.builtin").find_files({
-                        previewer = false,
-                        hidden = true,
-                        path_display = { truncate = 5 }
-                    })
+                    require("telescope.builtin").find_files()
                 end,
                 desc = "Find Files",
             },
@@ -28,10 +24,9 @@ return {
             {
                 "<leader>di",
                 function()
-                    require("telescope.builtin").diagnostics({
-                        initial_mode = "normal",
-                    })
-                end
+                    require("telescope.builtin").diagnostics()
+                end,
+                desc = "Show Diagnostics",
             },
 
             {
@@ -39,9 +34,9 @@ return {
                 function()
                     require("telescope.builtin").grep_string({
                         search = vim.fn.input "Grep String > ",
-                        initial_mode = "normal",
                     })
                 end,
+                desc = "Grep Word/String",
             },
 
             {
@@ -49,27 +44,36 @@ return {
                 function()
                     require("telescope.builtin").live_grep()
                 end,
-            },
-
-            {
-                "<leader>wt",
-                function()
-                    require('telescope').extensions.git_worktree.git_worktrees()
-                end,
+                desc = "Live Grep",
             },
 
             {
                 "\\\\",
                 function()
+                    require("telescope.builtin").buffers()
+                end,
+                desc = "Show Buffers",
+            },
+
+            {
+                "<leader>e.",
+                function()
                     require("telescope.builtin").find_files({
                         shorten_path = false,
-                        path_display = { truncate = 3 },
                         cwd = "~/.config",
                         prompt_title = ".config files",
-                        hidden = true,
+                        previewer = true,
                     })
                 end,
-                desc = "Find .config Files",
+                desc = "Edit .config Files",
+            },
+
+            {
+                "<leader>wt",
+                function()
+                    require("telescope").extensions.git_worktree.git_worktrees()
+                end,
+                desc = "Git Worktree",
             },
         },
         opts = function()
@@ -103,6 +107,30 @@ return {
                             ["<C-d>"] = actions.results_scrolling_down,
                             ["<C-u>"] = actions.results_scrolling_up,
                         },
+                    },
+                },
+                pickers = {
+                    find_files = {
+                        previewer = false,
+                        hidden = true,
+                        path_display = { truncate = 5 }
+                    },
+                    buffers = {
+                        initial_mode = "normal",
+                        mappings = {
+                            n = {
+                                ["d"] = actions.delete_buffer,
+                            }
+                        }
+                    },
+                    lsp_references = {
+                        initial_mode = "normal",
+                    },
+                    grep_string = {
+                        initial_mode = "normal",
+                    },
+                    diagnostics = {
+                        initial_mode = "normal",
                     },
                 },
                 extensions = {
