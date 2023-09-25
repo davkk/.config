@@ -7,10 +7,6 @@ local symbols = {
 
 return {
     {
-        "mkitt/tabline.vim",
-        lazy = false,
-    },
-    {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = false,
@@ -20,7 +16,7 @@ return {
             icon_filename.icon_hl_cache = {}
 
             local custom_filename = {
-                "filename",
+                icon_filename,
                 color = { gui = "bold" },
 
                 file_status = true,
@@ -37,6 +33,20 @@ return {
                     section_separators = "",
                     component_separators = "",
                     globalstatus = true,
+                },
+                tabline = {
+                    lualine_a = {},
+                    lualine_b = {
+                        {
+                            "tabs",
+                            max_length = vim.o.columns,
+                            mode = 2,
+                            tabs_color = {
+                                active = { gui = "bold" },
+                                inactive = { fg = "#8D849A", gui = "bold" },
+                            },
+                        },
+                    },
                 },
                 winbar = {
                     lualine_a = {},
@@ -110,16 +120,15 @@ return {
                             colored = true,
                             update_in_insert = false,
                         },
-                        {
-                            "filetype",
-                            color = { fg = "#8D849A", gui = "bold" },
-                            colored = false,
-                        }
                     },
                     lualine_y = {},
                     lualine_z = {},
                 },
             }
         end,
+        config = function (_, opts)
+            require("lualine").setup(opts)
+            vim.o.showtabline = 1
+        end
     },
 }
