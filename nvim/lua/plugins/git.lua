@@ -7,15 +7,13 @@ return {
             local keymap = vim.keymap
             local opts = { noremap = true, silent = true }
 
-            keymap.set("n", "<leader>gs", "<cmd>:vertical G<CR>", opts)
+            keymap.set("n", "<leader>gs", vim.cmd.Git, opts)
             keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
             keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase<CR>", opts)
 
-            -- do git merges easily
-            -- gh = choose left
-            -- gl = choose right
-            keymap.set("n", "gh", "<cmd>diffget //2<CR>", opts)
-            keymap.set("n", "gl", "<cmd>diffget //3<CR>", opts)
+            -- do git merges easily:
+            keymap.set("n", "gh", "<cmd>diffget //2<CR>", opts) -- gh = choose left
+            keymap.set("n", "gl", "<cmd>diffget //3<CR>", opts) -- gl = choose right
         end
     },
     {
