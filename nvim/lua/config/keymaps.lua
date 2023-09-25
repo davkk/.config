@@ -39,20 +39,13 @@ keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
 -- terminal
 keymap.set("n", "<leader>t", "<cmd>term<cr>", opts)
 keymap.set("n", "<leader>st", "<cmd>12 split<cr>:se wfh<cr>:term<cr>", opts)
-keymap.set("n", "<leader>vst", "<cmd>45 vsplit<cr>:se wfw<cr>:term<cr>", opts)
 
--- tabs
-keymap.set('n', "<C-t>", "<Nop>", opts) -- disable default tagstack keymap
-keymap.set('n', "<C-t>n", "<cmd>tabnew<CR>", opts)
-keymap.set('n', "<C-t>t", "<cmd>tabnew<CR>:term<CR>", opts)
+keymap.set("n", "L", function()
+    pcall(vim.cmd, [[checktime]])
+    vim.api.nvim_feedkeys("gt", "n", true)
+end, { desc = "Switch to next tab", silent = true, noremap = true })
 
-keymap.set('n', "<C-t>c", "<cmd>tabclose<CR>", opts)
-
-for i = 1, 9 do
-    keymap.set("n", string.format("<C-t>%i", i), function()
-        pcall(vim.cmd, [[checktime]])
-        vim.api.nvim_feedkeys(string.format("%sgt", i), "n", true)
-    end, { desc = string.format("Switch to tab nr %s", i), silent = true, noremap = true })
-end
-
-keymap.set("n", "<C-f>", ":$tabnew<cr>:term<cr>i<C-f>", opts)
+keymap.set("n", "H", function()
+    pcall(vim.cmd, [[checktime]])
+    vim.api.nvim_feedkeys("gT", "n", true)
+end, { desc = "Switch to previous tab", silent = true, noremap = true })
