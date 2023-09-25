@@ -12,17 +12,12 @@ keymap.set('x', '<leader>p', '"_dP', opts)
 keymap.set("v", "<", "<gv", opts)
 keymap.set("v", ">", ">gv", opts)
 
-keymap.set('n', '+', '<C-a>', opts)
-keymap.set('n', '-', '<C-x>', opts)
-
 keymap.set('n', '<C-d>', '<C-d>zz', opts)
 keymap.set('n', '<C-u>', '<C-u>zz', opts)
 
 -- resize window
-keymap.set('n', '<C-left>', '<C-w>3>', opts)
-keymap.set('n', '<C-right>', '<C-w>3<', opts)
-keymap.set('n', '<C-up>', '<C-w>3+', opts)
-keymap.set('n', '<C-down>', '<C-w>3-', opts)
+keymap.set('n', '<A-,>', '<C-w>5>', opts)
+keymap.set('n', '<A-.>', '<C-w>5<', opts)
 
 -- better experience
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
