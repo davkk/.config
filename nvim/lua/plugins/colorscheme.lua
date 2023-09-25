@@ -41,6 +41,10 @@ return {
 
                 FloatTitle = { fg = "highlight_med" },
                 FloatBorder = { fg = "highlight_med" },
+
+                TabLine = { bg = "none", bold = true},
+                TabLineFill = { bg = "none", fg = "muted", bold = true },
+                TabLineSel = { bg = "none", fg = "rose", bold = true },
             }
         },
         config = function(_, opts)

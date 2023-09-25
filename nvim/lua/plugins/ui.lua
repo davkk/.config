@@ -7,6 +7,10 @@ local symbols = {
 
 return {
     {
+        "mkitt/tabline.vim",
+        lazy = false,
+    },
+    {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         lazy = false,
@@ -33,28 +37,6 @@ return {
                     section_separators = "",
                     component_separators = "",
                     globalstatus = true,
-                },
-                tabline = {
-                    lualine_a = {},
-                    lualine_b = {
-                        {
-                            "tabs",
-                            max_length = vim.o.columns,
-                            mode = 1,
-                            padding = { left = 0, right = 1 },
-                            tabs_color = {
-                                active = { gui = "bold" },
-                                inactive = { fg = "#8D849A", gui = "bold" },
-                            },
-                            fmt = function(_, context)
-                                return string.format("(%s)", context.tabnr)
-                            end,
-                        },
-                    },
-                    lualine_c = {},
-                    lualine_x = {},
-                    lualine_y = {},
-                    lualine_z = {},
                 },
                 winbar = {
                     lualine_a = {},
