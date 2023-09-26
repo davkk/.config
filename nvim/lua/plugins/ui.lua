@@ -71,21 +71,20 @@ return {
                     lualine_z = {},
                 },
                 sections = {
-                    lualine_a = {
-                        {
-                            "mode",
-                            separator = { left = "", right = "", },
-                            padding = 0,
-                        },
-                    },
+                    lualine_a = {},
                     lualine_b = {
                         {
-                            "branch",
-                            icon = "",
+                            "mode",
+                            padding = { left = 0, right = 1 },
                             color = { gui = "bold" },
-                            padding = { left = 2, right = 1 },
+                        },
+                    },
+                    lualine_c = {
+                        {
+                            "branch",
+                            icon = "󰜘",
                             fmt = function(str)
-                                local limit = 25
+                                local limit = 30
                                 if #str > limit then
                                     return str:sub(1, limit) .. "…"
                                 else
@@ -111,7 +110,6 @@ return {
                             end
                         },
                     },
-                    lualine_c = {},
                     lualine_x = {
                         {
                             "diagnostics",
