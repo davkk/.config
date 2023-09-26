@@ -85,19 +85,19 @@ config.colors = {
         background = "none",
 
         active_tab = {
-            bg_color = "none",
-            fg_color = palette.text,
+            bg_color = palette.base,
+            fg_color = palette.muted,
             intensity = "Bold",
         },
 
         inactive_tab = {
             bg_color = "none",
-            fg_color = palette.muted,
+            fg_color = palette.subtle,
         },
 
         inactive_tab_hover = {
             bg_color = "none",
-            fg_color = palette.muted,
+            fg_color = palette.subtle,
         },
 
         new_tab = {
