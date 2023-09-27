@@ -83,14 +83,24 @@ return {
                         {
                             "branch",
                             icon = "󰜘",
+                            color = { fg = "#8D849A" },
                             fmt = function(str)
-                                local limit = 30
+                                local limit = 40
                                 if #str > limit then
                                     return str:sub(1, limit) .. "…"
                                 else
                                     return str
                                 end
                             end,
+                        },
+                    },
+                    lualine_x = {
+                        {
+                            "diagnostics",
+                            sources = { "nvim_diagnostic" },
+                            symbols = symbols,
+                            colored = true,
+                            update_in_insert = false,
                         },
                         {
                             "diff",
@@ -108,15 +118,6 @@ return {
                             cond = function()
                                 return vim.fn.winwidth(0) > 80
                             end
-                        },
-                    },
-                    lualine_x = {
-                        {
-                            "diagnostics",
-                            sources = { "nvim_diagnostic" },
-                            symbols = symbols,
-                            colored = true,
-                            update_in_insert = false,
                         },
                     },
                     lualine_y = {},
