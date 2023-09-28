@@ -56,7 +56,7 @@ return {
             },
 
             {
-                "<leader>e.",
+                "<leader>.",
                 function()
                     require("telescope.builtin").find_files({
                         shorten_path = false,
