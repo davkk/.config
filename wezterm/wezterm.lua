@@ -86,8 +86,7 @@ config.colors = {
 
         active_tab = {
             bg_color = palette.base,
-            fg_color = palette.muted,
-            intensity = "Bold",
+            fg_color = palette.subtle,
         },
 
         inactive_tab = {
