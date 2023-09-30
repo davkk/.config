@@ -119,7 +119,7 @@ return {
                         initial_mode = "normal",
                         mappings = {
                             n = {
-                                ["d"] = actions.delete_buffer,
+                                ["dd"] = actions.delete_buffer,
                             }
                         }
                     },
