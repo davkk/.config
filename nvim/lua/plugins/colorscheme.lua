@@ -21,6 +21,7 @@ return {
                 CursorLineNr = { bold = true },
                 LineNr = { fg = "highlight_med" },
                 ColorColumn = { bg = "base", blend = 10 },
+                Visual = { bg = "highlight_low" },
 
                 DiagnosticWarn = { fg = "#ea9d34" },
                 DiagnosticSignWarn = { link = "DiagnosticWarn" },
@@ -38,9 +39,13 @@ return {
 
                 CmpItemMenu = { fg = "highlight_med" },
                 CmpItemAbbrMatchFuzzy = { fg = "rose" },
+                CmpItemKind = { fg = "iris" },
 
                 FloatTitle = { fg = "highlight_med" },
                 FloatBorder = { fg = "highlight_med" },
+
+                TelescopeSelection = { bg = "base" },
+                TelescopeSelectionCaret = { bg = "base" },
             }
         },
         config = function(_, opts)

@@ -34,12 +34,12 @@ return {
                     completion = cmp.config.window.bordered {
                         winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
                         side_padding = 0,
-                        col_offset = -2,
+                        -- col_offset = -2,
                     },
                     documentation = cmp.config.window.bordered {
                         winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
                         side_padding = 0,
-                        col_offset = -2,
+                        -- col_offset = -2,
                     }
                 },
                 snippet = {
@@ -67,9 +67,9 @@ return {
                     fetching_timeout = 80
                 },
                 formatting = {
-                    fields = { "kind", "abbr", "menu" },
+                    -- fields = { "kind", "abbr", "menu" },
                     format = require("lspkind").cmp_format({
-                        mode = "symbol",
+                        -- mode = "symbol",
                         ellipsis_char = "…",
                         before = function(_, vim_item)
                             vim_item.abbr = vim_item.abbr:match("[^(]+")
