@@ -15,20 +15,18 @@ return {
             highlight_groups = {
                 WinSeparator = { bg = "None" },
 
-                TabnineSuggestion = { fg = "muted", bg = "none", blend = 10 },
+                TabnineSuggestion = { fg = "muted", bg = "none", blend = 0 },
 
-                CursorLine = { bg = "base", blend = 10 },
+                CursorLine = { bg = "overlay", blend = 40 },
                 CursorLineNr = { bold = true },
                 LineNr = { fg = "highlight_med" },
-                ColorColumn = { bg = "base", blend = 10 },
-                Visual = { bg = "highlight_low" },
+                ColorColumn = { bg = "overlay", blend = 40 },
 
                 DiagnosticWarn = { fg = "#ea9d34" },
+                DiagnosticUnderlineWarn = { sp = "#ea9d34" },
                 DiagnosticSignWarn = { link = "DiagnosticWarn" },
                 DiagnosticVirtualTextWarn = { link = "DiagnosticWarn" },
                 DiagnosticFloatingWarn = { link = "DiagnosticWarn" },
-
-                DiagnosticUnderlineWarn = { sp = "#ea9d34" },
 
                 GitSignsAdd = { bg = "None" },
                 GitSignsChange = { bg = "None" },
@@ -37,7 +35,7 @@ return {
                 FidgetTask = { fg = "highlight_med" },
                 FidgetTitle = { fg = "text" },
 
-                CmpItemMenu = { fg = "highlight_med" },
+                CmpItemMenu = { fg = "highlight_low" },
                 CmpItemAbbrMatchFuzzy = { fg = "rose" },
                 CmpItemKind = { fg = "iris" },
 
