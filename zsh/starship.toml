@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory$git_branch $python$nodejs
+$directory$git_branch $python$nodejs $cmd_duration
 $character
 """
 
@@ -35,18 +35,22 @@ use_12hr = true
 [git_branch]
 style = "purple"
 symbol = " "
-format = "[|](#26233a) [$symbol$branch(:$remote_branch)]($style)"
+format = "[|](#2F2B3B) [$symbol$branch(:$remote_branch)]($style)"
 truncation_length = 25
+
+[cmd_duration]
+min_time = 500
+format = '[|](#2F2B3B) [took](#8D849A) [$duration](bold #8D849A)'
 
 [python]
 style = "yellow"
 symbol = " "
-format = "[|](#26233a) [$symbol$virtualenv]($style)"
+format = "[|](#2F2B3B) [$symbol$virtualenv]($style)"
 
 [nodejs]
 style = "green"
 symbol = "󰎙 "
-format = "[|](#26233a) [$symbol$version]($style)"
+format = "[|](#2F2B3B) [$symbol$version]($style)"
 
 [fill]
 symbol = " "
