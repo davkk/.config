@@ -77,6 +77,9 @@ alias tmux='tmux -u'
 # -- PLUGINS
 source $XDG_CONFIG_HOME/antigen/antigen.zsh
 
+antigen use oh-my-zsh
+antigen bundle fzf
+
 antigen bundle 'zsh-users/zsh-syntax-highlighting'
 antigen bundle 'zsh-users/zsh-autosuggestions'
 
