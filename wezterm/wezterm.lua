@@ -11,7 +11,6 @@ config.term = "wezterm"
 config.audible_bell = "Disabled"
 config.cursor_blink_rate = 0
 config.adjust_window_size_when_changing_font_size = false
-config.hide_mouse_cursor_when_typing = false
 
 -- TABS
 config.use_fancy_tab_bar = false
@@ -28,10 +27,10 @@ config.cell_width = 0.9
 config.window_background_opacity = 0.8
 config.window_decorations = "RESIZE"
 config.window_padding = {
-    left = "1cell",
-    right = "1cell",
-    top = "0.5cell",
-    bottom = "0.5cell",
+    left = "0.1cell",
+    right = "0.1cell",
+    top = "0.1cell",
+    bottom = "0.1cell",
 }
 
 -- COLORS
@@ -85,8 +84,8 @@ config.colors = {
         background = "none",
 
         active_tab = {
-            bg_color = palette.base,
-            fg_color = palette.subtle,
+            bg_color = "none",
+            fg_color = palette.text,
         },
 
         inactive_tab = {
@@ -162,5 +161,33 @@ config.mouse_bindings = {
         action = wezterm.action.OpenLinkAtMouseCursor,
     },
 }
+
+
+-- TABS
+local tab_title = function(tab_info)
+    local title = tab_info.tab_title
+
+    if title and #title > 0 then
+        return title
+    end
+
+    return tab_info.active_pane.title
+end
+
+wezterm.on(
+    'format-tab-title',
+    function(tab, tabs)
+        local title = tab_title(tab)
+        local separator = tab.tab_index ~= #tabs - 1 and "|" or ""
+        return {
+            { Text = tab.tab_index + 1 .. ":" },
+            { Attribute = { Intensity = "Bold" } },
+            { Text = title },
+            { Attribute = { Intensity = "Normal" } },
+            { Foreground = { Color = palette.overlay } },
+            { Text = " " .. separator .. " " },
+        }
+    end
+)
 
 return config
