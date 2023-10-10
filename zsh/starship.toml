@@ -2,8 +2,8 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory$git_branch $python$nodejs $cmd_duration
-$character
+$directory$git_branch$python$nodejs$cmd_duration
+$sudo$character
 """
 
 # Inserts a blank line between shell prompts
@@ -14,12 +14,8 @@ add_newline = false
 disabled = true
 
 [character]
-success_symbol = "[󰅂](bold)"
-error_symbol = "[󰅂](bold red)"
-vimcmd_symbol = "[󰅁](bold)"
-vimcmd_replace_one_symbol = "[󰅁](bold)"
-vimcmd_replace_symbol = "[󰅁](bold)"
-vimcmd_visual_symbol = "[󰅁](bold)"
+success_symbol = '[󰅂](bold)'
+error_symbol = '[󰅂](bold red)'
 
 [directory]
 style = "green bold"
@@ -34,23 +30,30 @@ use_12hr = true
 
 [git_branch]
 style = "purple"
-symbol = " "
-format = "[|](#2F2B3B) [$symbol$branch(:$remote_branch)]($style)"
+symbol = "󰜘 "
+format = "[|](#2F2B3B) [$symbol$branch]($style) "
+always_show_remote = true
 truncation_length = 25
 
 [cmd_duration]
-min_time = 500
-format = '[|](#2F2B3B) [took](#8D849A) [$duration](bold #8D849A)'
+min_time = 1000
+format = "[|](#2F2B3B) [took $duration](#645C70)"
 
 [python]
 style = "yellow"
 symbol = " "
-format = "[|](#2F2B3B) [$symbol$virtualenv]($style)"
+format = "[|](#2F2B3B) [$symbol$virtualenv]($style) "
 
 [nodejs]
-style = "green"
+style = "blue"
 symbol = "󰎙 "
-format = "[|](#2F2B3B) [$symbol$version]($style)"
+format = "[|](#2F2B3B) [$symbol$version]($style) "
 
 [fill]
 symbol = " "
+
+[sudo]
+disabled = false
+style = "bold yellow"
+symbol = "#"
+format = "[$symbol]($style)"
