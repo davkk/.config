@@ -27,10 +27,10 @@ config.cell_width = 0.9
 config.window_background_opacity = 0.8
 config.window_decorations = "RESIZE"
 config.window_padding = {
-    left = "0.1cell",
-    right = "0.1cell",
-    top = "0.1cell",
-    bottom = "0.1cell",
+    left = "1cell",
+    right = "1cell",
+    top = "0.5cell",
+    bottom = "0.5cell",
 }
 
 -- COLORS
@@ -180,6 +180,7 @@ wezterm.on(
         local title = tab_title(tab)
         local separator = tab.tab_index ~= #tabs - 1 and "|" or ""
         return {
+            { Text = tab.tab_index == 0 and " " or "" },
             { Text = tab.tab_index + 1 .. ":" },
             { Attribute = { Intensity = "Bold" } },
             { Text = title },
