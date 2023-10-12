@@ -16,8 +16,10 @@ keymap.set('n', '<C-d>', '<C-d>zz', opts)
 keymap.set('n', '<C-u>', '<C-u>zz', opts)
 
 -- resize window
-keymap.set('n', '<A-,>', '<C-w>5>', opts)
-keymap.set('n', '<A-.>', '<C-w>5<', opts)
+keymap.set('n', '<A-Right>', '<C-w>5>', opts)
+keymap.set('n', '<A-Left>', '<C-w>5<', opts)
+keymap.set('n', '<A-Up>', '<C-w>2+', opts)
+keymap.set('n', '<A-Down>', '<C-w>2-', opts)
 
 -- better experience
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
