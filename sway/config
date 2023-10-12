@@ -264,6 +264,8 @@ for_window [class="1Password"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 600 px height 300 px, move position 830 px 565 px, sticky on
 for_window [title="Emulator*"] floating enable, sticky on
 for_window [app_id="python3"] floating enable, sticky on
+for_window [app_id="gnuplot_qt"] floating enable, sticky on
+for_window [class="Xplot"] floating enable, sticky on
 
 ##
 # Startup
