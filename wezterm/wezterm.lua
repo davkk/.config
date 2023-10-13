@@ -12,12 +12,6 @@ config.audible_bell = "Disabled"
 config.cursor_blink_rate = 0
 config.adjust_window_size_when_changing_font_size = false
 
--- TABS
-config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = true
-config.show_new_tab_button_in_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = true
-
 -- WINDOW
 config.initial_cols = 120
 config.initial_rows = 40
@@ -164,6 +158,12 @@ config.mouse_bindings = {
 
 
 -- TABS
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
+config.show_new_tab_button_in_tab_bar = false
+config.hide_tab_bar_if_only_one_tab = true
+config.tab_max_width = 100
+
 local tab_title = function(tab_info)
     local title = tab_info.tab_title
 
@@ -175,10 +175,10 @@ local tab_title = function(tab_info)
 end
 
 wezterm.on(
-    'format-tab-title',
+    "format-tab-title",
     function(tab, tabs)
         local title = tab_title(tab)
-        local separator = tab.tab_index ~= #tabs - 1 and "|" or ""
+        local separator = tab.tab_index < #tabs - 1 and "|" or ""
         return {
             { Text = tab.tab_index == 0 and " " or "" },
             { Text = tab.tab_index + 1 .. ":" },
