@@ -1,16 +1,11 @@
-local symbols = {
-    error = "󱎘 ",
-    warn = "󱈸 ",
-    hint = "󱠂 ",
-    info = " ",
-}
-
 return {
     {
         "nvim-lualine/lualine.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "nvim-tree/nvim-web-devicons", "rose-pine" },
         lazy = false,
         opts = function()
+            local palette = require("rose-pine.palette")
+
             local icon_filename = require('lualine.components.filename'):extend()
             icon_filename.apply_icon = require('lualine.components.filetype').apply_icon
             icon_filename.icon_hl_cache = {}
@@ -43,7 +38,7 @@ return {
                             mode = 2,
                             tabs_color = {
                                 active = { gui = "bold" },
-                                inactive = { fg = "#8D849A", gui = "bold" },
+                                inactive = { fg = palette.subtle, gui = "bold" },
                             },
                         },
                     },
@@ -55,7 +50,7 @@ return {
                     lualine_x = {
                         {
                             "location",
-                            color = { fg = "#8D849A", gui = "bold" },
+                            color = { fg = palette.subtle, gui = "bold" },
                             padding = 0,
                         },
                     },
@@ -83,7 +78,7 @@ return {
                         {
                             "branch",
                             icon = "󰜘",
-                            color = { fg = "#8D849A" },
+                            color = { fg = palette.subtle },
                             fmt = function(str)
                                 local limit = 40
                                 if #str > limit then
@@ -96,19 +91,12 @@ return {
                     },
                     lualine_x = {
                         {
-                            "diagnostics",
-                            sources = { "nvim_diagnostic" },
-                            symbols = symbols,
-                            colored = true,
-                            update_in_insert = false,
-                        },
-                        {
                             "diff",
                             colored = true,
                             diff_color = {
-                                added = { fg = "#8D849A", bg = "None" },
-                                modified = { fg = "#8D849A", bg = "None" },
-                                removed = { fg = "#8D849A", bg = "None" },
+                                added = { fg = palette.subtle, bg = "None" },
+                                modified = { fg = palette.subtle, bg = "None" },
+                                removed = { fg = palette.subtle, bg = "None" },
                             },
                             symbols = {
                                 added = " ",
@@ -119,13 +107,19 @@ return {
                                 return vim.fn.winwidth(0) > 80
                             end
                         },
+                        {
+                            "diagnostics",
+                            sources = { "nvim_diagnostic" },
+                            colored = true,
+                            update_in_insert = false,
+                        },
                     },
                     lualine_y = {},
                     lualine_z = {},
                 },
             }
         end,
-        config = function (_, opts)
+        config = function(_, opts)
             require("lualine").setup(opts)
             vim.o.showtabline = 1
         end
