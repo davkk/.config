@@ -16,10 +16,6 @@ local signs = {
     Info = "󰅂 ",
 }
 
-M.format = function()
-    vim.lsp.buf.format({ timeout_ms = 4000 })
-end
-
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
 
@@ -51,9 +47,6 @@ M.setup_lsp_keybinds = function(bufnr)
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rr", "<cmd>:Telescope lsp_references<cr>", opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-    vim.keymap.set("n", "<leader>f", M.format, opts)
-    vim.keymap.set("v", "<leader>f", M.format, opts)
 
     vim.keymap.set("i", "<C-h>",
         function()
