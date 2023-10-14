@@ -76,6 +76,7 @@ opt.backup = false
 
 -- keep cursor at the center
 opt.scrolloff = 10
+opt.sidescrolloff = 10
 
 -- disable bells
 opt.errorbells = false
