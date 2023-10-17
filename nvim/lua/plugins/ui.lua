@@ -34,6 +34,7 @@ return {
                     lualine_b = {
                         {
                             "tabs",
+                            show_modified_status = false,
                             max_length = vim.o.columns,
                             mode = 2,
                             tabs_color = {
