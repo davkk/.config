@@ -81,8 +81,8 @@ input "type:touchpad" {
 }
 
 input type:keyboard {
-  # caps as ctrl
-  xkb_options ctrl:nocaps
+  xkb_layout us,pl
+  xkb_options ctrl:nocaps,grp:alt_shift_toggle
 }
 
 ##
