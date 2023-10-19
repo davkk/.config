@@ -14,12 +14,6 @@ HYPHEN_INSENSITIVE="true"
 
 
 # -- CUSTOM FUNCTIONS
-vimcd() {
-    if [ ! -z $NVIM ] && [ -e /tmp/nvim.pipe ]; then
-        nvim --server /tmp/nvim.pipe --remote-send "<C-\\><C-N>:tcd $(realpath ${1:-.})<CR>"
-    fi
-}
-
 pop() {
     if [[ $# -eq 1 ]]; then
         selected=$1
@@ -29,21 +23,8 @@ pop() {
     if [[ -n "$selected" ]]; then
         cd "$selected"
         zle reset-prompt
-
-        vimcd $selected
     fi
 }
-
-vim() {
-    if [ -z $NVIM ]; then
-        nvim --listen /tmp/nvim.pipe $@
-    elif [[ $# -le 1 ]]; then
-        nvim --server /tmp/nvim.pipe --remote-silent $(realpath ${1:-.})
-    else
-        echo "sir, this is wendy's"
-    fi
-}
-
 
 # -- BINDKEYS
 bindkey -e
@@ -72,6 +53,7 @@ bindkey "\e[3@" kill-line
 # -- ALIASES
 alias l='ls --color -lhF --group-directories-first'
 alias nv='echo you are stupid'
+alias vim=nvim
 alias python='python3'
 alias tmux='tmux -u'
 
@@ -133,7 +115,7 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export MANPAGER='nvim +Man!'
+export MANPAGER="nvim +Man! --cmd 'let g:unception_disable=1'"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 

@@ -147,5 +147,12 @@ return {
             { "<leader>rt", "<cmd>ReplToggle<cr>",  desc = "Toggle nvim-repl" },
             { "<leader>rc", "<cmd>ReplRunCell<cr>", desc = "nvim-repl run cell" },
         },
+    },
+    {
+        "samjwill/nvim-unception",
+        lazy = false,
+        init = function()
+            vim.g.unception_open_buffer_in_new_tab = true
+        end
     }
 }
