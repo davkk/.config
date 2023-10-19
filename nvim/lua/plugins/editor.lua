@@ -77,7 +77,7 @@ return {
             disable_auto_comment = true,
             accept_keymap = "<Tab>",
             dismiss_keymap = "<C-x>",
-            debounce_ms = 500,
+            debounce_ms = 1000,
             exclude_filetypes = { "TelescopePrompt", "oil", "harpoon", "gitcommit" },
         },
         config = function(_, opts)
