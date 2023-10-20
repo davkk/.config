@@ -64,6 +64,7 @@ exec_always swayidle -w \
       timeout 100 'swaymsg "output * power off"' \
       resume 'swaymsg "output * power on"; light -S $(light)' \
       timeout 300 '$lock' \
+      resume 'swaymsg "output * power on"; light -S $(light)' \
       before-sleep '$lock'
 
 bindswitch --reload --locked lid:on exec $lock
