@@ -270,6 +270,7 @@ for_window [title="Emulator*"] floating enable, sticky on
 for_window [app_id="python3"] floating enable, sticky on
 for_window [class="gnuplot_qt"] floating enable, resize set width 1000 px height 800 px, sticky on
 for_window [class="Xplot"] floating enable, sticky on
+for_window [class="Matplotlib"] floating enable, resize set width 1000 px height 800 px, sticky on
 
 ##
 # Startup
