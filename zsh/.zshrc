@@ -1,3 +1,5 @@
+export TERM=wezterm
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
@@ -30,23 +32,6 @@ bindkey -e
 
 zle -N pop
 bindkey '^f' pop
-
-# ctrl+arrows
-bindkey "\e[1;5C" forward-word
-bindkey "\e[1;5D" backward-word
-# urxvt
-bindkey "\eOc" forward-word
-bindkey "\eOd" backward-word
-# ctrl+delete
-bindkey "\e[3;5~" kill-word
-# urxvt
-bindkey "\e[3^" kill-word
-# ctrl+backspace
-bindkey '^H' backward-kill-word
-# ctrl+shift+delete
-bindkey "\e[3;6~" kill-line
-# urxvt
-bindkey "\e[3@" kill-line
 
 
 # -- ALIASES
