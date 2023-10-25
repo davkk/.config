@@ -1,4 +1,4 @@
-; extends
+;; extends
 (command
   name: (command_name) @_name
     (#eq? @_name "awk")
