@@ -12,7 +12,7 @@ return {
             disable_float_background = true,
             disable_italics = true,
             highlight_groups = {
-                WinSeparator = { bg = "None" },
+                WinSeparator = { bg = "None", fg = "overlay" },
 
                 TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
 
