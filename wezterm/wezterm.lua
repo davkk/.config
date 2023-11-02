@@ -23,8 +23,8 @@ config.window_decorations = "RESIZE"
 config.window_padding = {
     left = "1cell",
     right = "1cell",
-    top = "0.5cell",
-    bottom = "0.5cell",
+    top = "0.7cell",
+    bottom = "0.1cell",
 }
 
 -- COLORS
