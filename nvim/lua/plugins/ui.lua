@@ -36,11 +36,15 @@ return {
                             "tabs",
                             show_modified_status = false,
                             max_length = vim.o.columns,
-                            mode = 2,
+                            mode = 1,
                             tabs_color = {
                                 active = { gui = "bold" },
                                 inactive = { fg = palette.subtle, gui = "bold" },
                             },
+                            fmt = function(name, context)
+                                -- Show + if buffer is modified in tab
+                                return string.format("%d:%s", context.tabnr, name)
+                            end
                         },
                     },
                 },
@@ -51,7 +55,7 @@ return {
                     lualine_x = {
                         {
                             "location",
-                            color = { fg = palette.subtle, gui = "bold" },
+                            color = { fg = palette.highlight_high, gui = "bold" },
                             padding = 0,
                         },
                     },

@@ -32,8 +32,8 @@ return {
         c = { bg = "none", fg = p.text },
     },
     inactive = {
-        a = { bg = p.subtle, fg = p.base, gui = 'bold' },
-        b = { bg = "none", fg = p.subtle },
-        c = { bg = "none", fg = p.subtle },
+        a = { bg = p.highlight_high, fg = p.base, gui = 'bold' },
+        b = { bg = "none", fg = p.highlight_high },
+        c = { bg = "none", fg = p.highlight_high },
     },
 }
