@@ -23,6 +23,9 @@ return {
                 python = { "isort", "black" },
                 javascript = { "prettierd", "eslint_d" },
                 typescript = { "prettierd", "eslint_d" },
+                sass = { "prettierd" },
+                scss = { "prettierd" },
+                css = { "prettierd" },
             },
         },
         config = function(_, opts)
