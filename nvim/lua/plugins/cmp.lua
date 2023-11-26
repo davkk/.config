@@ -1,3 +1,5 @@
+local winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+
 return {
     {
         "hrsh7th/nvim-cmp",
@@ -32,14 +34,14 @@ return {
             return {
                 window = {
                     completion = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-                        side_padding = 0,
-                        -- col_offset = -2,
+                        winhighlight = winhighlight,
+                        -- side_padding = 0,
+                        col_offset = -1,
                     },
                     documentation = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-                        side_padding = 0,
-                        -- col_offset = -2,
+                        winhighlight = winhighlight,
+                        -- side_padding = 0,
+                        col_offset = -1,
                     }
                 },
                 snippet = {
@@ -94,7 +96,17 @@ return {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
                     { name = "buffer" },
-                })
+                }),
+                window = {
+                    completion = cmp.config.window.bordered {
+                        winhighlight = winhighlight,
+                        col_offset = 0,
+                    },
+                    documentation = cmp.config.window.bordered {
+                        winhighlight = winhighlight,
+                        col_offset = 0,
+                    }
+                },
             })
 
             cmp.setup.cmdline({ ":" }, {
@@ -102,7 +114,17 @@ return {
                 sources = cmp.config.sources({
                     { name = "path" },
                     { name = "cmdline" },
-                })
+                }),
+                window = {
+                    completion = cmp.config.window.bordered {
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+                        col_offset = 0,
+                    },
+                    documentation = cmp.config.window.bordered {
+                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+                        col_offset = 0,
+                    }
+                },
             })
         end,
     },

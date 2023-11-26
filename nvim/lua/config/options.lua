@@ -2,6 +2,8 @@ local opt = vim.opt
 
 opt.shell = "/usr/bin/zsh"
 
+opt.mouse = nil
+
 -- colors
 opt.background = "dark"
 opt.termguicolors = true
@@ -100,7 +102,7 @@ opt.undofile = true
 -- show whitespace
 opt.list = true
 opt.listchars = {
-    tab = '»·',
+    tab = '» ',
     trail = '·',
     extends = '→',
     precedes = '←',

@@ -61,13 +61,15 @@ output "eDP-1" {
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 exec_always swayidle -w \
-      timeout 100 'swaymsg "output * power off"' \
-      resume 'swaymsg "output * power on"; light -S $(light)' \
-      timeout 300 '$lock' \
-      resume 'swaymsg "output * power on"; light -S $(light)' \
+      timeout 600 '$lock; sleep 1; swaymsg "output * power off"' \
+          resume 'swaymsg "output * power on"; light -S $(light)' \
       before-sleep '$lock'
 
 bindswitch --reload --locked lid:on exec $lock
+
+# disable timeout when in fullscreen
+for_window [class="^.*"] inhibit_idle fullscreen
+for_window [app_id="^.*"] inhibit_idle fullscreen
 
 ##
 # Input configuration
