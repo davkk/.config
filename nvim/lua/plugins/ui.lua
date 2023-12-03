@@ -117,6 +117,7 @@ return {
                             sources = { "nvim_diagnostic" },
                             colored = true,
                             update_in_insert = false,
+                            symbols = { error = "E", warn = "W", info = "I", hint = "H" },
                         },
                     },
                     lualine_y = {},

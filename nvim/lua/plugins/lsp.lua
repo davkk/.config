@@ -9,12 +9,12 @@ local lsp_servers = {
     "angularls",
 }
 
-local signs = {
-    Error = "󰅂 ",
-    Warn = "󰅂 ",
-    Hint = "󰅂 ",
-    Info = "󰅂 ",
-}
+-- local signs = {
+--     Error = "󰅂 ",
+--     Warn = "󰅂 ",
+--     Hint = "󰅂 ",
+--     Info = "󰅂 ",
+-- }
 
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
@@ -234,19 +234,19 @@ M.plugins = {
 }
 
 M.setup_diagnostics = function()
-    for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-    end
+    -- for type, icon in pairs(signs) do
+    --     local hl = "DiagnosticSign" .. type
+    --     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+    -- end
 
     vim.diagnostic.config({
         severity_sort = true,
-        virtual_text = {
-            prefix = "󱓻",
-            source = "if_many",
-        },
+        -- virtual_text = {
+        --     prefix = "󱓻",
+        --     source = "if_many",
+        -- },
         virtual_lines = false,
-        signs = { active = signs },
+        -- signs = { active = signs },
         underline = true,
         update_in_insert = false,
         float = {
