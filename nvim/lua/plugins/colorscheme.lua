@@ -9,9 +9,12 @@ return {
             bold_vert_split = true,
             dim_nc_background = false,
             disable_background = true,
-            disable_float_background = true,
+            disable_float_background = false,
             disable_italics = true,
             highlight_groups = {
+                Pmenu = { blend = 10 },
+                PmenuSel = { bg = "rose", fg = "base" },
+
                 WinSeparator = { bg = "None", fg = "overlay" },
 
                 TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
@@ -35,15 +38,19 @@ return {
                 FidgetTask = { fg = "highlight_med" },
                 FidgetTitle = { fg = "text" },
 
-                CmpItemMenu = { fg = "highlight_low" },
+                CmpItemMenu = { fg = "highlight_high" },
                 CmpItemAbbrMatchFuzzy = { fg = "rose" },
                 CmpItemKind = { fg = "iris" },
 
                 FloatTitle = { fg = "highlight_med" },
                 FloatBorder = { fg = "highlight_med" },
 
+                TelescopeNormal = { link = "Pmenu", blend = 10 },
+                TelescopeBorder = { link = "Pmenu", blend = 10 },
                 TelescopeSelection = { bg = "base" },
                 TelescopeSelectionCaret = { bg = "base" },
+
+                NormalFloat = { blend = 10 }
             }
         },
         config = function(_, opts)

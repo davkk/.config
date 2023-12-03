@@ -1,4 +1,4 @@
-local winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None"
+local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
 
 return {
     {
@@ -33,15 +33,11 @@ return {
 
             return {
                 window = {
-                    completion = cmp.config.window.bordered {
+                    completion = {
                         winhighlight = winhighlight,
-                        -- side_padding = 0,
-                        col_offset = -1,
                     },
-                    documentation = cmp.config.window.bordered {
+                    documentation = {
                         winhighlight = winhighlight,
-                        -- side_padding = 0,
-                        col_offset = -1,
                     }
                 },
                 snippet = {
@@ -97,16 +93,6 @@ return {
                 sources = cmp.config.sources({
                     { name = "buffer" },
                 }),
-                window = {
-                    completion = cmp.config.window.bordered {
-                        winhighlight = winhighlight,
-                        col_offset = 0,
-                    },
-                    documentation = cmp.config.window.bordered {
-                        winhighlight = winhighlight,
-                        col_offset = 0,
-                    }
-                },
             })
 
             cmp.setup.cmdline({ ":" }, {
@@ -115,16 +101,6 @@ return {
                     { name = "path" },
                     { name = "cmdline" },
                 }),
-                window = {
-                    completion = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-                        col_offset = 0,
-                    },
-                    documentation = cmp.config.window.bordered {
-                        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
-                        col_offset = 0,
-                    }
-                },
             })
         end,
     },

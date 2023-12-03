@@ -91,14 +91,14 @@ M.plugins = {
 
             M.setup_diagnostics()
 
-            require("lspconfig.ui.windows").default_options.border = "rounded"
+            -- require("lspconfig.ui.windows").default_options.border = "rounded"
 
             mason.setup({
                 pip = {
                     upgrade_pip = true,
                 },
                 ui = {
-                    border = "rounded",
+                    -- border = "rounded",
                     icons = {
                         package_installed = "✓",
                         package_pending = "➜",
@@ -225,7 +225,7 @@ M.plugins = {
                 relative = "editor",
                 blend = 0,
                 zindex = 100,
-                border = "rounded", -- style of border for the fidget window
+                -- border = "rounded", -- style of border for the fidget window
             },
         },
         config = true
@@ -252,7 +252,7 @@ M.setup_diagnostics = function()
         float = {
             show_header = true,
             style = 'minimal',
-            border = 'rounded',
+            -- border = 'rounded',
             source = 'if_many',
             header = '',
             prefix = '',
@@ -309,14 +309,15 @@ end
 
 M.setup_lsp_handlers = function()
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, { border = "rounded" }
+    --     vim.lsp.handlers.hover, { border = "rounded" }
+        vim.lsp.handlers.hover, {}
     )
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
         vim.lsp.handlers.signature_help,
         {
             focusable = false,
-            border = "rounded",
+            -- border = "rounded",
         }
     )
 end
