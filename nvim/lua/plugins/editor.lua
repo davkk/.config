@@ -50,9 +50,9 @@ return {
             float = {
                 max_width = 80,
                 max_height = 30,
-                border = "rounded",
+                -- border = "rounded",
                 win_options = {
-                    winblend = 0,
+                    winblend = 10,
                 },
             },
         },
