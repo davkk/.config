@@ -112,4 +112,5 @@ else
 fi
 
 # opam configuration
-[[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+[[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
+eval `opam env`

@@ -170,19 +170,24 @@ M.plugins = {
                 },
             })
 
-            M.server_setup(lspconfig.ocamllsp)
-
-            M.server_setup(lspconfig.rescriptls, {
-                init_options = {
-                    extensionConfiguration = {
-                        allowBuiltInFormatter = true,
-                        askToStartBuild = false,
-                        autoRunCodeAnalysis = true,
-                        codeLens = true,
-                        inlayHints = { enable = true },
-                    },
+            M.server_setup(lspconfig.ocamllsp, {
+                settings = {
+                    codelens = { enable = true },
+                    extendedHover = { enable = true },
                 },
             })
+
+            -- M.server_setup(lspconfig.rescriptls, {
+            --     init_options = {
+            --         extensionConfiguration = {
+            --             allowBuiltInFormatter = true,
+            --             askToStartBuild = false,
+            --             autoRunCodeAnalysis = true,
+            --             codeLens = true,
+            --             inlayHints = { enable = true },
+            --         },
+            --     },
+            -- })
 
             M.server_setup(require("ionide"), {
                 cmd = {
