@@ -20,16 +20,26 @@ return {
             local cmp = require("cmp")
             local cmp_select = { behavior = cmp.SelectBehavior.Select }
             local cmp_mapping = cmp.mapping.preset.insert({
-                ['<C-Space>'] = cmp.mapping.complete(),
-                ['<C-y>'] = cmp.mapping.confirm({
+                ["<Tab>"] = cmp.config.disable,
+                ["<S-Tab>"] = cmp.config.disable,
+
+                ["<C-Space>"] = cmp.mapping.complete(),
+
+                ["<C-y>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Insert,
                     select = true,
                 }),
-                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                ["<C-q>"] = cmp.mapping.confirm({
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = false,
+                }),
+
+                ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+                ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+
+                ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
             })
-            cmp_mapping['<Tab>'] = nil
-            cmp_mapping['<S-Tab>'] = nil
 
             return {
                 window = {
