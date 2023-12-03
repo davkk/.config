@@ -21,6 +21,7 @@ return {
                 LineNr = { fg = "highlight_med" },
                 ColorColumn = { bg = "overlay", blend = 40 },
 
+                SpellBad = { sp = "#ea9d34" },
                 DiagnosticWarn = { fg = "#ea9d34" },
                 DiagnosticUnderlineWarn = { sp = "#ea9d34" },
                 DiagnosticSignWarn = { link = "DiagnosticWarn" },

@@ -23,8 +23,8 @@ keymap.set('n', '<A-Down>', '<C-w>2-', opts)
 
 -- better experience
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set({ 'n', 'v' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap.set({ 'n', 'v' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- exit teminal with Esc
 keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
