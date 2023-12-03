@@ -14,8 +14,8 @@ add_newline = false
 disabled = true
 
 [character]
-success_symbol = '[󰅂](bold)'
-error_symbol = '[󰅂](bold red)'
+success_symbol = '[❯](bold)'
+error_symbol = '[❯](bold red)'
 
 [directory]
 style = "green bold"

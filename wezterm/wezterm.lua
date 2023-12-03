@@ -16,7 +16,6 @@ config.adjust_window_size_when_changing_font_size = false
 config.initial_cols = 120
 config.initial_rows = 40
 config.max_fps = 144
-config.cell_width = 0.9
 
 config.window_background_opacity = 0.8
 config.window_decorations = "RESIZE"
@@ -106,12 +105,16 @@ config.colors = {
 
 -- FONT
 config.font = wezterm.font_with_fallback {
-    {
-        family = "iMWritingMono Nerd Font",
-        stretch = "ExtraExpanded",
-        harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
-    },
+   "Input",
+    -- {
+    --     family = "iMWritingMono Nerd Font",
+    --     stretch = "ExtraExpanded",
+    --     harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+    -- },
 }
+config.use_cap_height_to_scale_fallback_fonts = true
+config.cell_width = 1
+config.underline_thickness = 4
 config.font_size = 19
 config.warn_about_missing_glyphs = false -- life saver
 
