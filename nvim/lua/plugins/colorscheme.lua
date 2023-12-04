@@ -12,7 +12,7 @@ return {
             disable_float_background = false,
             disable_italics = true,
             highlight_groups = {
-                Pmenu = { blend = 10 },
+                Pmenu = { blend = 5 },
                 PmenuSel = { bg = "rose", fg = "base" },
 
                 WinSeparator = { bg = "None", fg = "overlay" },
@@ -42,15 +42,17 @@ return {
                 CmpItemAbbrMatchFuzzy = { fg = "rose" },
                 CmpItemKind = { fg = "iris" },
 
-                FloatTitle = { fg = "highlight_med" },
-                FloatBorder = { fg = "highlight_med" },
+                NormalFloat = { blend = 5 },
+                FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
+                FloatBorder = { fg = "highlight_med", blend = 5 },
 
-                TelescopeNormal = { link = "Pmenu", blend = 10 },
-                TelescopeBorder = { link = "Pmenu", blend = 10 },
-                TelescopeSelection = { bg = "base" },
-                TelescopeSelectionCaret = { bg = "base" },
+                TelescopeNormal = { blend = 5 },
+                TelescopeBorder = { blend = 5 },
+                TelescopeTitle = { bg = "None", blend = 5 },
+                TelescopeSelection = { bg = "highlight_med" },
+                TelescopeSelectionCaret = { bg = "highlight_med" },
 
-                NormalFloat = { blend = 10 }
+                TreesitterContext = { bg = "none", blend = 100 },
             }
         },
         config = function(_, opts)

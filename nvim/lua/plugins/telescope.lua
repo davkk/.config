@@ -82,6 +82,7 @@ return {
 
             telescope.setup({
                 defaults = {
+                    winblend = 5,
                     layout_strategy = "flex",
                     layout_config = {
                         prompt_position = "top",

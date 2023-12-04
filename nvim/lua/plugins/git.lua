@@ -42,6 +42,10 @@ return {
                 delay = 2000,
                 virt_text_pos = "eol",
             },
+
+            preview_config = {
+                border = "solid",
+            }
         },
         config = function(_, opts)
             local gs = require("gitsigns")
