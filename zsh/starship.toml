@@ -2,12 +2,17 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory$git_branch$python$nodejs$cmd_duration
+$directory\
+$git_branch\
+$python\
+$nodejs\
+$ocaml\
+$cmd_duration
 $sudo$character
 """
 
 # Inserts a blank line between shell prompts
-add_newline = false
+add_newline = true
 
 # Disable the package module, hiding it from the prompt completely
 [package]
@@ -48,6 +53,11 @@ format = "[|](#2F2B3B) [$symbol$virtualenv]($style) "
 style = "blue"
 symbol = "󰎙 "
 format = "[|](#2F2B3B) [$symbol$version]($style) "
+
+[ocaml]
+style = "yellow"
+symbol = " "
+format = "[|](#2F2B3B) [$symbol$version$switch_indicator]($style) "
 
 [fill]
 symbol = " "
