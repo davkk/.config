@@ -54,7 +54,7 @@ output * bg $wallpaper fill
 
 output "eDP-1" {
     mode 2880x1800@90.001Hz
-    scale 1.5
+    scale 1.25
 }
 
 ##
