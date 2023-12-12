@@ -102,11 +102,11 @@ return {
                                 modified = { fg = palette.subtle, bg = "None" },
                                 removed = { fg = palette.subtle, bg = "None" },
                             },
-                            symbols = {
-                                added = " ",
-                                modified = " ",
-                                removed = " "
-                            },
+                            -- symbols = {
+                            --     added = " ",
+                            --     modified = " ",
+                            --     removed = " "
+                            -- },
                             cond = function()
                                 return vim.fn.winwidth(0) > 80
                             end
