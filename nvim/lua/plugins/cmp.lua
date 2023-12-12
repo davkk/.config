@@ -15,31 +15,18 @@ return {
 
             "L3MON4D3/LuaSnip",
             "saadparwaiz1/cmp_luasnip",
+
+            "tzachar/cmp-tabnine",
         },
         opts = function()
-            local cmp = require("cmp")
-            local cmp_select = { behavior = cmp.SelectBehavior.Select }
-            local cmp_mapping = cmp.mapping.preset.insert({
-                ["<Tab>"] = cmp.config.disable,
-                ["<S-Tab>"] = cmp.config.disable,
-
-                ["<C-Space>"] = cmp.mapping.complete(),
-
-                ["<C-y>"] = cmp.mapping.confirm({
-                    behavior = cmp.ConfirmBehavior.Insert,
-                    select = true,
-                }),
-                ["<C-q>"] = cmp.mapping.confirm({
-                    behavior = cmp.ConfirmBehavior.Replace,
-                    select = false,
-                }),
-
-                ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-                ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-
-                ["<C-d>"] = cmp.mapping.scroll_docs(4),
-                ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+            local lspkind = require("lspkind")
+            lspkind.init({
+                symbol_map = {
+                    TabNine = "󰹻"
+                }
             })
+
+            local cmp = require("cmp")
 
             return {
                 window = {
@@ -55,8 +42,38 @@ return {
                         require('luasnip').lsp_expand(args.body)
                     end,
                 },
-                mapping = cmp_mapping,
+                mapping = cmp.mapping.preset.insert({
+                    ["<Tab>"] = cmp.config.disable,
+                    ["<S-Tab>"] = cmp.config.disable,
+
+                    ["<C-Space>"] = cmp.mapping.complete(),
+
+                    ["<C-y>"] = cmp.mapping.confirm({
+                        behavior = cmp.ConfirmBehavior.Insert,
+                        select = true,
+                    }),
+                    ["<C-q>"] = cmp.mapping.confirm({
+                        behavior = cmp.ConfirmBehavior.Replace,
+                        select = false,
+                    }),
+
+                    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+                    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+
+                    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+                    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+
+                    -- tabnine completion
+                    ["<C-a>"] = cmp.mapping.complete({
+                        config = {
+                            sources = {
+                                { name = "cmp_tabnine" },
+                            },
+                        },
+                    }),
+                }),
                 sources = cmp.config.sources({
+                    { name = "cmp_tabnine" },
                     {
                         name = "nvim_lsp",
                         group_index = 1,
@@ -70,18 +87,46 @@ return {
                         keyword_length = 5,
                     },
                 }),
+                sorting = {
+                    comparators = {
+                        require('cmp_tabnine.compare'),
+
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+
+                        -- better sort completion items that start with one or more underlines
+                        function(entry1, entry2)
+                            local _, entry1_under = entry1.completion_item.label:find "^_+"
+                            local _, entry2_under = entry2.completion_item.label:find "^_+"
+                            entry1_under = entry1_under or 0
+                            entry2_under = entry2_under or 0
+                            if entry1_under > entry2_under then
+                                return false
+                            elseif entry1_under < entry2_under then
+                                return true
+                            end
+                        end,
+
+                        cmp.config.compare.kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                    }
+                },
                 performance = {
                     trigger_debounce_time = 300,
                     fetching_timeout = 80
                 },
                 formatting = {
-                    format = require("lspkind").cmp_format({
+                    format = lspkind.cmp_format({
                         ellipsis_char = "…",
                         menu = {
                             buffer = "[buf]",
                             nvim_lsp = "[LSP]",
                             path = "[path]",
                             luasnip = "[snip]",
+                            cmp_tabnine = "[tabnine]",
                         },
                     }),
                 },

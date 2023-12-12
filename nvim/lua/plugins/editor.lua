@@ -70,20 +70,44 @@ return {
         },
     },
     {
-        "codota/tabnine-nvim",
-        event = "BufReadPost",
-        build = "./dl_binaries.sh",
+        "tzachar/cmp-tabnine",
+        lazy = "BufReadPost",
+        build = './install.sh',
+        dependencies = 'hrsh7th/nvim-cmp',
         opts = {
-            disable_auto_comment = true,
-            accept_keymap = "<Tab>",
-            dismiss_keymap = "<C-x>",
-            debounce_ms = 1000,
-            exclude_filetypes = { "TelescopePrompt", "oil", "harpoon", "gitcommit" },
+            max_lines = 5,
+            max_num_results = 1,
+            sort = true,
+            run_on_every_keystroke = true,
+            snippet_placeholder = '..',
+            ignored_file_types = {
+                "TelescopePrompt",
+                "oil",
+                "harpoon",
+                "gitcommit"
+            },
+            show_prediction_strength = false
         },
         config = function(_, opts)
-            require("tabnine").setup(opts)
+            local tabnine = require("cmp_tabnine.config")
+            tabnine:setup(opts)
         end,
     },
+    -- {
+    --     "codota/tabnine-nvim",
+    --     event = "BufReadPost",
+    --     build = "./dl_binaries.sh",
+    --     opts = {
+    --         disable_auto_comment = true,
+    --         accept_keymap = "<Tab>",
+    --         dismiss_keymap = "<C-x>",
+    --         debounce_ms = 1000,
+    --         exclude_filetypes = { "TelescopePrompt", "oil", "harpoon", "gitcommit" },
+    --     },
+    --     config = function(_, opts)
+    --         require("tabnine").setup(opts)
+    --     end,
+    -- },
     {
         "ThePrimeagen/harpoon",
         keys = {
