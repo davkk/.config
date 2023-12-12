@@ -42,7 +42,6 @@ return {
                                 inactive = { fg = palette.subtle, gui = "bold" },
                             },
                             fmt = function(name, context)
-                                -- Show + if buffer is modified in tab
                                 return string.format("%d:%s", context.tabnr, name)
                             end
                         },

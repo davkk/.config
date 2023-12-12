@@ -75,14 +75,8 @@ return {
                     fetching_timeout = 80
                 },
                 formatting = {
-                    -- fields = { "kind", "abbr", "menu" },
                     format = require("lspkind").cmp_format({
-                        -- mode = "symbol",
                         ellipsis_char = "…",
-                        -- before = function(_, vim_item)
-                        --     vim_item.abbr = vim_item.abbr:match("[^(]+")
-                        --     return vim_item
-                        -- end,
                         menu = {
                             buffer = "[buf]",
                             nvim_lsp = "[LSP]",

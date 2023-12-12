@@ -7,14 +7,8 @@ local lsp_servers = {
     "astro",
     "pyright",
     "angularls",
+    "ocamllsp",
 }
-
--- local signs = {
---     Error = "󰅂 ",
---     Warn = "󰅂 ",
---     Hint = "󰅂 ",
---     Info = "󰅂 ",
--- }
 
 M.setup_lsp_keybinds = function(bufnr)
     local opts = { buffer = bufnr, noremap = false, silent = true }
@@ -91,14 +85,11 @@ M.plugins = {
 
             M.setup_diagnostics()
 
-            -- require("lspconfig.ui.windows").default_options.border = "rounded"
-
             mason.setup({
                 pip = {
                     upgrade_pip = true,
                 },
                 ui = {
-                    -- border = "rounded",
                     icons = {
                         package_installed = "✓",
                         package_pending = "➜",
@@ -177,18 +168,6 @@ M.plugins = {
                 },
             })
 
-            -- M.server_setup(lspconfig.rescriptls, {
-            --     init_options = {
-            --         extensionConfiguration = {
-            --             allowBuiltInFormatter = true,
-            --             askToStartBuild = false,
-            --             autoRunCodeAnalysis = true,
-            --             codeLens = true,
-            --             inlayHints = { enable = true },
-            --         },
-            --     },
-            -- })
-
             M.server_setup(require("ionide"), {
                 cmd = {
                     "fsautocomplete",
@@ -225,7 +204,6 @@ M.plugins = {
                 relative = "editor",
                 blend = 0,
                 zindex = 100,
-                -- border = "rounded", -- style of border for the fidget window
             },
         },
         config = true
@@ -234,26 +212,14 @@ M.plugins = {
 }
 
 M.setup_diagnostics = function()
-    -- for type, icon in pairs(signs) do
-    --     local hl = "DiagnosticSign" .. type
-    --     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-    -- end
-
     vim.diagnostic.config({
         severity_sort = true,
-        -- virtual_text = {
-        --     prefix = "󱓻",
-        --     source = "if_many",
-        -- },
         virtual_lines = false,
-        -- signs = { active = signs },
         underline = true,
         update_in_insert = false,
         float = {
             show_header = true,
             style = 'minimal',
-            -- border = 'rounded',
-            source = 'if_many',
             header = '',
             prefix = '',
         },
@@ -293,6 +259,7 @@ end
 M.get_highest_error_severity = function()
     -- Go to the next diagnostic, but prefer going to errors first
     -- In general, I pretty much never want to go to the next hint
+    -- ~ copied from tjdevries
     local severity_levels = {
         vim.diagnostic.severity.ERROR,
         vim.diagnostic.severity.WARN,
@@ -309,16 +276,12 @@ end
 
 M.setup_lsp_handlers = function()
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    --     vim.lsp.handlers.hover, { border = "rounded" }
         vim.lsp.handlers.hover, {}
     )
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
         vim.lsp.handlers.signature_help,
-        {
-            focusable = false,
-            -- border = "rounded",
-        }
+        { focusable = false }
     )
 end
 
