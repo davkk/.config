@@ -3,6 +3,7 @@
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec --no-startup-id /usr/lib/xdg-desktop-portal -r
+exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
 
 font pango:monospace 15px
 
@@ -67,7 +68,7 @@ output "eDP-1" {
 exec_always swayidle -w \
       timeout 120 'swaymsg "output * power off"' \
           resume 'swaymsg "output * power on"; light -S $(light)' \
-      timeout 600 '$lock; sleep 1; swaymsg "output * power off"' \
+      timeout 600 'swaymsg "output * power on"; sleep 1; $lock; sleep 1; swaymsg "output * power off"' \
           resume 'swaymsg "output * power on"; light -S $(light)' \
       before-sleep '$lock'
 
