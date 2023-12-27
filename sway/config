@@ -33,11 +33,7 @@ set $menu j4-dmenu-desktop
 
 # Wallpaper
 set $wallpaper $HOME/Pictures/wallpaper.jpg
-
-# Lock command
-set $lock swaylock -i $wallpaper -s fill
-
-set $light 15
+set $default_light 15
 
 ##
 # Options
@@ -65,11 +61,13 @@ output "eDP-1" {
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+set $lock swaylock -f -i $wallpaper -s fill
+
 exec_always swayidle -w \
       timeout 120 'swaymsg "output * power off"' \
-          resume 'swaymsg "output * power on"; light -S $(light)' \
-      timeout 600 'swaymsg "output * power on"; sleep 1; $lock; sleep 1; swaymsg "output * power off"' \
-          resume 'swaymsg "output * power on"; light -S $(light)' \
+          resume 'swaymsg "output * power on"; light -S $(default_light)' \
+      timeout 600 'swaymsg "output * power on"; light -S $(default_light); sleep 1; $lock; sleep 1; swaymsg "output * power off"' \
+          resume 'swaymsg "output * power on"; light -S $(default_light)' \
       before-sleep '$lock'
 
 bindswitch --reload --locked lid:on exec $lock
@@ -92,7 +90,7 @@ input "type:touchpad" {
 
 input type:keyboard {
   xkb_layout us,pl
-  xkb_options ctrl:nocaps,grp:rctrl_rshift_toggle
+  xkb_options ctrl:esc,grp:rctrl_rshift_toggle
 }
 
 ##
@@ -163,8 +161,8 @@ bindsym $mod+b splith
 bindsym $mod+v splitv
 
 # Switch the current container between different layout styles
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+# bindsym $mod+s layout stacking
+# bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # Make the current focus fullscreen
@@ -190,7 +188,7 @@ bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Sreen brightness controls
-exec light -S $light
+exec light -S $default_light
 bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
 
@@ -232,7 +230,9 @@ bindsym $mod+r mode "resize"
 # Screeshots
 ##
 
-bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot
+bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot area
+bindsym Print exec $HOME/.config/.scripts/screenshot output
+bindsym Shift+Print exec $HOME/.config/.scripts/screenshot window
 
 ##
 # Status Bar
