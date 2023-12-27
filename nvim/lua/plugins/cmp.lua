@@ -15,17 +15,9 @@ return {
 
             "L3MON4D3/LuaSnip",
             "saadparwaiz1/cmp_luasnip",
-
-            "tzachar/cmp-tabnine",
         },
         opts = function()
             local lspkind = require("lspkind")
-            lspkind.init({
-                symbol_map = {
-                    TabNine = "󰹻"
-                }
-            })
-
             local cmp = require("cmp")
 
             return {
@@ -62,18 +54,8 @@ return {
 
                     ["<C-d>"] = cmp.mapping.scroll_docs(4),
                     ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-
-                    -- tabnine completion
-                    ["<C-a>"] = cmp.mapping.complete({
-                        config = {
-                            sources = {
-                                { name = "cmp_tabnine" },
-                            },
-                        },
-                    }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "cmp_tabnine" },
                     {
                         name = "nvim_lsp",
                         group_index = 1,
@@ -89,8 +71,6 @@ return {
                 }),
                 sorting = {
                     comparators = {
-                        require('cmp_tabnine.compare'),
-
                         cmp.config.compare.offset,
                         cmp.config.compare.exact,
                         cmp.config.compare.score,
@@ -126,7 +106,6 @@ return {
                             nvim_lsp = "[LSP]",
                             path = "[path]",
                             luasnip = "[snip]",
-                            cmp_tabnine = "[tabnine]",
                         },
                     }),
                 },
