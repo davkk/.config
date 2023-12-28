@@ -121,6 +121,10 @@ return {
         event = "BufReadPost",
     },
     {
+        "tpope/vim-repeat",
+        event = "BufReadPost",
+    },
+    {
         "pappasam/nvim-repl",
         init = function()
             vim.g["repl_filetype_commands"] = {

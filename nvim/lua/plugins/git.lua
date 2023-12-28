@@ -29,13 +29,7 @@ return {
             },
 
             numhl = true,
-
-            -- Highlights the _whole_ line.
-            --    Instead, use gitsigns.toggle_linehl()
             linehl = false,
-
-            -- Highlights just the part of the line that has changed
-            --    Instead, use gitsigns.toggle_word_diff()
             word_diff = false,
 
             current_line_blame_opts = {
@@ -52,6 +46,7 @@ return {
             gs.setup(opts)
 
             vim.keymap.set("n", "<leader>gb", gs.blame_line);
+            vim.keymap.set("n", "<leader>gd", gs.diffthis);
         end
     },
     {
