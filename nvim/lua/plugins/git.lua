@@ -4,16 +4,15 @@ return {
         cmd = { "G", "Git" },
         keys = { "<leader>g", "gl", "gh" },
         config = function()
-            local keymap = vim.keymap
             local opts = { noremap = true, silent = true }
 
-            keymap.set("n", "<leader>gs", vim.cmd.Git, opts)
-            keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
-            keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase<CR>", opts)
+            vim.keymap.set("n", "<leader>gs", vim.cmd.Git, opts)
+            vim.keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
+            vim.keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase<CR>", opts)
 
             -- do git merges easily:
-            keymap.set("n", "gh", "<cmd>diffget //2<CR>", opts) -- gh = choose left
-            keymap.set("n", "gl", "<cmd>diffget //3<CR>", opts) -- gl = choose right
+            vim.keymap.set("n", "gh", "<cmd>diffget //2<CR>", opts) -- gh = choose left
+            vim.keymap.set("n", "gl", "<cmd>diffget //3<CR>", opts) -- gl = choose right
         end
     },
     {
@@ -37,9 +36,7 @@ return {
                 virt_text_pos = "eol",
             },
 
-            preview_config = {
-                border = "solid",
-            }
+            preview_config = { border = "solid", }
         },
         config = function(_, opts)
             local gs = require("gitsigns")
@@ -52,11 +49,6 @@ return {
     {
         "ThePrimeagen/git-worktree.nvim",
         dependencies = { "stevearc/oil.nvim" },
-        opts = {
-            update_on_change_command = "Oil ."
-        },
-        config = function(_, opts)
-            require("git-worktree").setup(opts)
-        end
+        opts = { update_on_change_command = "Oil ." },
     }
 }

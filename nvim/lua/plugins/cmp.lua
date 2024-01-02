@@ -1,4 +1,5 @@
-local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+local winhighlight =
+"Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
 
 return {
     {
@@ -22,12 +23,8 @@ return {
 
             return {
                 window = {
-                    completion = {
-                        winhighlight = winhighlight,
-                    },
-                    documentation = {
-                        winhighlight = winhighlight,
-                    }
+                    completion = { winhighlight = winhighlight, },
+                    documentation = { winhighlight = winhighlight, }
                 },
                 snippet = {
                     expand = function(args)
@@ -49,8 +46,14 @@ return {
                         select = false,
                     }),
 
-                    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-                    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+                    ["<C-p>"] = cmp.mapping.select_prev_item({
+                        behavior = cmp
+                            .SelectBehavior.Select
+                    }),
+                    ["<C-n>"] = cmp.mapping.select_next_item({
+                        behavior = cmp
+                            .SelectBehavior.Select
+                    }),
 
                     ["<C-d>"] = cmp.mapping.scroll_docs(4),
                     ["<C-u>"] = cmp.mapping.scroll_docs(-4),
@@ -64,10 +67,7 @@ return {
                     },
                     { name = "path" },
                     { name = "luasnip" },
-                    {
-                        name = "buffer",
-                        keyword_length = 5,
-                    },
+                    { name = "buffer", keyword_length = 5, },
                 }),
                 sorting = {
                     comparators = {
@@ -77,8 +77,10 @@ return {
 
                         -- better sort completion items that start with one or more underlines
                         function(entry1, entry2)
-                            local _, entry1_under = entry1.completion_item.label:find "^_+"
-                            local _, entry2_under = entry2.completion_item.label:find "^_+"
+                            local _, entry1_under = entry1.completion_item.label
+                                :find "^_+"
+                            local _, entry2_under = entry2.completion_item.label
+                                :find "^_+"
                             entry1_under = entry1_under or 0
                             entry2_under = entry2_under or 0
                             if entry1_under > entry2_under then

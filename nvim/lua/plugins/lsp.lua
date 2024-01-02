@@ -1,66 +1,87 @@
-local M = {}
-
-local lsp_servers = {
+local ensure_lsp_servers = {
     "lua_ls",
-    "pyright",
     "marksman",
-    "astro",
-    "pyright",
-    "angularls",
-    "ocamllsp",
+    "cssls",
 }
 
-M.setup_lsp_keybinds = function(bufnr)
-    local opts = { buffer = bufnr, noremap = false, silent = true }
+local function create_codelens_autocmd(client, bufnr)
+    if client.supports_method("textDocument/codeLens") then
+        vim.lsp.codelens.refresh()
 
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "<leader>gT", vim.lsp.buf.type_definition, opts)
-    vim.keymap.set("n", "<leader>gI", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "<leader>ws", vim.lsp.buf.workspace_symbol, opts)
+        local refreshCodelens = vim.api.nvim_create_augroup("refreshCodelens", {})
 
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts) -- open detailed error message window
-
-    vim.keymap.set("n", "<leader>dn", function()
-        vim.diagnostic.goto_next {
-            severity = M.get_highest_error_severity(),
-            wrap = true,
-            float = true,
-        }
-    end, opts)
-    vim.keymap.set("n", "<leader>dp", function()
-        vim.diagnostic.goto_prev {
-            severity = M.get_highest_error_severity(),
-            wrap = true,
-            float = true,
-        }
-    end, opts)
-
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>rr", "<cmd>:Telescope lsp_references<cr>", opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-    vim.keymap.set("i", "<C-h>",
-        function()
-            require("cmp").mapping.abort()
-            vim.lsp.buf.signature_help()
-        end,
-        opts)
+        vim.api.nvim_create_autocmd(
+            { "BufEnter", "InsertLeave", "TextChanged", },
+            {
+                buffer = bufnr,
+                callback = vim.lsp.codelens.refresh,
+                group = refreshCodelens,
+            })
+    end
 end
 
-M.server_setup = function(server, custom_config)
-    server.setup(vim.tbl_deep_extend("force", {
-        on_attach = M.on_attach,
-        capabilities = M.capabilities,
-        flags = {
-            debounce_text_changes = 100,
+local function setup_lsp_handlers()
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, {}
+    )
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+        vim.lsp.handlers.signature_help,
+        { focusable = false }
+    )
+end
+
+local function setup_vim_diagnostics()
+    vim.diagnostic.config({
+        severity_sort = true,
+        virtual_text = true,
+        underline = true,
+        update_in_insert = false,
+        float = {
+            show_header = true,
+            style = "minimal",
+            header = "",
+            prefix = "",
         },
+    })
+end
+
+local updated_capabilities = vim.tbl_deep_extend("force",
+    vim.lsp.protocol.make_client_capabilities(),
+    require("cmp_nvim_lsp").default_capabilities())
+
+updated_capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+updated_capabilities.textDocument.completion.completionItem.snippetSupport = true
+updated_capabilities.textDocument.completion.completionItem.documentationFormat = {
+    "markdown",
+    "plaintext"
+}
+updated_capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+    },
+}
+updated_capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
+updated_capabilities.textDocument.codeLens = { dynamicRegistration = false }
+
+local function on_attach(client, bufnr)
+    create_codelens_autocmd(client, bufnr)
+    setup_lsp_handlers()
+end
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities(
+    updated_capabilities)
+
+local function server_setup(server, custom_config)
+    server.setup(vim.tbl_deep_extend("force", {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        flags = { debounce_text_changes = 100 },
     }, custom_config or {}))
 end
 
-M.plugins = {
+return {
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPost", "BufNewFile" },
@@ -70,105 +91,82 @@ M.plugins = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
 
-            {
-                "pmizio/typescript-tools.nvim",
-                dependencies = {
-                    "nvim-lua/plenary.nvim",
-                    "neovim/nvim-lspconfig",
-                },
-            }
+            "ionide/Ionide-vim",
+            "pmizio/typescript-tools.nvim"
         },
         config = function()
             local mason = require("mason")
             local mason_lspconfig = require("mason-lspconfig")
             local lspconfig = require("lspconfig")
 
-            M.setup_diagnostics()
+            setup_vim_diagnostics()
 
-            mason.setup({
-                pip = {
-                    upgrade_pip = true,
-                },
-                ui = {
-                    icons = {
-                        package_installed = "✓",
-                        package_pending = "➜",
-                        package_uninstalled = "✗",
-                    },
-                },
-            })
-
+            mason.setup()
             mason_lspconfig.setup({
-                ensure_installed = lsp_servers,
+                ensure_installed = ensure_lsp_servers,
                 handlers = {
                     function(server_name)
-                        M.server_setup(lspconfig[server_name])
+                        server_setup(lspconfig[server_name])
                     end,
                 }
             })
 
-            M.server_setup(require("typescript-tools"))
-
-            M.server_setup(lspconfig.lua_ls, {
-                -- Fix Undefined global 'vim'
+            server_setup(lspconfig.lua_ls, {
                 settings = {
                     Lua = {
-                        diagnostics = {
-                            globals = { 'vim' },
+                        format = {
+                            enable = true,
+                            defaultConfig = { max_line_length = "80", }
                         },
+                        diagnostics = { globals = { "vim" }, },
                         workspace = {
-                            library = vim.api.nvim_get_runtime_file('', true),
-                            checkThirdParty = false, -- THIS IS THE IMPORTANT LINE TO ADD
+                            library = vim.api.nvim_get_runtime_file("", true),
+                            checkThirdParty = false,
                         },
-                        telemetry = {
-                            enable = false,
-                        },
+                        telemetry = { enable = false, },
                     },
                 }
             })
 
-            M.server_setup(lspconfig.pyright, {
+            server_setup(lspconfig.pyright, {
                 root_dir = lspconfig.util.root_pattern("pyproject.toml"),
                 settings = {
-                    python = {
-                        analysis = {
-                            typeCheckingMode = "off"
-                        }
-                    }
+                    python = { analysis = { typeCheckingMode = "standard" } }
                 }
             })
 
-            M.server_setup(lspconfig.cssls, {
+            server_setup(lspconfig.cssls, {
                 settings = {
                     css = {
                         validate = true,
-                        lint = {
-                            unknownAtRules = "ignore"
-                        }
+                        lint = { unknownAtRules = "ignore" }
                     },
                     scss = {
                         validate = true,
-                        lint = {
-                            unknownAtRules = "ignore"
-                        }
+                        lint = { unknownAtRules = "ignore" }
                     },
                     less = {
                         validate = true,
-                        lint = {
-                            unknownAtRules = "ignore"
-                        }
+                        lint = { unknownAtRules = "ignore" }
                     },
                 },
             })
 
-            M.server_setup(lspconfig.ocamllsp, {
+            server_setup(lspconfig.ocamllsp, {
                 settings = {
                     codelens = { enable = true },
                     extendedHover = { enable = true },
                 },
             })
 
-            M.server_setup(require("ionide"), {
+            server_setup(require("typescript-tools"), {
+                settings = {
+                    expose_as_code_action = { "all" },
+                    code_lens = "all",
+                }
+            })
+
+            server_setup(require("ionide"), {
                 cmd = {
                     "fsautocomplete",
                     "--project-graph-enabled",
@@ -178,7 +176,8 @@ M.plugins = {
                     local root
                     root = lspconfig.util.find_git_ancestor(filename)
                     root = root or lspconfig.util.root_pattern("*.sln")(filename)
-                    root = root or lspconfig.util.root_pattern("*.fsproj")(filename)
+                    root = root or
+                        lspconfig.util.root_pattern("*.fsproj")(filename)
                     root = root or lspconfig.util.root_pattern("*.fsx")(filename)
                     return root
                 end,
@@ -206,89 +205,5 @@ M.plugins = {
                 zindex = 100,
             },
         },
-        config = true
-    },
-
-}
-
-M.setup_diagnostics = function()
-    vim.diagnostic.config({
-        severity_sort = true,
-        virtual_lines = false,
-        underline = true,
-        update_in_insert = false,
-        float = {
-            show_header = true,
-            style = 'minimal',
-            header = '',
-            prefix = '',
-        },
-    })
-end
-
-local c = vim.lsp.protocol.make_client_capabilities()
-c.textDocument.completion.completionItem.snippetSupport = true
-c.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-        "documentation",
-        "detail",
-        "additionalTextEdits",
     },
 }
-
-M.capabilities = require("cmp_nvim_lsp").default_capabilities(c)
-
-M.create_codelens_autocmd = function(client, bufnr)
-    if client.supports_method("textDocument/codeLens") then
-        vim.lsp.codelens.refresh()
-
-        local refreshCodelens = vim.api.nvim_create_augroup("refreshCodelens", {})
-
-        vim.api.nvim_create_autocmd({
-            "BufEnter",
-            "InsertLeave",
-            "TextChanged",
-        }, {
-            buffer = bufnr,
-            callback = vim.lsp.codelens.refresh,
-            group = refreshCodelens,
-        })
-    end
-end
-
-M.get_highest_error_severity = function()
-    -- Go to the next diagnostic, but prefer going to errors first
-    -- In general, I pretty much never want to go to the next hint
-    -- ~ copied from tjdevries
-    local severity_levels = {
-        vim.diagnostic.severity.ERROR,
-        vim.diagnostic.severity.WARN,
-        vim.diagnostic.severity.INFO,
-        vim.diagnostic.severity.HINT,
-    }
-    for _, level in ipairs(severity_levels) do
-        local diags = vim.diagnostic.get(0, { severity = { min = level } })
-        if #diags > 0 then
-            return level, diags
-        end
-    end
-end
-
-M.setup_lsp_handlers = function()
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, {}
-    )
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-        vim.lsp.handlers.signature_help,
-        { focusable = false }
-    )
-end
-
-M.on_attach = function(client, bufnr)
-    M.setup_lsp_keybinds(bufnr)
-    M.create_codelens_autocmd(client, bufnr)
-    M.setup_lsp_handlers()
-end
-
-return M.plugins

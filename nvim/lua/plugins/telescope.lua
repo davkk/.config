@@ -119,20 +119,12 @@ return {
                     buffers = {
                         initial_mode = "normal",
                         mappings = {
-                            n = {
-                                ["dd"] = actions.delete_buffer,
-                            }
+                            n = { ["dd"] = actions.delete_buffer, }
                         }
                     },
-                    lsp_references = {
-                        initial_mode = "normal",
-                    },
-                    grep_string = {
-                        initial_mode = "normal",
-                    },
-                    diagnostics = {
-                        initial_mode = "normal",
-                    },
+                    lsp_references = { initial_mode = "normal", },
+                    grep_string = { initial_mode = "normal", },
+                    diagnostics = { initial_mode = "normal", },
                 },
                 extensions = {
                     fzf = {
