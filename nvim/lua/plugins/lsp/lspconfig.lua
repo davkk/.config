@@ -38,7 +38,6 @@ return {
             ensure_installed = ensure_lsp_servers,
             handlers = {
                 function(server_name)
-                    print(server_name)
                     lsp.server_setup(lspconfig[server_name])
                 end,
                 ["lua_ls"] = function()
