@@ -8,7 +8,7 @@ return {
 
             vim.keymap.set("n", "<leader>gs", vim.cmd.Git, opts)
             vim.keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
-            vim.keymap.set("n", "<leader>gP", "<cmd>:G pull --rebase<CR>", opts)
+            vim.keymap.set("n", "<leader>gP", "<cmd>:G pull origin --rebase<CR>", opts)
 
             -- do git merges easily:
             vim.keymap.set("n", "gh", "<cmd>diffget //2<CR>", opts) -- gh = choose left
@@ -44,6 +44,7 @@ return {
 
             vim.keymap.set("n", "<leader>gb", gs.blame_line);
             vim.keymap.set("n", "<leader>gd", gs.diffthis);
+            vim.keymap.set("n", "<leader>gD", ":Gitsigns diffthis ");
         end
     },
     {
