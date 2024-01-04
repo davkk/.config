@@ -1,7 +1,7 @@
 return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons", "rose-pine" },
-    lazy = false,
+    event = "VeryLazy",
     opts = function()
         local palette = require("rose-pine.palette")
 

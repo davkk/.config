@@ -1,15 +1,13 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        lazy = false,
+        build = ":TSUpdate",
+        event = "VeryLazy",
         dependencies = {
-            "nvim-treesitter/playground",
             "JoosepAlviste/nvim-ts-context-commentstring",
             "nvim-treesitter/nvim-treesitter-context",
             { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
-            "nkrkv/nvim-treesitter-rescript",
         },
-        build = ":TSUpdate",
         opts = {
             ensure_installed = {
                 "lua",
