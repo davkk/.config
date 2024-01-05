@@ -1,13 +1,12 @@
 return {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "rose-pine" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "rose-pine-tinted" },
     lazy = false,
     opts = function()
-        local palette = require("rose-pine.palette")
+        local palette = require("rose-pine-tinted.palette")
 
-        local icon_filename = require('lualine.components.filename'):extend()
-        icon_filename.apply_icon = require('lualine.components.filetype')
-            .apply_icon
+        local icon_filename = require("lualine.components.filename"):extend()
+        icon_filename.apply_icon = require("lualine.components.filetype").apply_icon
         icon_filename.icon_hl_cache = {}
 
         local custom_filename = {
@@ -24,7 +23,7 @@ return {
         return {
             options = {
                 icons_enabled = true,
-                theme = "rose-pine",
+                theme = "rose-pine-tinted",
                 section_separators = "",
                 component_separators = "",
                 globalstatus = true,
