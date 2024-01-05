@@ -14,6 +14,7 @@ return {
             Pmenu = { blend = 5 },
             PmenuSel = { bg = "rose", fg = "base" },
 
+            StatusLine = { bg = "None" },
             WinSeparator = { bg = "None", fg = "overlay" },
 
             TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
