@@ -109,7 +109,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             opts_buff)
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_buff)
 
-        vim.keymap.set("i", "<C-h>", function()
+        vim.keymap.set("i", "<C-s>", function()
             require("cmp").mapping.abort()
             vim.lsp.buf.signature_help()
         end, opts_buff)
