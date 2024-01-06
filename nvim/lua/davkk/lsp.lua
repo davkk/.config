@@ -1,6 +1,8 @@
 local M = {}
 
 function M.on_attach(client, bufnr)
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+
     if client.supports_method("textDocument/codeLens") then
         vim.lsp.codelens.refresh()
 
@@ -15,11 +17,14 @@ function M.on_attach(client, bufnr)
             })
     end
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        vim.lsp.handlers.hover, {})
+    if filetype == "typescript" or filetype == "lua" then
+        client.server_capabilities.semanticTokensProvider = nil
+    end
+
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
         vim.lsp.handlers.signature_help,
-        { focusable = false })
+        { focusable = false }
+    )
 end
 
 M.capabilities = vim.tbl_deep_extend(
