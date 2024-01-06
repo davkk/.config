@@ -323,12 +323,6 @@ function M._load(options)
         SignChange = { link = "GitSignsChange" },
         SignDelete = { link = "GitSignsDelete" },
 
-        -- mvllow/modes.nvim
-        ModesCopy = { bg = p.gold },
-        ModesDelete = { bg = p.love },
-        ModesInsert = { bg = p.foam },
-        ModesVisual = { bg = p.iris },
-
         -- hrsh7th/nvim-cmp
         CmpItemAbbr = { fg = p.subtle },
         CmpItemAbbrDeprecated = { fg = p.subtle, strikethrough = true },
