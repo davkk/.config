@@ -30,6 +30,7 @@ return {
                 style = "minimal",
                 header = "",
                 prefix = "",
+                border = "solid",
             },
         })
 
