@@ -1,22 +1,8 @@
 return {
     "stevearc/conform.nvim",
-    event = { "BufWritePre" },
+    event = "BufWritePre",
     cmd = { "ConformInfo" },
-    keys = {
-        {
-            -- Customize or remove this keymap to your liking
-            "<leader>f",
-            function()
-                require("conform").format({
-                    timeout_ms = 4000,
-                    async = true,
-                    lsp_fallback = true
-                })
-            end,
-            mode = { "n", "v" },
-            desc = "Format buffer",
-        },
-    },
+    keys = { "<leader>f" },
     opts = {
         formatters_by_ft = {
             python = { "isort", "black" },
@@ -45,5 +31,18 @@ return {
         )
 
         conform.setup(opts)
+
+        vim.keymap.set(
+            { "n", "v" },
+            "<leader>f",
+            function()
+                conform.format({
+                    timeout_ms = 4000,
+                    async = true,
+                    lsp_fallback = true
+                })
+            end,
+            { desc = "Format buffer", }
+        )
     end,
 }

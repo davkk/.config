@@ -1,8 +1,7 @@
 return {
     {
         "tpope/vim-fugitive",
-        cmd = { "G", "Git" },
-        keys = { "<leader>g", "gl", "gh" },
+        event = "VeryLazy",
         config = function()
             local opts = { noremap = true, silent = true }
 

@@ -1,14 +1,6 @@
 return {
     "ThePrimeagen/harpoon",
-    keys = {
-        "<leader>a",
-        "<leader>h",
-        "<leader>1",
-        "<leader>2",
-        "<leader>3",
-        "<leader>4",
-        "<leader>5",
-    },
+    event = "VeryLazy",
     opts = {
         menu = {
             width = math.floor(vim.o.columns * 4 / 5),

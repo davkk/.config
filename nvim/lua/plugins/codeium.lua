@@ -1,6 +1,6 @@
 return {
     "Exafunction/codeium.vim",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
         vim.keymap.set("i", "<tab>", function()
             return vim.fn["codeium#Accept"]()
