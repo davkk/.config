@@ -14,7 +14,6 @@ return {
         local mason = require("mason")
         local mason_lspconfig = require("mason-lspconfig")
         local lspconfig = require("lspconfig")
-        local lsp = require("davkk.lsp")
 
         vim.diagnostic.config({
             severity_sort = true,
@@ -95,6 +94,24 @@ return {
             },
         }
 
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            vim.lsp.protocol.make_client_capabilities(),
+            require("cmp_nvim_lsp").default_capabilities()
+        )
+
+        capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        capabilities.textDocument.completion.completionItem.resolveSupport = {
+            properties = {
+                "documentation",
+                "detail",
+                "additionalTextEdits",
+            },
+        }
+        capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
+        capabilities.textDocument.codeLens = { dynamicRegistration = false }
+
         for server, config in pairs(servers) do
             if not config then
                 return
@@ -104,11 +121,37 @@ return {
                 config = {}
             end
 
-            if type(server) == "string" then
-                lsp.server_setup(lspconfig[server], config)
-            else
-                lsp.server_setup(server, config)
-            end
+            (type(server) == "string" and lspconfig[server] or server)
+                .setup(vim.tbl_deep_extend("force", {
+                    on_attach = function(client, bufnr)
+                        local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+
+                        if client.supports_method("textDocument/codeLens") then
+                            vim.lsp.codelens.refresh()
+
+                            local refreshCodelens = vim.api.nvim_create_augroup("refreshCodelens", {})
+
+                            vim.api.nvim_create_autocmd(
+                                { "BufEnter", "InsertLeave", "TextChanged", },
+                                {
+                                    buffer = bufnr,
+                                    callback = vim.lsp.codelens.refresh,
+                                    group = refreshCodelens,
+                                })
+                        end
+
+                        if filetype == "typescript" or filetype == "lua" then
+                            client.server_capabilities.semanticTokensProvider = nil
+                        end
+
+                        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+                            vim.lsp.handlers.signature_help,
+                            { focusable = false }
+                        )
+                    end,
+                    capabilities = capabilities,
+                    flags = { debounce_text_changes = 100 },
+                }, config or {}))
         end
     end,
 }
