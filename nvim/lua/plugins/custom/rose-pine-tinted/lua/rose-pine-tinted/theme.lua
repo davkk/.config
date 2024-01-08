@@ -71,7 +71,7 @@ function M._load(options)
         RedrawDebugRecompose = { fg = "#ffffff", bg = p.love },
         Search = { bg = p.highlight_med },
         SpecialKey = { fg = p.foam },
-        SpellBad = { sp = p.warning, underline = true },
+        SpellBad = { sp = groups.warn, underline = true },
         SpellCap = { sp = p.subtle, underline = true },
         SpellLocal = { sp = p.subtle, underline = true },
         SpellRare = { sp = p.subtle, underline = true },
@@ -91,7 +91,7 @@ function M._load(options)
         VertSplit = { fg = groups.border, bg = maybe.bold_vert_split },
         Visual = { bg = p.highlight_med },
         -- VisualNOS = {},
-        WarningMsg = { fg = p.gold },
+        WarningMsg = { fg = groups.warn },
         -- Whitespace = {},
         WildMenu = { link = "IncSearch" },
 
