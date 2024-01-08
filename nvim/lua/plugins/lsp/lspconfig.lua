@@ -1,3 +1,28 @@
+local function on_attach(client, bufnr)
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+
+    if client.supports_method("textDocument/codeLens") then
+        vim.lsp.codelens.refresh()
+        vim.api.nvim_create_autocmd(
+            { "BufEnter", "InsertLeave", "TextChanged", },
+            {
+                buffer = bufnr,
+                callback = vim.lsp.codelens.refresh,
+                group = vim.api.nvim_create_augroup("refreshCodelens", {}),
+            }
+        )
+    end
+
+    if filetype == "typescript" or filetype == "lua" then
+        client.server_capabilities.semanticTokensProvider = nil
+    end
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+        vim.lsp.handlers.signature_help,
+        { focusable = false }
+    )
+end
+
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
@@ -68,11 +93,14 @@ return {
             gopls = true,
             clangd = true,
 
-            [require("typescript-tools")] = {
-                settings = { expose_as_code_action = { "all" }, }
-            },
+            [require("typescript-tools")] = function()
+                vim.keymap.set("n", "<leader>oi", ":TSToolsOrganizeImports<cr>", { silent = true })
+            end,
 
-            angularls = true,
+            angularls = {
+                root_dir = lspconfig.util.root_pattern("Gruntfile.js"),
+            }
+            ,
             astro = true,
             texlab = true,
 
@@ -117,38 +145,17 @@ return {
                 return
             end
 
+            if type(config) == "function" then
+                config = config()
+            end
+
             if type(config) ~= "table" then
                 config = {}
             end
 
             (type(server) == "string" and lspconfig[server] or server)
                 .setup(vim.tbl_deep_extend("force", {
-                    on_attach = function(client, bufnr)
-                        local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
-                        if client.supports_method("textDocument/codeLens") then
-                            vim.lsp.codelens.refresh()
-
-                            local refreshCodelens = vim.api.nvim_create_augroup("refreshCodelens", {})
-
-                            vim.api.nvim_create_autocmd(
-                                { "BufEnter", "InsertLeave", "TextChanged", },
-                                {
-                                    buffer = bufnr,
-                                    callback = vim.lsp.codelens.refresh,
-                                    group = refreshCodelens,
-                                })
-                        end
-
-                        if filetype == "typescript" or filetype == "lua" then
-                            client.server_capabilities.semanticTokensProvider = nil
-                        end
-
-                        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-                            vim.lsp.handlers.signature_help,
-                            { focusable = false }
-                        )
-                    end,
+                    on_attach = on_attach,
                     capabilities = capabilities,
                     flags = { debounce_text_changes = 100 },
                 }, config or {}))
