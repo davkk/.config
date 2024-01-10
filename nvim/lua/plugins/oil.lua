@@ -1,14 +1,15 @@
 return {
     "stevearc/oil.nvim",
     lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+        "refractalize/oil-git-status.nvim"
+    },
     opts = {
-        columns = {
-            { "icon", add_padding = false, },
-        },
+        columns = { { "icon", add_padding = false, }, },
         win_options = {
             wrap = false,
-            signcolumn = "no",
+            signcolumn = "yes:2",
             cursorcolumn = false,
             number = true,
             relativenumber = true,
@@ -49,7 +50,10 @@ return {
     },
     config = function(_, opts)
         local oil = require("oil")
+        local oil_git_status = require("oil-git-status")
+
         oil.setup(opts)
+        oil_git_status.setup()
 
         vim.keymap.set("n", "<C-e>", oil.open, { noremap = true, silent = true })
     end,
