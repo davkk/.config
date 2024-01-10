@@ -10,8 +10,8 @@ return {
         icon_filename.icon_hl_cache = {}
 
         local custom_filename = {
-            icon_filename,
-            color = { gui = "bold" },
+            "filename",
+            color = { fg = palette.subtle },
 
             file_status = true,
             newfile_status = true,
@@ -46,28 +46,28 @@ return {
                     },
                 },
             },
-            winbar = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = { custom_filename },
-                lualine_x = {
-                    {
-                        "location",
-                        color = { fg = palette.highlight_high, gui = "bold" },
-                        padding = 0,
-                    },
-                },
-                lualine_y = {},
-                lualine_z = {},
-            },
-            inactive_winbar = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = { custom_filename },
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = {},
-            },
+            -- winbar = {
+            --     lualine_a = {},
+            --     lualine_b = {},
+            --     lualine_c = { custom_filename },
+            --     lualine_x = {
+            --         {
+            --             "location",
+            --             color = { fg = palette.highlight_high, gui = "bold" },
+            --             padding = 0,
+            --         },
+            --     },
+            --     lualine_y = {},
+            --     lualine_z = {},
+            -- },
+            -- inactive_winbar = {
+            --     lualine_a = {},
+            --     lualine_b = {},
+            --     lualine_c = { custom_filename },
+            --     lualine_x = {},
+            --     lualine_y = {},
+            --     lualine_z = {},
+            -- },
             sections = {
                 lualine_a = {},
                 lualine_b = {
@@ -78,31 +78,34 @@ return {
                     },
                 },
                 lualine_c = {
-                    {
-                        "branch",
-                        icon = "󰜘",
-                        color = { fg = palette.subtle },
-                        fmt = function(str)
-                            local limit = 40
-                            if #str > limit then
-                                return str:sub(1, limit) .. "…"
-                            else
-                                return str
-                            end
-                        end,
-                    },
-                },
-                lualine_x = {
+                    custom_filename,
+                    -- {
+                    --     "branch",
+                    --     icon = "󰜘",
+                    --     padding = { left = 0, right = 2 },
+                    --     color = { fg = palette.iris },
+                    --     fmt = function(str)
+                    --         local limit = 40
+                    --         if #str > limit then
+                    --             return str:sub(1, limit) .. "…"
+                    --         else
+                    --             return str
+                    --         end
+                    --     end,
+                    -- },
                     {
                         "diff",
                         colored = true,
+                        padding = 1,
                         diff_color = {
-                            added = { fg = palette.subtle, bg = "None" },
-                            modified = { fg = palette.subtle, bg = "None" },
-                            removed = { fg = palette.subtle, bg = "None" },
+                            added = { fg = palette.highlight_high, bg = palette.none },
+                            modified = { fg = palette.highlight_high, bg = palette.none },
+                            removed = { fg = palette.highlight_high, bg = palette.none },
                         },
                         cond = function() return vim.fn.winwidth(0) > 80 end
                     },
+                },
+                lualine_x = {
                     {
                         "diagnostics",
                         sources = { "nvim_diagnostic" },
@@ -110,6 +113,11 @@ return {
                         update_in_insert = false,
                         symbols = { error = "E", warn = "W", info = "I", hint = "H" },
                     },
+                    {
+                        "location",
+                        color = { fg = palette.highlight_high },
+                        padding = { left = 1, right = 0 },
+                    }
                 },
                 lualine_y = {},
                 lualine_z = {},
