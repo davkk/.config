@@ -20,5 +20,8 @@ return {
     foam = "#b7d7d5",
     iris = "#d2b1d6",
 
-    warning = "#ea9d34"
+    error = "#b4637a",
+    warning = "#ea9d34",
+    hint = "#907aa9",
+    info = "#56949f",
 }
