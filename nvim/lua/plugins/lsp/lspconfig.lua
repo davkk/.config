@@ -13,7 +13,7 @@ local function on_attach(client, bufnr)
         )
     end
 
-    if filetype == "typescript" or filetype == "lua" then
+    if filetype == "lua" then
         client.server_capabilities.semanticTokensProvider = nil
     end
 
