@@ -39,6 +39,8 @@ local palette = {
     pine = "#628079",
     foam = "#b7d7d5",
     iris = "#d2b1d6",
+    highlight_low = "#23222B",
+    highlight_med = "#403E4E",
     highlight_high = "#545161",
 }
 
@@ -78,17 +80,17 @@ config.colors = {
 
         active_tab = {
             bg_color = "none",
-            fg_color = palette.text,
+            fg_color = palette.subtle,
         },
 
         inactive_tab = {
             bg_color = "none",
-            fg_color = palette.subtle,
+            fg_color = palette.highlight_high,
         },
 
         inactive_tab_hover = {
             bg_color = "none",
-            fg_color = palette.subtle,
+            fg_color = palette.highlight_high,
         },
 
         new_tab = {
@@ -104,14 +106,14 @@ config.colors = {
 }
 
 -- FONT
-config.font = wezterm.font_with_fallback {
-   "Input",
+config.font = wezterm.font_with_fallback({
+    "Input",
     -- {
     --     family = "iMWritingMono Nerd Font",
     --     stretch = "ExtraExpanded",
     --     harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
     -- },
-}
+})
 config.use_cap_height_to_scale_fallback_fonts = true
 config.cell_width = 1
 config.underline_thickness = 4
@@ -181,15 +183,10 @@ wezterm.on(
     "format-tab-title",
     function(tab, tabs)
         local title = tab_title(tab)
-        local separator = tab.tab_index < #tabs - 1 and "|" or ""
         return {
-            { Text = tab.tab_index == 0 and " " or "" },
             { Text = tab.tab_index + 1 .. ":" },
-            { Attribute = { Intensity = "Bold" } },
             { Text = title },
-            { Attribute = { Intensity = "Normal" } },
-            { Foreground = { Color = palette.overlay } },
-            { Text = " " .. separator .. " " },
+            { Text = "  " },
         }
     end
 )
