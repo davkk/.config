@@ -9,17 +9,6 @@ return {
         icon_filename.apply_icon = require("lualine.components.filetype").apply_icon
         icon_filename.icon_hl_cache = {}
 
-        local custom_filename = {
-            "filename",
-            color = { fg = palette.subtle },
-
-            file_status = true,
-            newfile_status = true,
-            path = 1,
-
-            shorting_target = vim.o.columns * 1 / 3,
-        }
-
         return {
             options = {
                 icons_enabled = true,
@@ -37,37 +26,20 @@ return {
                         max_length = vim.o.columns,
                         mode = 1,
                         tabs_color = {
-                            active = { gui = "bold" },
-                            inactive = { fg = palette.subtle, gui = "bold" },
+                            active = { fg = palette.subtle },
+                            inactive = { fg = palette.highlight_high },
                         },
                         fmt = function(name, context)
-                            return string.format("%d:%s", context.tabnr, name)
+                            local buflist = vim.fn.tabpagebuflist(context.tabnr)
+                            local winnr = vim.fn.tabpagewinnr(context.tabnr)
+                            local bufnr = buflist[winnr]
+                            local mod = vim.fn.getbufvar(bufnr, '&mod')
+                            local show_mod = mod == 1 and "[+]" or ""
+                            return string.format("%d:%s %s", context.tabnr, name, show_mod)
                         end
                     },
                 },
             },
-            -- winbar = {
-            --     lualine_a = {},
-            --     lualine_b = {},
-            --     lualine_c = { custom_filename },
-            --     lualine_x = {
-            --         {
-            --             "location",
-            --             color = { fg = palette.highlight_high, gui = "bold" },
-            --             padding = 0,
-            --         },
-            --     },
-            --     lualine_y = {},
-            --     lualine_z = {},
-            -- },
-            -- inactive_winbar = {
-            --     lualine_a = {},
-            --     lualine_b = {},
-            --     lualine_c = { custom_filename },
-            --     lualine_x = {},
-            --     lualine_y = {},
-            --     lualine_z = {},
-            -- },
             sections = {
                 lualine_a = {},
                 lualine_b = {
@@ -78,21 +50,16 @@ return {
                     },
                 },
                 lualine_c = {
-                    custom_filename,
-                    -- {
-                    --     "branch",
-                    --     icon = "󰜘",
-                    --     padding = { left = 0, right = 2 },
-                    --     color = { fg = palette.iris },
-                    --     fmt = function(str)
-                    --         local limit = 40
-                    --         if #str > limit then
-                    --             return str:sub(1, limit) .. "…"
-                    --         else
-                    --             return str
-                    --         end
-                    --     end,
-                    -- },
+                    {
+                        "filename",
+                        color = { fg = palette.subtle },
+
+                        file_status = true,
+                        newfile_status = true,
+                        path = 1,
+
+                        shorting_target = vim.o.columns * 1 / 3,
+                    },
                     {
                         "diff",
                         colored = true,
@@ -115,7 +82,7 @@ return {
                     },
                     {
                         "location",
-                        color = { fg = palette.highlight_high },
+                        color = { fg = palette.highlight_med, gui = "bold" },
                         padding = { left = 1, right = 0 },
                     }
                 },
