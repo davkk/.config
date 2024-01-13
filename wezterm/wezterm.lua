@@ -133,7 +133,36 @@ table.insert(config.hyperlink_rules, {
 })
 
 -- KEYBINDINGS
+config.leader = { key = "f", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
+    -- Send "CTRL-F" to the terminal when pressing CTRL-F + CTRL-F
+    {
+        key = "f",
+        mods = "LEADER|CTRL",
+        action = wezterm.action.SendKey({ key = "f", mods = "CTRL" }),
+    },
+
+    {
+        key = "c",
+        mods = "LEADER",
+        action = wezterm.action.SpawnTab("CurrentPaneDomain"),
+    },
+    {
+        key = "x",
+        mods = "LEADER",
+        action = wezterm.action.CloseCurrentTab({ confirm = true }),
+    },
+    {
+        key = "n",
+        mods = "LEADER",
+        action = wezterm.action.ActivateTabRelative(1),
+    },
+    {
+        key = "p",
+        mods = "LEADER",
+        action = wezterm.action.ActivateTabRelative(-1),
+    },
+
     {
         key = "Enter",
         mods = "ALT",
@@ -144,16 +173,27 @@ config.keys = {
         action = wezterm.action.ToggleFullScreen,
     },
 }
+
+for i = 1, 9 do
+    -- CTRL + number to activate that tab
+    table.insert(config.keys, {
+        key = tostring(i),
+        mods = "CTRL",
+        action = wezterm.action.ActivateTab(i - 1),
+    })
+    -- F1 through F9 to activate that tab
+    table.insert(config.keys, {
+        key = "F" .. tostring(i),
+        action = wezterm.action.ActivateTab(i - 1),
+    })
+end
+
 config.mouse_bindings = {
-    -- Change the default click behavior so that it only selects
-    -- text and doesn"t open hyperlinks
     {
         event = { Up = { streak = 1, button = "Left" } },
         mods = "NONE",
-        action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor "Clipboard",
+        action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor("Clipboard"),
     },
-
-    -- Bind 'Up' event of CTRL-Click to open hyperlinks
     {
         event = { Up = { streak = 1, button = "Left" } },
         mods = "CTRL",
