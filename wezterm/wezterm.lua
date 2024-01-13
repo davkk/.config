@@ -20,10 +20,10 @@ config.max_fps = 144
 config.window_background_opacity = 0.8
 config.window_decorations = "RESIZE"
 config.window_padding = {
-    left = "1cell",
-    right = "1cell",
-    top = "0.7cell",
-    bottom = "0.1cell",
+    left = 5,
+    right = 5,
+    top = 5,
+    bottom = 5,
 }
 
 -- COLORS
