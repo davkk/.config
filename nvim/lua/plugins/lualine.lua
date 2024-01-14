@@ -27,15 +27,11 @@ return {
                         mode = 1,
                         tabs_color = {
                             active = { fg = palette.subtle },
-                            inactive = { fg = palette.highlight_high },
+                            inactive = { fg = palette.highlight_med },
                         },
                         fmt = function(name, context)
-                            local buflist = vim.fn.tabpagebuflist(context.tabnr)
-                            local winnr = vim.fn.tabpagewinnr(context.tabnr)
-                            local bufnr = buflist[winnr]
-                            local mod = vim.fn.getbufvar(bufnr, '&mod')
-                            local show_mod = mod == 1 and "[+]" or ""
-                            return string.format("%d:%s %s", context.tabnr, name, show_mod)
+                            local active = context.current and "*" or " "
+                            return string.format("%d:[%s]%s", context.tabnr, name, active)
                         end
                     },
                 },
@@ -45,13 +41,13 @@ return {
                 lualine_b = {
                     {
                         "mode",
-                        padding = { left = 0, right = 1 },
+                        padding = { left = 0, right = 2 },
                         color = { gui = "bold" },
                     },
                 },
                 lualine_c = {
                     {
-                        "filename",
+                        icon_filename,
                         color = { fg = palette.subtle },
 
                         file_status = true,
@@ -82,7 +78,7 @@ return {
                     },
                     {
                         "location",
-                        color = { fg = palette.highlight_med, gui = "bold" },
+                        color = { fg = palette.highlight_med },
                         padding = { left = 1, right = 0 },
                     }
                 },

@@ -85,12 +85,12 @@ config.colors = {
 
         inactive_tab = {
             bg_color = "none",
-            fg_color = palette.highlight_high,
+            fg_color = palette.highlight_med,
         },
 
         inactive_tab_hover = {
             bg_color = "none",
-            fg_color = palette.highlight_high,
+            fg_color = palette.highlight_med,
         },
 
         new_tab = {
@@ -221,11 +221,13 @@ end
 
 wezterm.on(
     "format-tab-title",
-    function(tab, tabs)
+    function(tab)
         local title = tab_title(tab)
         return {
-            { Text = tab.tab_index + 1 .. ":" },
-            { Text = title },
+            { Text = string.format("%d", tab.tab_index + 1) },
+            { Text = ":" },
+            { Text = string.format("[%s]", title) },
+            { Text = tab.is_active and "*" or " " },
             { Text = "  " },
         }
     end
