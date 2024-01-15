@@ -15,47 +15,45 @@ return {
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
     },
-    opts = function()
+    config = function()
         local lspkind = require("lspkind")
         local cmp = require("cmp")
 
-        return {
+        cmp.setup({
             window = {
                 completion = { winhighlight = winhighlight, },
                 documentation = { winhighlight = winhighlight, }
             },
             snippet = {
                 expand = function(args)
-                    require('luasnip').lsp_expand(args.body)
+                    require("luasnip").lsp_expand(args.body)
                 end,
             },
-            mapping = cmp.mapping.preset.insert({
+            mapping = {
                 ["<Tab>"] = cmp.config.disable,
                 ["<S-Tab>"] = cmp.config.disable,
 
                 ["<C-Space>"] = cmp.mapping.complete(),
 
-                ["<C-y>"] = cmp.mapping.confirm({
+                ["<C-y>"] = cmp.mapping(cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Insert,
                     select = true,
-                }),
-                ["<C-q>"] = cmp.mapping.confirm({
+                }), { "i", "c" }),
+                ["<C-q>"] = cmp.mapping(cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
-                    select = false,
-                }),
+                    select = true,
+                }), { "i", "c" }),
 
-                ["<C-p>"] = cmp.mapping.select_prev_item({
-                    behavior = cmp
-                        .SelectBehavior.Select
-                }),
-                ["<C-n>"] = cmp.mapping.select_next_item({
-                    behavior = cmp
-                        .SelectBehavior.Select
-                }),
+                ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item({
+                    behavior = cmp.SelectBehavior.Select
+                }), { "i", "c" }),
+                ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item({
+                    behavior = cmp.SelectBehavior.Select
+                }), { "i", "c" }),
 
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-            }),
+            },
             sources = cmp.config.sources({
                 {
                     name = "nvim_lsp",
@@ -109,22 +107,15 @@ return {
                     },
                 }),
             },
-        }
-    end,
-    config = function(_, opts)
-        local cmp = require("cmp")
-
-        cmp.setup(opts)
+        })
 
         cmp.setup.cmdline({ "/", "?" }, {
-            mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources({
                 { name = "buffer" },
             }),
         })
 
         cmp.setup.cmdline({ ":" }, {
-            mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources({
                 { name = "path" },
                 { name = "cmdline" },
