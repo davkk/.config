@@ -5,10 +5,6 @@ return {
     opts = function()
         local palette = require("rose-pine-tinted.palette")
 
-        local icon_filename = require("lualine.components.filename"):extend()
-        icon_filename.apply_icon = require("lualine.components.filetype").apply_icon
-        icon_filename.icon_hl_cache = {}
-
         return {
             options = {
                 icons_enabled = true,
@@ -25,9 +21,10 @@ return {
                         show_modified_status = false,
                         max_length = vim.o.columns,
                         mode = 1,
+                        padding = { left = 0, right = 2 },
                         tabs_color = {
-                            active = { fg = palette.subtle },
-                            inactive = { fg = palette.highlight_med },
+                            active = { fg = palette.text, gui = "bold" },
+                            inactive = { fg = palette.highlight_high },
                         },
                         fmt = function(name, context)
                             local active = context.current and "*" or " "
@@ -47,7 +44,7 @@ return {
                 },
                 lualine_c = {
                     {
-                        icon_filename,
+                        "filename",
                         color = { fg = palette.subtle },
 
                         file_status = true,

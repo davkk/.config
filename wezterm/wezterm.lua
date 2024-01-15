@@ -29,9 +29,9 @@ config.window_padding = {
 -- COLORS
 local palette = {
     base = "#1a1821",
-    overlay = "#2F2B3B",
-    muted = "#645C70",
-    subtle = "#8D849A",
+    overlay = "#2f2b3b",
+    muted = "#645c70",
+    subtle = "#8d849a",
     text = "#dad6e9",
     love = "#f56389",
     gold = "#ffb083",
@@ -39,8 +39,8 @@ local palette = {
     pine = "#628079",
     foam = "#b7d7d5",
     iris = "#d2b1d6",
-    highlight_low = "#23222B",
-    highlight_med = "#403E4E",
+    highlight_low = "#23222b",
+    highlight_med = "#403e4e",
     highlight_high = "#545161",
 }
 
@@ -50,8 +50,7 @@ config.colors = {
     cursor_fg = palette.base,
     cursor_border = palette.text,
     cursor_bg = palette.text,
-    selection_bg = "#2F2B3B",
-    selection_fg = palette.text,
+    selection_bg = palette.highlight_med,
 
     ansi = {
         palette.overlay,
@@ -80,17 +79,18 @@ config.colors = {
 
         active_tab = {
             bg_color = "none",
-            fg_color = palette.subtle,
+            fg_color = palette.text,
+            intensity = "Bold",
         },
 
         inactive_tab = {
             bg_color = "none",
-            fg_color = palette.highlight_med,
+            fg_color = palette.highlight_high,
         },
 
         inactive_tab_hover = {
             bg_color = "none",
-            fg_color = palette.highlight_med,
+            fg_color = palette.highlight_high,
         },
 
         new_tab = {
