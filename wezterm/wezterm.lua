@@ -174,13 +174,15 @@ config.keys = {
     },
 }
 
-for i = 1, 9 do
+for i = 1, 5 do
     -- CTRL + number to activate that tab
     table.insert(config.keys, {
         key = tostring(i),
         mods = "CTRL",
         action = wezterm.action.ActivateTab(i - 1),
     })
+end
+for i = 1, 9 do
     -- F1 through F9 to activate that tab
     table.insert(config.keys, {
         key = "F" .. tostring(i),
