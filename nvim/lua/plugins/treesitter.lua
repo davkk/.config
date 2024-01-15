@@ -11,6 +11,10 @@ return {
         ensure_installed = {
             "lua",
             "vim",
+            "gitcommit",
+            "gitignore",
+            "git_config",
+            "git_rebase",
             "vimdoc",
             "bash",
             "awk",
