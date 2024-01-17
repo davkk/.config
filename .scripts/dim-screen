@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+min_brightness=0
+fade_step_time=0.1
+
+get_brightness() {
+    if [[ -z $sysfs_path ]]; then
+        light -G
+    else
+        cat $sysfs_path
+    fi
+}
+
+set_brightness() {
+    if [[ -z $sysfs_path ]]; then
+        light -S $1
+    else
+        echo $1 > $sysfs_path
+    fi
+}
+
+fade_brightness() {
+    if [[ -z $sysfs_path ]]; then
+        light -S $1
+    elif [[ -z $fade_step_time ]]; then
+        set_brightness $1
+    else
+        local level
+        for level in $(eval echo {$(get_brightness)..$1}); do
+            set_brightness $level
+            sleep $fade_step_time
+        done
+    fi
+}
+
+trap 'exit 0' TERM INT
+trap "set_brightness $(get_brightness); kill %%" EXIT
+fade_brightness $min_brightness
+sleep 2147483647 &
+wait

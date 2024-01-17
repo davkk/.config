@@ -22,14 +22,11 @@ set $right l
 set $term wezterm
 set $browser brave-browser
 
-# Styles
-set $highlight #ffb083
-
 # Your preferred application launcher
 set $menu i3-dmenu-desktop
 
 # Wallpaper
-set $wallpaper $HOME/Pictures/wallpaper.jpg
+set $wallpaper $HOME/Pictures/wallpaper.png
 set $default_light 15
 
 ##
@@ -55,13 +52,11 @@ exec_always --no-startup-id ~/.fehbg
 # Idle configuration
 ##
 
-# Dim the screen after three minutes of inactivity, lock the screen two minutes later using i3lock:
-set $lock i3lock -i $wallpaper --ignore-empty-password --show-failed-attempts
+# Dim the screen after two minutes of inactivity, lock the screen five minutes later using i3lock:
+set $lock i3lock -n -e -f -c 1a1821
 
-exec --no-startup-id xset s 180 120
-exec --no-startup-id xss-lock -n dim-screen.sh -- i3lock -n
-
-# TODO: lock on lid close
+exec --no-startup-id xset s 100 300
+exec --no-startup-id xss-lock -l -n $HOME/.config/.scripts/dim-screen -- $lock
 
 ##
 # Input configuration
@@ -181,7 +176,7 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
-exec light -S $default_light
+exec --no-startup-id light -S $default_light
 bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
 
@@ -228,7 +223,7 @@ for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enabl
 # Startup
 ##
 
-exec nm-applet
+exec --no-startup-id nm-applet
 
-exec --no-startup-id i3-msg 'exec sleep 2; workspace 1; exec $term'
-exec --no-startup-id i3-msg 'exec sleep 4; workspace 2; exec $browser'
+exec --no-startup-id i3-msg 'workspace 1; exec $term'
+exec --no-startup-id "sleep 4; i3-msg 'workspace 2; exec $browser'"
