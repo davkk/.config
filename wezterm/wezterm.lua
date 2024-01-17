@@ -226,11 +226,7 @@ wezterm.on(
     function(tab)
         local title = tab_title(tab)
         return {
-            { Text = string.format("%d", tab.tab_index + 1) },
-            { Text = ":" },
-            { Text = string.format("[%s]", title) },
-            { Text = tab.is_active and "*" or " " },
-            { Text = "  " },
+            { Text = string.format("%d:[%s]  ", tab.tab_index + 1, title) },
         }
     end
 )

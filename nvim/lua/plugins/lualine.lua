@@ -27,8 +27,7 @@ return {
                             inactive = { fg = palette.highlight_high },
                         },
                         fmt = function(name, context)
-                            local active = context.current and "*" or " "
-                            return string.format("%d:[%s]%s", context.tabnr, name, active)
+                            return string.format("%d:[%s]", context.tabnr, name)
                         end
                     },
                 },
