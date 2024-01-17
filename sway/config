@@ -90,7 +90,7 @@ input "type:touchpad" {
 
 input type:keyboard {
   xkb_layout us,pl
-  xkb_options ctrl:esc,grp:rctrl_rshift_toggle
+  xkb_options caps:escape,grp:rctrl_rshift_toggle
 }
 
 ##
@@ -175,7 +175,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # Move focus to the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 ##
 # FKeys
@@ -231,7 +231,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ##
-# Screeshots
+# Screenshots
 ##
 
 bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot area
