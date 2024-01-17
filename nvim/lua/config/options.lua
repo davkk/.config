@@ -88,7 +88,7 @@ opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
 -- more space for messages
-opt.cmdheight = 0
+opt.cmdheight = 1
 
 -- Don't pass messages to |ins-completion-menu|. // not mine, borrowed
 opt.shortmess:append("c")
