@@ -105,11 +105,8 @@ export MANPAGER="nvim +Man! --cmd 'let g:unception_disable=1'"
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+export SUDO_EDITOR=`which nvim`
+export EDITOR=`which vim`
 
 # opam configuration
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
