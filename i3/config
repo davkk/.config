@@ -42,8 +42,8 @@ floating_modifier $mod
 ##
 # Output configuration
 ##
-
-# TODO: xrandr?
+exec --no-startup-id xrandr --output eDP --set TearFree on
+exec --no-startup-id picom -b
 
 # Wallpaper
 exec_always --no-startup-id ~/.fehbg
@@ -51,10 +51,9 @@ exec_always --no-startup-id ~/.fehbg
 ##
 # Idle configuration
 ##
+set $lock i3lock -n -e -f -c 000000
 
 # Dim the screen after two minutes of inactivity, lock the screen five minutes later using i3lock:
-set $lock i3lock -n -e -f -c 1a1821
-
 exec --no-startup-id xset s 100 300
 exec --no-startup-id xss-lock -l -n $HOME/.config/.scripts/dim-screen -- $lock
 
@@ -62,7 +61,14 @@ exec --no-startup-id xss-lock -l -n $HOME/.config/.scripts/dim-screen -- $lock
 # Input configuration
 ##
 
-# TODO: touchpad & keyboard
+# keyboard
+exec --no-startup-id setxkbmap -layout us,pl -option caps:escape,grp:rctrl_rshift_toggle
+
+# touchpad
+# - enable tap-to-click
+exec --no-startup-id xinput set-prop 12 332 1
+# - enable natural scrolling
+exec --no-startup-id xinput set-prop 12 299 1
 
 ##
 # Key bindings
@@ -226,4 +232,4 @@ for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enabl
 exec --no-startup-id nm-applet
 
 exec --no-startup-id i3-msg 'workspace 1; exec --no-startup-id $term'
-exec --no-startup-id "sleep 4 && i3-msg 'workspace 2; exec --no-startup-id $browser'"
+exec --no-startup-id "sleep 1 && i3-msg 'workspace 2; exec --no-startup-id $browser'"
