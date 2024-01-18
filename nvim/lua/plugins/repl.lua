@@ -1,6 +1,6 @@
 return {
     "pappasam/nvim-repl",
-    keys = { "<leader>rt", "<leader><cr>" },
+    ft = "python",
     init = function()
         vim.g["repl_filetype_commands"] = {
             python = "ipython --no-autoindent",
