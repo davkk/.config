@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+path=$HOME/Pictures/screenshots
+file=$path/screenshot-`date +%s`.png
+
+mkdir -p $path
+
+case $1 in
+
+  "area")
+    maim --format=png --select $file
+    ;;
+
+  "output")
+    maim --format=png $file
+    ;;
+
+  "window")
+    maim --format=png --window $(xdotool getactivewindow) $file
+    ;;
+esac
+
+cat $file | xclip -selection clipboard -t image/png

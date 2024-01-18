@@ -187,9 +187,9 @@ bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 # Screenshots
 ##
 
-bindsym $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/screenshot area
-bindsym Print exec --no-startup-id $HOME/.config/.scripts/screenshot output
-bindsym Shift+Print exec --no-startup-id $HOME/.config/.scripts/screenshot window
+bindsym $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 area
+bindsym Print exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 output
+bindsym Shift+Print exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 window
 
 ##
 # Status Bar
