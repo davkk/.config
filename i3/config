@@ -69,10 +69,10 @@ exec --no-startup-id xss-lock -l -n $HOME/.config/.scripts/dim-screen -- $lock
 ##
 
 # Lock the screen
-bindsym $win+l exec $lock
+bindsym $win+l exec --no-startup-id $lock
 
 # start a terminal
-bindsym $mod+Return exec $term
+bindsym $mod+Return exec --no-startup-id $term
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -81,7 +81,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec --no-startup-id $menu
 
 # Exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # change focus
 bindsym $mod+$left focus left
@@ -166,19 +166,19 @@ bindsym $mod+r mode "resize"
 ##
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioStop exec playerctl stop
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 # Sreen brightness controls
 exec --no-startup-id light -S $default_light
-bindsym XF86MonBrightnessUp exec light -A 5
-bindsym XF86MonBrightnessDown exec light -U 5
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 # Toggle touchpad
 bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
@@ -187,9 +187,9 @@ bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 # Screenshots
 ##
 
-bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot area
-bindsym Print exec $HOME/.config/.scripts/screenshot output
-bindsym Shift+Print exec $HOME/.config/.scripts/screenshot window
+bindsym $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/screenshot area
+bindsym Print exec --no-startup-id $HOME/.config/.scripts/screenshot output
+bindsym Shift+Print exec --no-startup-id $HOME/.config/.scripts/screenshot window
 
 ##
 # Status Bar
@@ -225,5 +225,5 @@ for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enabl
 
 exec --no-startup-id nm-applet
 
-exec --no-startup-id i3-msg 'workspace 1; exec $term'
-exec --no-startup-id "sleep 4; i3-msg 'workspace 2; exec $browser'"
+exec --no-startup-id i3-msg 'workspace 1; exec --no-startup-id $term'
+exec --no-startup-id "sleep 4 && i3-msg 'workspace 2; exec --no-startup-id $browser'"
