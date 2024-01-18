@@ -117,7 +117,7 @@ config.font = wezterm.font_with_fallback({
 config.use_cap_height_to_scale_fallback_fonts = true
 config.cell_width = 1
 config.underline_thickness = 4
-config.font_size = 19
+config.font_size = 21
 config.warn_about_missing_glyphs = false -- life saver
 
 
