@@ -7,17 +7,18 @@ mkdir -p $path
 
 case $1 in
 
-  "area")
-    maim --format=png --select $file
+  "output")
+    gnome-screenshot -f $file
     ;;
 
-  "output")
-    maim --format=png $file
+  "area")
+    gnome-screenshot -a -f $file
     ;;
 
   "window")
-    maim --format=png --window $(xdotool getactivewindow) $file
+    gnome-screenshot -w -f $file
     ;;
+
 esac
 
 cat $file | xclip -selection clipboard -t image/png

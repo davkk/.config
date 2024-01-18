@@ -193,9 +193,9 @@ bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 # Screenshots
 ##
 
-bindsym $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 area
-bindsym Print exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 output
-bindsym Shift+Print exec --no-startup-id $HOME/.config/.scripts/screenshot-x11 window
+bindsym --release $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot area
+bindsym --release Print exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot output
+bindsym --release Shift+Print exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot window
 
 ##
 # Status Bar
@@ -214,6 +214,7 @@ bar {
 ##
 # App settings
 ##
+for_window [class="Gnome-screenshot"] floating enable, resize set width 200 px height 200 px
 
 for_window [class="1Password"] floating enable
 for_window [class="firefox" title="Picture-in-Picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky enable
