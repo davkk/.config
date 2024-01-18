@@ -14,27 +14,6 @@ setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
 
-
-# -- CUSTOM FUNCTIONS
-pop() {
-    if [[ $# -eq 1 ]]; then
-        selected=$1
-    else
-        selected=$(find ~/projects ~/work ~/personal -mindepth 1 -maxdepth 1 -type d 2&>/dev/null | fzf )
-    fi
-    if [[ -n "$selected" ]]; then
-        cd "$selected"
-        zle reset-prompt
-    fi
-}
-
-# -- BINDKEYS
-bindkey -e
-
-zle -N pop
-bindkey '^f' pop
-
-
 # -- ALIASES
 alias l='ls --color -lhF --group-directories-first'
 alias nv='echo you are stupid'
@@ -81,6 +60,7 @@ export ANDROID_AVD_HOME=$HOME/.android
 
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.config/.scripts/
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.dotnet/tools
@@ -107,6 +87,22 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 # preferred editor for local and remote sessions
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which vim`
+
+# -- CUSTOM FUNCTIONS
+
+# change directory (project)
+cdp() {
+    selected=`selp`
+    if [[ -n "$selected" ]]; then
+        cd "$selected"
+    fi
+}
+zle -N cdp
+
+# -- BINDKEYS
+bindkey -e
+
+# -- CONFIGS
 
 # opam configuration
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
