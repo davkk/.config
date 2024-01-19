@@ -11,7 +11,7 @@ return {
         end, { expr = true, silent = true })
 
         vim.cmd [[
-            let g:codeium_idle_delay = 600
+            let g:codeium_idle_delay = 300
         ]]
     end
 }
