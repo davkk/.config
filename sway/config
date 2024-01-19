@@ -23,7 +23,7 @@ set $right l
 
 # Your preferred terminal emulator
 set $term wezterm
-set $browser firefox
+set $browser brave-browser
 
 # Styles
 set $highlight #ffb083
@@ -47,7 +47,8 @@ hide_edge_borders smart
 # Output configuration
 ##
 
-output * bg $wallpaper fill
+output * bg #000000 solid_color
+# output * bg $wallpaper fill
 
 output "eDP-1" {
     mode 2880x1800@90.001Hz

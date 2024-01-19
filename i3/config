@@ -26,7 +26,7 @@ set $browser brave-browser
 set $menu i3-dmenu-desktop
 
 # Wallpaper
-set $wallpaper $HOME/Pictures/wallpaper.png
+set $wallpaper $HOME/Pictures/wallpaper.jpg
 set $default_light 15
 
 ##
@@ -46,7 +46,7 @@ exec --no-startup-id xrandr --output eDP --set TearFree on
 exec --no-startup-id picom -b
 
 # Wallpaper
-exec_always --no-startup-id ~/.fehbg
+exec_always --no-startup-id feh --no-fehbg --bg-fill $wallpaper &
 
 ##
 # Idle configuration
@@ -55,7 +55,7 @@ set $lock i3lock -n -e -f -c 000000
 
 # Dim the screen after two minutes of inactivity, lock the screen five minutes later using i3lock:
 exec --no-startup-id xset s 100 300
-exec --no-startup-id xss-lock -l -n $HOME/.config/.scripts/dim-screen -- $lock
+exec --no-startup-id xss-lock -l -n $HOME/.config/i3/dim-screen -- $lock
 
 ##
 # Input configuration
@@ -193,9 +193,9 @@ bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 # Screenshots
 ##
 
-bindsym --release $win+Shift+s exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot area
-bindsym --release Print exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot output
-bindsym --release Shift+Print exec --no-startup-id $HOME/.config/.scripts/gnome-screenshot window
+bindsym --release $win+Shift+s exec $HOME/.config/i3/screenshot area
+bindsym --release Print exec $HOME/.config/i3/screenshot output
+bindsym --release Shift+Print exec $HOME/.config/i3/screenshot window
 
 ##
 # Status Bar
