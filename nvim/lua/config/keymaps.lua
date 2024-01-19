@@ -40,7 +40,6 @@ vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
 vim.keymap.set("t", "<S-Space>", "<Space>")
 
-vim.keymap.set("n", "<leader>t", "<cmd>term<cr>", opts)
 vim.keymap.set("n", "<leader>st", "<cmd>12 split<cr>:se wfh<cr>:term<cr>", opts)
 
 vim.keymap.set("n", "<Right>", function()
