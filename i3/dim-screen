@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 min_brightness=0
-fade_step_time=0.1
+fade_step_time=0.2
 
 get_brightness() {
     if [[ -z $sysfs_path ]]; then
