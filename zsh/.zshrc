@@ -91,8 +91,8 @@ export EDITOR=`which vim`
 # -- CUSTOM FUNCTIONS
 
 # change directory (project)
-cdp() {
-    selected=`selp`
+sp() {
+    selected=`fzfp`
     if [[ -n "$selected" ]]; then
         cd "$selected"
     fi

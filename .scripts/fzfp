@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# selp = select project
-# let's you select a project dir from the list with fzf
+# fzfp = fuzzy find project
 
 if [[ $# -eq 1 ]]; then
     selected=$1

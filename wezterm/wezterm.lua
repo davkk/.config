@@ -133,13 +133,13 @@ table.insert(config.hyperlink_rules, {
 })
 
 -- KEYBINDINGS
-config.leader = { key = "f", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
     -- Send "CTRL-F" to the terminal when pressing CTRL-F + CTRL-F
     {
-        key = "f",
+        key = "b",
         mods = "LEADER|CTRL",
-        action = wezterm.action.SendKey({ key = "f", mods = "CTRL" }),
+        action = wezterm.action.SendKey({ key = "b", mods = "CTRL" }),
     },
 
     {
@@ -171,6 +171,26 @@ config.keys = {
     {
         key = "F11",
         action = wezterm.action.ToggleFullScreen,
+    },
+
+    {
+        key = "f",
+        mods = "LEADER",
+        action = wezterm.action.SpawnCommandInNewTab({
+            args = {
+                string.format("%s/.config/.scripts/wezterm-tabizer", wezterm.home_dir)
+            },
+        }),
+    },
+    {
+        key = ".",
+        mods = "LEADER",
+        action = wezterm.action.SpawnCommandInNewTab({
+            args = {
+                string.format("%s/.config/.scripts/wezterm-tabizer", wezterm.home_dir),
+                string.format("%s/.config", wezterm.home_dir),
+            },
+        }),
     },
 }
 
