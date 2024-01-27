@@ -88,7 +88,24 @@ opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
 -- more space for messages
-opt.cmdheight = 1
+opt.cmdheight = 0
+vim.api.nvim_create_autocmd("RecordingEnter", {
+    pattern = "*",
+    callback = function()
+        opt.cmdheight = 1
+    end,
+})
+vim.api.nvim_create_autocmd("RecordingLeave", {
+    pattern = "*",
+    callback = function()
+        -- NOTE: Timer is here because we need to close cmdheight AFTER
+        -- the macro is ended, not during the Leave event
+        local timer = vim.uv.new_timer()
+        timer:start(50, 0, vim.schedule_wrap(function()
+            opt.cmdheight = 0
+        end))
+    end,
+})
 
 -- Don't pass messages to |ins-completion-menu|. // not mine, borrowed
 opt.shortmess:append("c")
