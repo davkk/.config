@@ -335,7 +335,7 @@ function M._load(options)
         ["@markup.heading.6.marker.markdown"] = { link = "@text.title.6.marker.markdown" },
 
         -- nvim-treesitter/nvim-treesitter-context
-        TreesitterContext = { bg = p.none, blend = 100 },
+        TreesitterContext = { bg = p.none, link = "Normal" },
 
         -- vim.lsp.buf.document_highlight()
         LspReferenceText = { bg = p.highlight_med },
