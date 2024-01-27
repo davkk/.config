@@ -3,15 +3,15 @@ local M = {}
 ---@param options Options
 function M._load(options)
     local h = require("rose-pine-tinted.util").highlight
-    local p = require("rose-pine-tinted.palette")
+    local palette = require("rose-pine-tinted.palette")
 
     local groups = options.groups or {}
     local maybe = {
-        base = (options.disable_background and p.none) or groups.background,
-        surface = (options.disable_float_background and p.none) or groups.panel,
+        base = (options.disable_background and palette.none) or groups.background,
+        surface = (options.disable_float_background and palette.none) or groups.panel,
         italic = not options.disable_italics,
     }
-    maybe.bold_vert_split = (options.bold_vert_split and groups.border) or p.none
+    maybe.bold_vert_split = (options.bold_vert_split and groups.border) or palette.none
     maybe.dim_nc_background = (options.dim_nc_background and groups.background_nc) or maybe.base
 
     local float_background = options.dim_nc_background
@@ -19,121 +19,121 @@ function M._load(options)
         or maybe.surface
 
     M.defaults = {
-        ColorColumn = { bg = p.overlay, blend = 40 },
-        Conceal = { bg = p.none },
+        ColorColumn = { bg = palette.overlay, blend = 40 },
+        Conceal = { bg = palette.none },
         CurSearch = { link = "IncSearch" },
-        Cursor = { fg = p.text, bg = p.highlight_high },
-        CursorColumn = { bg = p.highlight_low },
+        Cursor = { fg = palette.text, bg = palette.highlight_high },
+        CursorColumn = { bg = palette.highlight_low },
         -- CursorIM = {},
-        CursorLine = { bg = p.overlay, blend = 40 },
-        CursorLineNr = { fg = p.text, bold = true },
+        CursorLine = { bg = palette.overlay, blend = 40 },
+        CursorLineNr = { fg = palette.text, bold = true },
         DarkenedPanel = { bg = maybe.surface },
         DarkenedStatusline = { bg = maybe.surface },
         DiffAdd = { bg = groups.git_add, blend = 20 },
 
-        DiffChange = { bg = p.overlay },
+        DiffChange = { bg = palette.overlay },
         DiffDelete = { bg = groups.git_delete, blend = 20 },
         DiffText = { bg = groups.git_text, blend = 20 },
         diffAdded = { link = "DiffAdd" },
         diffChanged = { link = "DiffChange" },
         diffRemoved = { link = "DiffDelete" },
-        Directory = { fg = p.foam, bg = p.none },
+        Directory = { fg = palette.foam, bg = palette.none, bold = true },
         -- EndOfBuffer = {},
-        ErrorMsg = { fg = p.love, bold = true },
+        ErrorMsg = { fg = palette.love, bold = true },
         FloatBorder = { fg = groups.border, bg = maybe.surface, blend = 5 },
-        FloatTitle = { fg = p.highlight_med, bg = p.base, blend = 5 },
-        FoldColumn = { fg = p.muted },
-        Folded = { fg = p.text, bg = maybe.surface },
-        IncSearch = { fg = groups.background, bg = p.rose },
-        LineNr = { fg = p.highlight_med },
-        MatchParen = { fg = p.text, bg = p.highlight_med },
-        ModeMsg = { fg = p.subtle },
-        MoreMsg = { fg = p.iris },
-        NonText = { fg = p.muted },
-        Normal = { fg = p.text, bg = maybe.base },
-        NormalFloat = { fg = p.text, bg = maybe.surface, blend = 5 },
-        NormalNC = { fg = p.text, bg = maybe.dim_nc_background },
-        NvimInternalError = { fg = "#ffffff", bg = p.love },
-        Pmenu = { fg = p.subtle, bg = maybe.surface, blend = 5 },
-        PmenuSbar = { bg = p.highlight_low },
-        PmenuSel = { fg = p.base, bg = p.rose },
-        PmenuThumb = { bg = p.highlight_med },
+        FloatTitle = { fg = palette.highlight_med, bg = palette.base, blend = 5 },
+        FoldColumn = { fg = palette.muted },
+        Folded = { fg = palette.text, bg = maybe.surface },
+        IncSearch = { fg = groups.background, bg = palette.rose },
+        LineNr = { fg = palette.highlight_med },
+        MatchParen = { fg = palette.text, bg = palette.highlight_med },
+        ModeMsg = { fg = palette.subtle },
+        MoreMsg = { fg = palette.iris },
+        NonText = { fg = palette.muted },
+        Normal = { fg = palette.text, bg = maybe.base },
+        NormalFloat = { fg = palette.text, bg = maybe.surface, blend = 5 },
+        NormalNC = { fg = palette.text, bg = maybe.dim_nc_background },
+        NvimInternalError = { fg = "#ffffff", bg = palette.love },
+        Pmenu = { fg = palette.subtle, bg = maybe.surface, blend = 5 },
+        PmenuSbar = { bg = palette.highlight_low },
+        PmenuSel = { fg = palette.base, bg = palette.rose },
+        PmenuThumb = { bg = palette.highlight_med },
 
-        WinSeparator = { bg = p.none, fg = "overlay" },
-        WinBar = { bg = p.none },
-        WinBarNC = { bg = p.none },
+        WinSeparator = { bg = palette.none, fg = "overlay" },
+        WinBar = { bg = palette.none },
+        WinBarNC = { bg = palette.none },
 
-        Question = { fg = p.gold },
-        QuickFixLine = { bg = p.overlay },
+        Question = { fg = palette.gold },
+        QuickFixLine = { bg = palette.overlay },
         -- RedrawDebugNormal = {}
-        RedrawDebugClear = { fg = "#ffffff", bg = p.gold },
-        RedrawDebugComposed = { fg = "#ffffff", bg = p.pine },
-        RedrawDebugRecompose = { fg = "#ffffff", bg = p.love },
-        Search = { bg = p.highlight_med },
-        SpecialKey = { fg = p.foam },
+        RedrawDebugClear = { fg = "#ffffff", bg = palette.gold },
+        RedrawDebugComposed = { fg = "#ffffff", bg = palette.pine },
+        RedrawDebugRecompose = { fg = "#ffffff", bg = palette.love },
+        Search = { bg = palette.highlight_med },
+        SpecialKey = { fg = palette.foam },
         SpellBad = { sp = groups.warn, underline = true },
-        SpellCap = { sp = p.subtle, underline = true },
-        SpellLocal = { sp = p.subtle, underline = true },
-        SpellRare = { sp = p.subtle, underline = true },
+        SpellCap = { sp = palette.subtle, underline = true },
+        SpellLocal = { sp = palette.subtle, underline = true },
+        SpellRare = { sp = palette.subtle, underline = true },
         SignColumn = {
-            fg = p.text,
-            bg = (options.dim_nc_background and p.none) or maybe.base,
+            fg = palette.text,
+            bg = (options.dim_nc_background and palette.none) or maybe.base,
         },
-        Substitute = { fg = p.base, bg = p.love },
-        StatusLine = { fg = p.subtle, bg = p.none },
-        StatusLineNC = { fg = p.muted, bg = groups.panel_nc },
+        Substitute = { fg = palette.base, bg = palette.love },
+        StatusLine = { fg = palette.subtle, bg = palette.none },
+        StatusLineNC = { fg = palette.muted, bg = groups.panel_nc },
         StatusLineTerm = { link = "StatusLine" },
         StatusLineTermNC = { link = "StatusLineNC" },
-        TabLine = { fg = p.subtle, bg = groups.panel },
+        TabLine = { fg = palette.subtle, bg = groups.panel },
         TabLineFill = { bg = groups.panel },
-        TabLineSel = { fg = p.text, bg = p.overlay },
-        Title = { fg = p.text },
+        TabLineSel = { fg = palette.text, bg = palette.overlay },
+        Title = { fg = palette.text },
         VertSplit = { fg = groups.border, bg = maybe.bold_vert_split },
-        Visual = { bg = p.highlight_med },
+        Visual = { bg = palette.highlight_med },
         -- VisualNOS = {},
         WarningMsg = { fg = groups.warn },
         -- Whitespace = {},
         WildMenu = { link = "IncSearch" },
 
-        Boolean = { fg = p.rose },
-        Character = { fg = p.gold },
+        Boolean = { fg = palette.rose },
+        Character = { fg = palette.gold },
         Comment = { fg = groups.comment, italic = maybe.italic },
-        Conditional = { fg = p.pine },
-        Constant = { fg = p.gold },
-        Debug = { fg = p.rose },
-        Define = { fg = p.iris },
-        Delimiter = { fg = p.subtle },
-        Error = { fg = p.love },
-        Exception = { fg = p.pine },
-        Float = { fg = p.gold },
-        Function = { fg = p.rose },
-        Identifier = { fg = p.rose },
+        Conditional = { fg = palette.pine },
+        Constant = { fg = palette.gold },
+        Debug = { fg = palette.rose },
+        Define = { fg = palette.iris },
+        Delimiter = { fg = palette.subtle },
+        Error = { fg = palette.love },
+        Exception = { fg = palette.pine },
+        Float = { fg = palette.gold },
+        Function = { fg = palette.rose },
+        Identifier = { fg = palette.rose },
         -- Ignore = {},
-        Include = { fg = p.pine },
-        Keyword = { fg = p.pine },
-        Label = { fg = p.foam },
-        Macro = { fg = p.iris },
-        Number = { fg = p.gold },
-        Operator = { fg = p.subtle },
-        PreCondit = { fg = p.iris },
-        PreProc = { fg = p.iris },
-        Repeat = { fg = p.pine },
-        Special = { fg = p.rose },
-        SpecialChar = { fg = p.rose },
-        SpecialComment = { fg = p.iris },
-        Statement = { fg = p.pine },
-        StorageClass = { fg = p.foam },
-        String = { fg = p.gold },
-        Structure = { fg = p.foam },
-        Tag = { fg = p.foam },
-        Todo = { fg = p.iris },
-        Type = { fg = p.foam },
+        Include = { fg = palette.pine },
+        Keyword = { fg = palette.pine },
+        Label = { fg = palette.foam },
+        Macro = { fg = palette.iris },
+        Number = { fg = palette.gold },
+        Operator = { fg = palette.subtle },
+        PreCondit = { fg = palette.iris },
+        PreProc = { fg = palette.iris },
+        Repeat = { fg = palette.pine },
+        Special = { fg = palette.rose },
+        SpecialChar = { fg = palette.rose },
+        SpecialComment = { fg = palette.iris },
+        Statement = { fg = palette.pine },
+        StorageClass = { fg = palette.foam },
+        String = { fg = palette.gold },
+        Structure = { fg = palette.foam },
+        Tag = { fg = palette.foam },
+        Todo = { fg = palette.rose, bg = palette.rose, blend = 20 },
+        Type = { fg = palette.foam },
         Typedef = { link = "Type" },
         Underlined = { underline = true },
 
-        htmlArg = { fg = p.iris },
+        htmlArg = { fg = palette.iris },
         htmlBold = { bold = true },
-        htmlEndTag = { fg = p.subtle },
+        htmlEndTag = { fg = palette.subtle },
         htmlH1 = { fg = groups.headings.h1, bold = true },
         htmlH2 = { fg = groups.headings.h2, bold = true },
         htmlH3 = { fg = groups.headings.h3, bold = true },
@@ -141,11 +141,11 @@ function M._load(options)
         htmlH5 = { fg = groups.headings.h5, bold = true },
         htmlItalic = { italic = maybe.italic },
         htmlLink = { fg = groups.link },
-        htmlTag = { fg = p.subtle },
-        htmlTagN = { fg = p.text },
-        htmlTagName = { fg = p.foam },
+        htmlTag = { fg = palette.subtle },
+        htmlTagN = { fg = palette.text },
+        htmlTagName = { fg = palette.foam },
 
-        markdownDelimiter = { fg = p.subtle },
+        markdownDelimiter = { fg = palette.subtle },
         markdownH1 = { fg = groups.headings.h1, bold = true },
         markdownH1Delimiter = { link = "markdownH1" },
         markdownH2 = { fg = groups.headings.h2, bold = true },
@@ -161,17 +161,17 @@ function M._load(options)
         markdownLinkText = { fg = groups.link, sp = groups.link, underline = true },
         markdownUrl = { link = "markdownLinkText" },
 
-        mkdCode = { fg = p.foam, italic = maybe.italic },
-        mkdCodeDelimiter = { fg = p.rose },
-        mkdCodeEnd = { fg = p.foam },
-        mkdCodeStart = { fg = p.foam },
-        mkdFootnotes = { fg = p.foam },
-        mkdID = { fg = p.foam, underline = true },
+        mkdCode = { fg = palette.foam, italic = maybe.italic },
+        mkdCodeDelimiter = { fg = palette.rose },
+        mkdCodeEnd = { fg = palette.foam },
+        mkdCodeStart = { fg = palette.foam },
+        mkdFootnotes = { fg = palette.foam },
+        mkdID = { fg = palette.foam, underline = true },
         mkdInlineURL = { fg = groups.link, underline = true },
         mkdLink = { link = "mkdInlineURL" },
         mkdLinkDef = { link = "mkdInlineURL" },
-        mkdListItemLine = { fg = p.text },
-        mkdRule = { fg = p.subtle },
+        mkdListItemLine = { fg = palette.text },
+        mkdRule = { fg = palette.subtle },
         mkdURL = { link = "mkdInlineURL" },
 
         DiagnosticError = { fg = groups.error },
@@ -209,52 +209,158 @@ function M._load(options)
         healthWarning = { fg = groups.warn },
 
         -- Treesitter
-        ["@boolean"] = { link = "Boolean" },
-        ["@character"] = { link = "Character" },
-        ["@character.special"] = { link = "@character" },
-        ["@class"] = { fg = p.foam },
-        ["@comment"] = { link = "Comment" },
-        ["@conditional"] = { link = "Conditional" },
-        ["@constant"] = { link = "Constant" },
-        ["@constant.builtin"] = { fg = p.love },
-        ["@constant.macro"] = { link = "@constant" },
-        ["@constructor"] = { fg = p.foam },
-        ["@field"] = { fg = p.foam },
-        ["@variable.member"] = { link = "@field" },
-        ["@function"] = { link = "Function" },
-        ["@function.builtin"] = { fg = p.love },
-        ["@function.macro"] = { link = "@function" },
-        ["@include"] = { link = "Include" },
-        ["@interface"] = { fg = p.foam },
-        ["@keyword"] = { link = "Keyword" },
-        ["@keyword.operator"] = { fg = p.subtle },
+        --- Identifiers
+        ["@variable"] = { fg = palette.text, italic = maybe.italic },
+        ["@variable.builtin"] = { fg = palette.love },
+        ["@variable.parameter"] = { fg = palette.iris, italic = maybe.italic },
+        ["@variable.member"] = { fg = palette.foam },
+
+        ["@constant"] = { fg = palette.gold },
+        ["@constant.builtin"] = { fg = palette.love },
+        ["@constant.macro"] = { fg = palette.gold },
+
+        ["@module"] = { fg = palette.text },
+        ["@module.builtin"] = { fg = palette.love },
         ["@label"] = { link = "Label" },
-        ["@macro"] = { link = "Macro" },
-        ["@method"] = { fg = p.rose },
+
+        --- Literals
+        ["@string"] = { link = "String" },
+        -- ["@string.documentation"] = {},
+        ["@string.regexp"] = { fg = palette.iris },
+        ["@string.escape"] = { fg = palette.pine },
+        ["@string.special"] = { link = "String" },
+        ["@string.special.symbol"] = { link = "Identifier" },
+        ["@string.special.url"] = { fg = groups.link },
+        -- ["@string.special.path"] = {},
+
+        ["@character"] = { link = "Character" },
+        ["@character.special"] = { link = "Character" },
+
+        ["@boolean"] = { link = "Boolean" },
         ["@number"] = { link = "Number" },
+        ["@number.float"] = { link = "Number" },
+
+        --- Types
+        ["@type"] = { fg = palette.foam },
+        ["@type.builtin"] = { fg = palette.foam },
+        -- ["@type.definition"] = {},
+        -- ["@type.qualifier"] = {},
+
+        -- ["@attribute"] = {},
+        ["@property"] = { fg = palette.foam, italic = maybe.italic },
+
+        --- Functions
+        ["@function"] = { fg = palette.rose },
+        ["@function.builtin"] = { fg = palette.love },
+        -- ["@function.call"] = {},
+        ["@function.macro"] = { link = "Function" },
+        ["@function.method"] = { fg = palette.rose },
+        ["@function.method.call"] = { fg = palette.rose },
+
+        ["@constructor"] = { fg = palette.foam },
         ["@operator"] = { link = "Operator" },
-        ["@parameter"] = { fg = p.iris, italic = maybe.italic },
-        ["@variable.parameter"] = { link = "@parameter" },
+
+        --- Keywords
+        ["@keyword"] = { link = "Keyword" },
+        -- ["@keyword.coroutine"] = {},
+        -- ["@keyword.function"] = {},
+        ["@keyword.operator"] = { fg = palette.subtle },
+        ["@keyword.import"] = { fg = palette.pine },
+        ["@keyword.storage"] = { fg = palette.foam },
+        ["@keyword.repeat"] = { fg = palette.pine },
+        ["@keyword.return"] = { fg = palette.pine },
+        ["@keyword.debug"] = { fg = palette.rose },
+        ["@keyword.exception"] = { fg = palette.pine },
+        ["@keyword.conditional"] = { fg = palette.pine },
+        ["@keyword.conditional.ternary"] = { fg = palette.pine },
+        ["@keyword.directive"] = { fg = palette.iris },
+        ["@keyword.directive.define"] = { fg = palette.iris },
+
+        --- Punctuation
+        ["@punctuation.delimiter"] = { fg = palette.subtle },
+        ["@punctuation.bracket"] = { fg = palette.subtle },
+        ["@punctuation.special"] = { fg = palette.subtle },
+
+        --- Comments
+        ["@comment"] = { link = "Comment" },
+        -- ["@comment.documentation"] = {},
+
+        ["@comment.error"] = { fg = groups.error },
+        ["@comment.warning"] = { fg = groups.warn },
+        ["@comment.todo"] = { fg = groups.todo, bg = groups.todo, blend = 20 },
+        ["@comment.hint"] = { fg = groups.hint, bg = groups.hint, blend = 20 },
+        ["@comment.info"] = { fg = groups.info, bg = groups.info, blend = 20 },
+        ["@comment.note"] = { fg = groups.note, bg = groups.note, blend = 20 },
+
+        --- Markup
+        ["@markup.strong"] = { bold = true },
+        ["@markup.italic"] = { italic = maybe.italic },
+        ["@markup.strikethrough"] = { strikethrough = true },
+        ["@markup.underline"] = { underline = true },
+
+        ["@markup.heading"] = { fg = palette.foam, bold = true },
+
+        ["@markup.quote"] = { fg = palette.subtle },
+        ["@markup.math"] = { link = "Special" },
+        ["@markup.environment"] = { link = "Macro" },
+        ["@markup.environment.name"] = { link = "@type" },
+
+        -- ["@markup.link"] = {},
+        ["@markup.link.label"] = { fg = palette.text },
+        ["@markup.link.url"] = { fg = groups.link },
+
+        -- ["@markup.raw"] = { bg = palette.surface },
+        -- ["@markup.raw.block"] = { bg = palette.surface },
+
+        ["@markup.list"] = { fg = palette.text },
+        ["@markup.list.checked"] = { fg = palette.foam, bg = palette.foam, blend = 10 },
+        ["@markup.list.unchecked"] = { fg = palette.text },
+
+        ["@diff.plus"] = { fg = groups.git_add, bg = groups.git_add, blend = 20 },
+        ["@diff.minus"] = { fg = groups.git_delete, bg = groups.git_delete, blend = 20 },
+        ["@diff.delta"] = { bg = groups.git_change, blend = 20 },
+
+        ["@tag"] = { link = "Tag" },
+        ["@tag.attribute"] = { fg = palette.iris },
+        ["@tag.delimiter"] = { fg = palette.subtle },
+
+        --- Non-highlighting captures
+        -- ["@none"] = {},
+        ["@conceal"] = { link = "Conceal" },
+
+        -- ["@spell"] = {},
+        -- ["@nospell"] = {},
+
+        --- Semantic
+        ["@lsp.type.comment"] = {},
+        ["@lsp.type.enum"] = { link = "@type" },
+        ["@lsp.type.interface"] = { link = "@interface" },
+        ["@lsp.type.keyword"] = { link = "@keyword" },
+        ["@lsp.type.namespace"] = { link = "@namespace" },
+        ["@lsp.type.parameter"] = { link = "@parameter" },
+        ["@lsp.type.property"] = { link = "@property" },
+        ["@lsp.type.variable"] = {},
+        ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
+        ["@lsp.typemod.operator.injected"] = { link = "@operator" },
+        ["@lsp.typemod.string.injected"] = { link = "@string" },
+        ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
+        ["@lsp.typemod.variable.injected"] = { link = "@variable" },
+
+        ["@class"] = { fg = palette.foam },
+        ["@conditional"] = { link = "Conditional" },
+        ["@field"] = { fg = palette.foam },
+        ["@include"] = { link = "Include" },
+        ["@interface"] = { fg = palette.foam },
+        ["@macro"] = { link = "Macro" },
+        ["@method"] = { fg = palette.rose },
+        ["@parameter"] = { fg = palette.iris, italic = maybe.italic },
         ["@preproc"] = { link = "PreProc" },
-        ["@property"] = { fg = p.foam, italic = maybe.italic },
         ["@punctuation"] = { fg = groups.punctuation },
-        ["@punctuation.bracket"] = { link = "@punctuation" },
-        ["@punctuation.delimiter"] = { link = "@punctuation" },
-        ["@punctuation.special"] = { link = "@punctuation" },
-        ["@markup.list"] = { link = "@punctuation.special" },
         ["@regexp"] = { link = "String" },
         ["@repeat"] = { link = "Repeat" },
         ["@storageclass"] = { link = "StorageClass" },
-        ["@string"] = { link = "String" },
-        ["@string.escape"] = { fg = p.pine },
-        ["@string.special"] = { link = "@string" },
-        ["@markup.link.label"] = { link = "@string.special" },
         ["@symbol"] = { link = "Identifier" },
-        ["@string.special.symbol"] = { link = "@symbol" },
-        ["@tag"] = { link = "Tag" },
-        ["@tag.attribute"] = { fg = p.iris },
-        ["@tag.delimiter"] = { fg = p.subtle },
-        ["@text"] = { fg = p.text },
+        ["@text"] = { fg = palette.text },
         ["@text.strong"] = { bold = true },
         ["@text.emphasis"] = { italic = true },
         ["@text.underline"] = { underline = true },
@@ -267,46 +373,18 @@ function M._load(options)
         ["@text.note"] = { link = "SpecialComment" },
         ["@text.warning"] = { fg = groups.warn },
         ["@text.danger"] = { fg = groups.error },
-        ["@text.reference"] = { fg = p.subtle },
-        ["@text.literal"] = { fg = p.subtle },
+        ["@text.reference"] = { fg = palette.subtle },
+        ["@text.literal"] = { fg = palette.subtle },
         ["@markup"] = { link = "@text" },
-        ["@markup.strong"] = { link = "@text.strong" },
         ["@markup.emphasis"] = { link = "@text.emphasis" },
-        ["@markup.underline"] = { link = "@text.underline" },
         ["@markup.strike"] = { link = "@text.strike" },
-        ["@markup.math"] = { link = "@text.math" },
-        ["@markup.environment"] = { link = "@text.environment" },
-        ["@markup.environment.name"] = { link = "@text.environment.name" },
-        ["@markup.heading"] = { link = "@text.title" },
         ["@markup.link"] = { link = "@text.reference" },
-        ["@markup.link.url"] = { link = "@text.uri" },
         ["@markup.raw"] = { link = "@text.literal" },
         ["@markup.note"] = { link = "@text.note" },
         ["@markup.warning"] = { link = "@text.warning" },
         ["@markup.danger"] = { link = "@text.danger" },
         ["@todo"] = { link = "Todo" },
-        ["@type"] = { link = "Type" },
-        ["@variable"] = { fg = p.text, italic = maybe.italic },
-        ["@variable.builtin"] = { fg = p.love },
         ["@namespace"] = { link = "@include" },
-        ["@module"] = { link = "@namespace" },
-
-        -- LSP Semantic Token Groups
-        ["@lsp.type.comment"] = {},
-        ["@lsp.type.enum"] = { link = "@type" },
-        ["@lsp.type.keyword"] = { link = "@keyword" },
-        ["@lsp.type.interface"] = { link = "@interface" },
-        ["@lsp.type.namespace"] = { link = "@namespace" },
-        ["@lsp.type.parameter"] = { link = "@parameter" },
-        ["@lsp.type.property"] = { link = "@property" },
-        ["@lsp.type.variable"] = {}, -- use treesitter styles for regular variables
-        ["@lsp.typemod.function.defaultLibrary"] = { link = "Special" },
-        ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
-
-        -- LSP Injected Groups
-        ["@lsp.typemod.operator.injected"] = { link = "@operator" },
-        ["@lsp.typemod.string.injected"] = { link = "@string" },
-        ["@lsp.typemod.variable.injected"] = { link = "@variable" },
 
         -- nvim-treesitter Markdown Headings
         ["@text.title.1.markdown"] = { link = "markdownH1" },
@@ -335,97 +413,97 @@ function M._load(options)
         ["@markup.heading.6.marker.markdown"] = { link = "@text.title.6.marker.markdown" },
 
         -- nvim-treesitter/nvim-treesitter-context
-        TreesitterContext = { bg = p.none, link = "Normal" },
+        TreesitterContext = { bg = palette.none, link = "Normal" },
 
         -- vim.lsp.buf.document_highlight()
-        LspReferenceText = { bg = p.highlight_med },
-        LspReferenceRead = { bg = p.highlight_med },
-        LspReferenceWrite = { bg = p.highlight_med },
+        LspReferenceText = { bg = palette.highlight_med },
+        LspReferenceRead = { bg = palette.highlight_med },
+        LspReferenceWrite = { bg = palette.highlight_med },
 
         -- lsp-highlight-codelens
-        LspCodeLens = { fg = p.subtle },                  -- virtual text of code len
-        LspCodeLensSeparator = { fg = p.highlight_high }, -- separator between two or more code len
+        LspCodeLens = { fg = palette.subtle },                  -- virtual text of code len
+        LspCodeLensSeparator = { fg = palette.highlight_high }, -- separator between two or more code len
 
         -- j-hui/fidget.nvim
-        FidgetTask = { fg = p.highlight_med },
-        FidgetTitle = { fg = p.text },
+        FidgetTask = { fg = palette.highlight_med },
+        FidgetTitle = { fg = palette.text },
 
         -- lewis6991/gitsigns.nvim
-        GitSignsAdd = { fg = groups.git_add, bg = p.none },
-        GitSignsChange = { fg = groups.git_change, bg = p.none },
-        GitSignsDelete = { fg = groups.git_delete, bg = p.none },
+        GitSignsAdd = { fg = groups.git_add, bg = palette.none },
+        GitSignsChange = { fg = groups.git_change, bg = palette.none },
+        GitSignsDelete = { fg = groups.git_delete, bg = palette.none },
         SignAdd = { link = "GitSignsAdd" },
         SignChange = { link = "GitSignsChange" },
         SignDelete = { link = "GitSignsDelete" },
 
         -- hrsh7th/nvim-cmp
-        CmpItemAbbr = { fg = p.subtle },
-        CmpItemAbbrDeprecated = { fg = p.subtle, strikethrough = true },
-        CmpItemAbbrMatch = { fg = p.text, bold = true },
-        CmpItemAbbrMatchFuzzy = { fg = p.rose, bold = true },
-        CmpItemKind = { fg = p.iris },
-        CmpItemKindClass = { fg = p.pine },
-        CmpItemKindFunction = { fg = p.rose },
-        CmpItemKindInterface = { fg = p.foam },
-        CmpItemKindMethod = { fg = p.iris },
-        CmpItemKindSnippet = { fg = p.gold },
-        CmpItemKindVariable = { fg = p.text },
-        CmpItemMenu = { fg = p.highlight_high },
+        CmpItemAbbr = { fg = palette.subtle },
+        CmpItemAbbrDeprecated = { fg = palette.subtle, strikethrough = true },
+        CmpItemAbbrMatch = { fg = palette.text, bold = true },
+        CmpItemAbbrMatchFuzzy = { fg = palette.rose, bold = true },
+        CmpItemKind = { fg = palette.iris },
+        CmpItemKindClass = { fg = palette.pine },
+        CmpItemKindFunction = { fg = palette.rose },
+        CmpItemKindInterface = { fg = palette.foam },
+        CmpItemKindMethod = { fg = palette.iris },
+        CmpItemKindSnippet = { fg = palette.gold },
+        CmpItemKindVariable = { fg = palette.text },
+        CmpItemMenu = { fg = palette.highlight_high },
 
         -- nvim-telescope/telescope.nvim
         TelescopeBorder = { fg = groups.border, bg = float_background, blend = 5 },
-        TelescopeMatching = { fg = p.rose },
-        TelescopeNormal = { fg = p.subtle, bg = float_background, blend = 5 },
-        TelescopePromptNormal = { fg = p.text, bg = float_background },
-        TelescopePromptPrefix = { fg = p.subtle },
-        TelescopeSelection = { fg = p.text, bg = p.highlight_med },
-        TelescopeSelectionCaret = { fg = p.rose, bg = p.highlight_med },
-        TelescopeTitle = { fg = p.subtle, bg = p.none, blend = 5 },
+        TelescopeMatching = { fg = palette.rose },
+        TelescopeNormal = { fg = palette.subtle, bg = float_background, blend = 5 },
+        TelescopePromptNormal = { fg = palette.text, bg = float_background },
+        TelescopePromptPrefix = { fg = palette.subtle },
+        TelescopeSelection = { fg = palette.text, bg = palette.highlight_med },
+        TelescopeSelectionCaret = { fg = palette.rose, bg = palette.highlight_med },
+        TelescopeTitle = { fg = palette.subtle, bg = palette.none, blend = 5 },
 
         -- rcarriga/nvim-dap-ui
         DapUIVariable = { link = "Normal" },
         DapUIValue = { link = "Normal" },
         DapUIFrameName = { link = "Normal" },
-        DapUIThread = { fg = p.gold },
+        DapUIThread = { fg = palette.gold },
         DapUIWatchesValue = { link = "DapUIThread" },
         DapUIBreakpointsInfo = { link = "DapUIThread" },
-        DapUIBreakpointsCurrentLine = { fg = p.gold, bold = true },
-        DapUIWatchesEmpty = { fg = p.love },
+        DapUIBreakpointsCurrentLine = { fg = palette.gold, bold = true },
+        DapUIWatchesEmpty = { fg = palette.love },
         DapUIWatchesError = { link = "DapUIWatchesEmpty" },
-        DapUIBreakpointsDisabledLine = { fg = p.muted },
-        DapUISource = { fg = p.iris },
-        DapUIBreakpointsPath = { fg = p.foam },
+        DapUIBreakpointsDisabledLine = { fg = palette.muted },
+        DapUISource = { fg = palette.iris },
+        DapUIBreakpointsPath = { fg = palette.foam },
         DapUIScope = { link = "DapUIBreakpointsPath" },
         DapUILineNumber = { link = "DapUIBreakpointsPath" },
         DapUIBreakpointsLine = { link = "DapUIBreakpointsPath" },
         DapUIFloatBorder = { link = "DapUIBreakpointsPath" },
         DapUIStoppedThread = { link = "DapUIBreakpointsPath" },
         DapUIDecoration = { link = "DapUIBreakpointsPath" },
-        DapUIModifiedValue = { fg = p.foam, bold = true },
+        DapUIModifiedValue = { fg = palette.foam, bold = true },
 
         -- Exafunction/codeium.vim
-        CodeiumSuggestion = { fg = p.muted, bg = p.overlay, blend = 40 },
+        CodeiumSuggestion = { fg = palette.muted, bg = palette.overlay, blend = 40 },
 
         -- codota/tabnine.nvim
-        TabnineSuggestion = { fg = p.muted, bg = p.overlay, blend = 40 },
+        TabnineSuggestion = { fg = palette.muted, bg = palette.overlay, blend = 40 },
     }
 
-    vim.g.terminal_color_0 = p.overlay -- black
-    vim.g.terminal_color_8 = p.subtle  -- bright black
-    vim.g.terminal_color_1 = p.love    -- red
-    vim.g.terminal_color_9 = p.love    -- bright red
-    vim.g.terminal_color_2 = p.pine    -- green
-    vim.g.terminal_color_10 = p.pine   -- bright green
-    vim.g.terminal_color_3 = p.gold    -- yellow
-    vim.g.terminal_color_11 = p.gold   -- bright yellow
-    vim.g.terminal_color_4 = p.foam    -- blue
-    vim.g.terminal_color_12 = p.foam   -- bright blue
-    vim.g.terminal_color_5 = p.iris    -- magenta
-    vim.g.terminal_color_13 = p.iris   -- bright magenta
-    vim.g.terminal_color_6 = p.rose    -- cyan
-    vim.g.terminal_color_14 = p.rose   -- bright cyan
-    vim.g.terminal_color_7 = p.text    -- white
-    vim.g.terminal_color_15 = p.text   -- bright white
+    vim.g.terminal_color_0 = palette.overlay -- black
+    vim.g.terminal_color_8 = palette.subtle  -- bright black
+    vim.g.terminal_color_1 = palette.love    -- red
+    vim.g.terminal_color_9 = palette.love    -- bright red
+    vim.g.terminal_color_2 = palette.pine    -- green
+    vim.g.terminal_color_10 = palette.pine   -- bright green
+    vim.g.terminal_color_3 = palette.gold    -- yellow
+    vim.g.terminal_color_11 = palette.gold   -- bright yellow
+    vim.g.terminal_color_4 = palette.foam    -- blue
+    vim.g.terminal_color_12 = palette.foam   -- bright blue
+    vim.g.terminal_color_5 = palette.iris    -- magenta
+    vim.g.terminal_color_13 = palette.iris   -- bright magenta
+    vim.g.terminal_color_6 = palette.rose    -- cyan
+    vim.g.terminal_color_14 = palette.rose   -- bright cyan
+    vim.g.terminal_color_7 = palette.text    -- white
+    vim.g.terminal_color_15 = palette.text   -- bright white
 
     -- Set users highlight_group customisations.
     for group, opts in pairs(options.highlight_groups) do
