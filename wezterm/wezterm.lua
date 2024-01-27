@@ -17,7 +17,7 @@ config.initial_cols = 120
 config.initial_rows = 40
 config.max_fps = 144
 
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.85
 config.window_decorations = "RESIZE"
 config.window_padding = {
     left = 5,
