@@ -46,16 +46,18 @@ exec --no-startup-id xrandr --output eDP --set TearFree on
 exec --no-startup-id picom -b
 
 # Wallpaper
-exec_always --no-startup-id feh --no-fehbg --bg-fill $wallpaper &
+exec_always --no-startup-id feh --no-fehbg --bg-fill $wallpaper
 
 ##
 # Idle configuration
 ##
-set $lock i3lock -n -e -f -c 000000
+# set $lock i3lock -n -e -f -c 000000
+set $lock $HOME/.config/i3/lock.sh $wallpaper
 
 # Dim the screen after two minutes of inactivity, lock the screen five minutes later using i3lock:
-exec --no-startup-id xset s 100 300
-exec --no-startup-id xss-lock -l -n $HOME/.config/i3/dim-screen -- $lock
+exec --no-startup-id xset +dpms dpms 0 0 300
+exec --no-startup-id xset s 100 100
+exec --no-startup-id xss-lock -l -n $HOME/.config/i3/dim-screen.sh -- $lock
 
 ##
 # Input configuration
@@ -196,9 +198,9 @@ bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 # Screenshots
 ##
 
-bindsym --release $win+Shift+s exec $HOME/.config/i3/screenshot area
-bindsym --release Print exec $HOME/.config/i3/screenshot output
-bindsym --release Shift+Print exec $HOME/.config/i3/screenshot window
+bindsym --release $win+Shift+s exec $HOME/.config/i3/screenshot.sh area
+bindsym --release Print exec $HOME/.config/i3/screenshot.sh output
+bindsym --release Shift+Print exec $HOME/.config/i3/screenshot.sh window
 
 ##
 # Status Bar
