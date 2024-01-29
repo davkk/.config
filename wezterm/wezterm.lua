@@ -102,7 +102,7 @@ config.colors = {
 }
 
 -- FONT
-config.font = wezterm.font_with_fallback({ "Input" })
+config.font = wezterm.font_with_fallback({ "Input", "nonicons" })
 config.use_cap_height_to_scale_fallback_fonts = true
 config.cell_width = 1
 config.underline_thickness = 4
