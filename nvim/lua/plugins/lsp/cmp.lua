@@ -113,7 +113,7 @@ return {
                         nvim_lsp = "[LSP]",
                         path = "[path]",
                         luasnip = "[snip]",
-                        Codeium = "[codeium]",
+                        codeium = "{…}",
                     },
                 }),
             },
