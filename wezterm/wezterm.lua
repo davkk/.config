@@ -21,12 +21,6 @@ config.max_fps = 144
 
 config.window_background_opacity = 0.85
 config.window_decorations = "RESIZE"
-config.window_padding = {
-    left = 5,
-    right = 5,
-    top = 5,
-    bottom = 5,
-}
 
 -- COLORS
 local palette = {
@@ -108,14 +102,7 @@ config.colors = {
 }
 
 -- FONT
-config.font = wezterm.font_with_fallback({
-    "Input",
-    -- {
-    --     family = "iMWritingMono Nerd Font",
-    --     stretch = "ExtraExpanded",
-    --     harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
-    -- },
-})
+config.font = wezterm.font_with_fallback({ "Input" })
 config.use_cap_height_to_scale_fallback_fonts = true
 config.cell_width = 1
 config.underline_thickness = 4
@@ -240,11 +227,9 @@ config.tab_max_width = 100
 
 local tab_title = function(tab_info)
     local title = tab_info.tab_title
-
     if title and #title > 0 then
         return title
     end
-
     return tab_info.active_pane.title
 end
 
