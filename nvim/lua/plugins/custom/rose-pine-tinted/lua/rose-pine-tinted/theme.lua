@@ -126,7 +126,7 @@ function M._load(options)
         String = { fg = palette.gold },
         Structure = { fg = palette.foam },
         Tag = { fg = palette.foam },
-        Todo = { fg = palette.rose, bg = palette.rose, blend = 20 },
+        Todo = { fg = palette.todo, bg = palette.todo, blend = 20 },
         Type = { fg = palette.foam },
         Typedef = { link = "Type" },
         Underlined = { underline = true },
