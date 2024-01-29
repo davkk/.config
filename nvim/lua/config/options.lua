@@ -24,7 +24,6 @@ opt.laststatus = 3
 -- tabs and indent
 opt.autoindent = true
 opt.cindent = true
-opt.wrap = true
 
 opt.tabstop = 4
 opt.softtabstop = 4
