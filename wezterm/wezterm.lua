@@ -19,8 +19,15 @@ config.initial_cols = 120
 config.initial_rows = 40
 config.max_fps = 144
 
+config.enable_scroll_bar = false
 config.window_background_opacity = 0.85
 config.window_decorations = "RESIZE"
+config.window_padding = {
+  left = 0,
+  right = 0,
+  top = 0,
+  bottom = 0,
+}
 
 -- COLORS
 local palette = {
