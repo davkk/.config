@@ -11,8 +11,26 @@ vim.keymap.set("x", "<leader>p", '"_dP', opts)
 vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 
+-- recenter screen on jump
 vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
 vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
+vim.keymap.set("n", "{", "{zz", opts)
+vim.keymap.set("n", "}", "}zz", opts)
+vim.keymap.set("n", "n", "nzzzv", opts)
+vim.keymap.set("n", "N", "Nzzzv", opts)
+vim.keymap.set("n", "*", "*zz", opts)
+vim.keymap.set("n", "#", "#zz", opts)
+vim.keymap.set("n", "g*", "g*zz", opts)
+vim.keymap.set("n", "g#", "g#zz", opts)
+vim.keymap.set("n", "gg", "ggzz", opts)
+vim.keymap.set("n", "G", "Gzz", opts)
+vim.keymap.set("n", "%", "%zz", opts)
+vim.keymap.set("n", "<C-o>", "<C-o>zz", opts)
+vim.keymap.set("n", "<C-i>", "<C-i>zz", opts)
+
+-- move lines
+vim.keymap.set("v", "<C-Left>", ":m '<-2<CR>gv=gv", opts)
+vim.keymap.set("v", "<C-Right>", ":m '>+1<CR>gv=gv", opts)
 
 -- resize window
 vim.keymap.set("n", "<A-Right>", "<C-w>5>", opts)
@@ -90,14 +108,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "<leader>dn", function()
             vim.diagnostic.goto_next {
                 severity = get_highest_error_severity(),
-                wrap = true,
                 float = true,
             }
         end, opts_buff)
         vim.keymap.set("n", "<leader>dp", function()
             vim.diagnostic.goto_prev {
                 severity = get_highest_error_severity(),
-                wrap = true,
                 float = true,
             }
         end, opts_buff)
