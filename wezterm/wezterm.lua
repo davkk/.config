@@ -8,6 +8,8 @@ end
 -- OPTIONS
 config.term = "wezterm"
 
+config.check_for_updates = false
+
 config.audible_bell = "Disabled"
 config.cursor_blink_rate = 0
 config.adjust_window_size_when_changing_font_size = false
@@ -133,11 +135,11 @@ table.insert(config.hyperlink_rules, {
 })
 
 -- KEYBINDINGS
-config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "f", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
     -- Send "CTRL-F" to the terminal when pressing CTRL-F + CTRL-F
     {
-        key = "b",
+        key = "f",
         mods = "LEADER|CTRL",
         action = wezterm.action.SendKey({ key = "b", mods = "CTRL" }),
     },
@@ -161,6 +163,11 @@ config.keys = {
         key = "p",
         mods = "LEADER",
         action = wezterm.action.ActivateTabRelative(-1),
+    },
+    {
+        key = "[",
+        mods = "LEADER",
+        action = wezterm.action.ActivateCopyMode,
     },
 
     {
