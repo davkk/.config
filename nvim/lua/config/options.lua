@@ -38,6 +38,9 @@ opt.linebreak = true
 -- text wrapping
 opt.wrap = false
 
+-- transparent folds
+vim.wo.foldtext = ""
+
 -- disable autowrapping
 opt.fo:remove("t")
 
