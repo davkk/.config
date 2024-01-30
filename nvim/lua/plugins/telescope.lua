@@ -23,7 +23,7 @@ return {
                 layout_config = {
                     prompt_position = "top",
                     width = 0.9,
-                    height = 0.99,
+                    height = 0.8,
                 },
                 path_display = { smart = true },
                 sorting_strategy = "ascending",
