@@ -1,28 +1,23 @@
 #!/usr/bin/env bash
 
-if [[ $# -eq 1 ]]; then
-    selected=$1
-else
-    selected=$(find ~/projects ~/work ~/personal -mindepth 1 -maxdepth 1 -type d | fzf)
-fi
+selected=`~/.config/.scripts/fzfp $1`
 
 if [[ -z $selected ]]; then
     exit 0
 fi
 
-selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
+selected_name=`basename "$selected" | tr . _`
+tmux_running=`pgrep tmux`
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-window -c $selected \; rename-window $selected_name
+    tmux new-session -s $selected_name -c $selected
     exit 0
 fi
 
-has_window=`tmux lsw -F "#{window_name}" | grep $selected_name`
-if [[ -z $has_window ]]; then
-    tmux new-window -c $selected \; rename-window $selected_name
+has_session=`tmux has-session -t=$selected_name 2> /dev/null`
+if [[ -z $has_session ]]; then
+    tmux new-session -ds $selected_name -c $selected
 fi
 
-# switch to existing window and not session, by name
-tmux select-window -t $selected_name
+tmux switch-client -t $selected_name
 
