@@ -28,6 +28,12 @@
 !wezterm/
 !wezterm/**
 
+!alacritty/
+!alacritty/**
+
+!fontconfig/
+!fontconfig/**
+
 plugins/
 .oh-my-zsh/
 

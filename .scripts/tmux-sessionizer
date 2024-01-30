@@ -14,12 +14,15 @@ selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
+    tmux new-window -c $selected \; rename-window $selected_name
     exit 0
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
+has_window=`tmux lsw -F "#{window_name}" | grep $selected_name`
+if [[ -z $has_window ]]; then
+    tmux new-window -c $selected \; rename-window $selected_name
 fi
 
-tmux switch-client -t $selected_name
+# switch to existing window and not session, by name
+tmux select-window -t $selected_name
+
