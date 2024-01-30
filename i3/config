@@ -54,9 +54,11 @@ exec_always --no-startup-id feh --no-fehbg --bg-fill $wallpaper
 # set $lock i3lock -n -e -f -c 000000
 set $lock $HOME/.config/i3/lock.sh
 
-# Dim the screen after two minutes of inactivity, lock the screen five minutes later using i3lock:
-exec --no-startup-id xset +dpms dpms 0 0 300
-exec --no-startup-id xset s 100 300
+# dim the screen after 100 seconds of inactivity, lock after 300 seconds total
+exec --no-startup-id xset s 100 200
+# then turn off the screen
+exec --no-startup-id xset +dpms dpms 300
+
 exec --no-startup-id xss-lock -l -n $HOME/.config/i3/dim-screen.sh -- $lock $wallpaper
 
 ##
