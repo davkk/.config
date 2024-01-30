@@ -1,29 +1,31 @@
 return {
     "ThePrimeagen/harpoon",
     event = "VeryLazy",
+    branch = "harpoon2",
     opts = {
-        menu = {
-            width = math.floor(vim.o.columns * 4 / 5),
-            height = math.floor(vim.o.lines * 3 / 5),
+        settings = {
+            save_on_toggle = true,
+            sync_on_ui_close = true,
         },
-        excluded_filetypes = { "harpoon", "oil", "term" },
     },
     config = function(_, opts)
-        require("harpoon").setup(opts)
-        local mark = require("harpoon.mark")
-        local ui = require("harpoon.ui")
+        local harpoon = require("harpoon")
+        harpoon:setup(opts)
 
-        vim.keymap.set("n", "<leader>a", mark.add_file, { desc = "add file to Harpoon" })
-        vim.keymap.set("n", "<leader>h", ui.toggle_quick_menu, { desc = "toggle Harpoon quick menu" })
+        vim.keymap.set("n", "<leader>a", function()
+            harpoon:list():append()
+        end)
+        vim.keymap.set("n", "<leader>h", function()
+            harpoon.ui:toggle_quick_menu(harpoon:list())
+        end)
 
         for i = 1, 5 do
             vim.keymap.set(
                 "n",
                 string.format("<leader>%s", i),
                 function()
-                    require("harpoon.ui").nav_file(i)
-                end,
-                { desc = string.format("Harpoon navigate to file %s", i) }
+                    harpoon:list():select(i)
+                end
             )
         end
     end,
