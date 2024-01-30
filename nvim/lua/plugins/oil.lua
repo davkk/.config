@@ -3,13 +3,13 @@ return {
     lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-        columns = { { "icon", add_padding = false, }, },
+        columns = { { "icon", add_padding = false } },
         win_options = {
             wrap = false,
-            cursorcolumn = false,
+            colorcolumn = "",
             number = true,
             relativenumber = true,
-            cursorline = true,
+            cursorline = false,
             foldcolumn = "0",
             spell = false,
             list = false,
@@ -38,16 +38,11 @@ return {
         },
         use_default_keymaps = false,
         view_options = { show_hidden = true, },
-        float = {
-            max_width = 80,
-            max_height = 30,
-            win_options = { winblend = 10, },
-        },
     },
     config = function(_, opts)
         local oil = require("oil")
         oil.setup(opts)
 
-        vim.keymap.set("n", "<C-e>", oil.open, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-e>", oil.toggle_float, { noremap = true, silent = true })
     end,
 }
