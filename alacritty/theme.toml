@@ -43,7 +43,7 @@ foreground = "#8d849a"
 background = "#2f2b3b"
 
 [colors.hints.end]
-foreground = "#645c70"
+foreground = "#8d849a"
 background = "#2f2b3b"
 
 [colors.line_indicator]
@@ -69,7 +69,7 @@ cyan = "#edb2b5"
 white = "#dad6e9"
 
 [colors.bright]
-black = "#645c70"
+black = "#8d849a"
 red = "#f56389"
 green = "#628079"
 yellow = "#ffb083"
@@ -79,7 +79,7 @@ cyan = "#edb2b5"
 white = "#dad6e9"
 
 [colors.dim]
-black = "#645c70"
+black = "#8d849a"
 red = "#f56389"
 green = "#628079"
 yellow = "#ffb083"

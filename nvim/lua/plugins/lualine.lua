@@ -24,10 +24,10 @@ return {
                         padding = { left = 0, right = 2 },
                         tabs_color = {
                             active = { fg = palette.text, gui = "bold" },
-                            inactive = { fg = palette.highlight_high },
+                            inactive = { fg = palette.subtle },
                         },
                         fmt = function(name, context)
-                            return string.format("%d:[%s]", context.tabnr, name)
+                            return string.format("%d:%s", context.tabnr, name)
                         end
                     },
                 },
@@ -37,7 +37,7 @@ return {
                 lualine_b = {
                     {
                         "mode",
-                        padding = { left = 0, right = 2 },
+                        padding = { left = 0, right = 1 },
                         color = { gui = "bold" },
                     },
                 },
