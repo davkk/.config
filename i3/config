@@ -245,4 +245,4 @@ for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enabl
 exec --no-startup-id nm-applet
 
 exec --no-startup-id i3-msg 'workspace 1; exec --no-startup-id $term'
-exec --no-startup-id "sleep 3 && i3-msg 'workspace 2; exec --no-startup-id $browser'"
+exec --no-startup-id sh -c "sleep 3 && i3-msg 'workspace 2; exec --no-startup-id $browser; workspace 1'"
