@@ -1,7 +1,7 @@
 return {
     {
         "tpope/vim-fugitive",
-        event = "VeryLazy",
+        lazy = false,
         config = function()
             local opts = { noremap = true, silent = true }
 

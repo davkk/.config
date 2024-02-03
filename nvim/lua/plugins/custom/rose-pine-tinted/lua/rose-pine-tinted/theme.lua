@@ -80,13 +80,16 @@ function M._load(options)
             bg = (options.dim_nc_background and palette.none) or maybe.base,
         },
         Substitute = { fg = palette.base, bg = palette.love },
+
         StatusLine = { fg = palette.subtle, bg = palette.none },
         StatusLineNC = { fg = palette.muted, bg = groups.panel_nc },
         StatusLineTerm = { link = "StatusLine" },
         StatusLineTermNC = { link = "StatusLineNC" },
-        TabLine = { fg = palette.subtle, bg = groups.panel },
-        TabLineFill = { bg = groups.panel },
-        TabLineSel = { fg = palette.text, bg = palette.overlay },
+
+        TabLine = { fg = palette.subtle, bg = palette.none },
+        TabLineSel = { fg = palette.text, bg = palette.none, bold = true },
+        TabLineFill = { bg = palette.none },
+
         Title = { fg = palette.text },
         VertSplit = { fg = groups.border, bg = maybe.bold_vert_split },
         Visual = { bg = palette.highlight_med },
@@ -486,6 +489,15 @@ function M._load(options)
 
         -- codota/tabnine.nvim
         TabnineSuggestion = { fg = palette.muted, bg = palette.overlay, blend = 40 },
+
+        -- brianaung/yasl.nvim
+        YaslAdded = { fg = palette.highlight_med },
+        YaslModified = { fg = palette.highlight_med },
+        YaslRemoved = { fg = palette.highlight_med },
+        YaslError = { fg = palette.error },
+        YaslWarn = { fg = palette.warning },
+        YaslInfo = { fg = palette.info },
+        YaslHint = { fg = palette.hint },
     }
 
     vim.g.terminal_color_0 = palette.overlay -- black

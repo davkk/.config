@@ -1,6 +1,6 @@
 return {
     "ThePrimeagen/harpoon",
-    event = "VeryLazy",
+    lazy = false,
     branch = "harpoon2",
     opts = {
         settings = {

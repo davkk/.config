@@ -90,7 +90,7 @@ opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
 -- more space for messages
-opt.cmdheight = 0
+opt.cmdheight = 1
 vim.api.nvim_create_autocmd("RecordingEnter", {
     pattern = "*",
     callback = function()
