@@ -489,15 +489,6 @@ function M._load(options)
 
         -- codota/tabnine.nvim
         TabnineSuggestion = { fg = palette.muted, bg = palette.overlay, blend = 40 },
-
-        -- brianaung/yasl.nvim
-        YaslAdded = { fg = palette.highlight_med },
-        YaslModified = { fg = palette.highlight_med },
-        YaslRemoved = { fg = palette.highlight_med },
-        YaslError = { fg = palette.error },
-        YaslWarn = { fg = palette.warning },
-        YaslInfo = { fg = palette.info },
-        YaslHint = { fg = palette.hint },
     }
 
     vim.g.terminal_color_0 = palette.overlay -- black
