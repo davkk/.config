@@ -27,14 +27,14 @@ local modes = {
 local function highlight(mode)
     local fg = modes[mode] or palette.text
 
-    vim.api.nvim_set_hl(0, "ModeMsg", { fg = fg, bg = palette.none })
+    vim.api.nvim_set_hl(0, "ModeMsg", { fg = fg, bg = palette.none, bold = true })
 end
 
 local mode_highlight_group = vim.api.nvim_create_augroup("ModeHighlight", {})
 
 vim.api.nvim_create_autocmd("ModeChanged", {
     group = mode_highlight_group,
-    pattern = "*:[^i]",
+    pattern = "*:[^it]",
     callback = function(scene)
         local mode = vim.split(scene.match, ":")[2]
         highlight(mode)
@@ -43,8 +43,14 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 
 vim.api.nvim_create_autocmd("InsertEnter", {
     group = mode_highlight_group,
-    pattern = "*",
     callback = function()
         highlight("i")
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "TermEnter", "TermOpen" }, {
+    group = mode_highlight_group,
+    callback = function()
+        highlight("t")
     end,
 })
