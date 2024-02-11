@@ -91,19 +91,19 @@ StatusLine = {}
 
 ---@return string
 function StatusLine.build_statusline()
-    return table.concat {
+    return table.concat({
         "%#StatusLine#",
         filename(),
         "  ",
         "%#LineNr#",
         git_diff(),
-        "%#Normal#",
         "%=",
-        lsp(),
         "  ",
+        lsp(),
         "%#LineNr#",
+        "  ",
         location(),
-    }
+    })
 end
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
