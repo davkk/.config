@@ -98,7 +98,7 @@ return {
             end,
 
             angularls = {
-                root_dir = lspconfig.util.root_pattern("Gruntfile.js"),
+                root_dir = lspconfig.util.root_pattern("angular.json", "Gruntfile.js"),
             }
             ,
             astro = true,

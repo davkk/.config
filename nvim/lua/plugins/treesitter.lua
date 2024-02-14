@@ -5,7 +5,6 @@ return {
     dependencies = {
         "JoosepAlviste/nvim-ts-context-commentstring",
         "nvim-treesitter/nvim-treesitter-context",
-        { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
     },
     opts = {
         ensure_installed = {

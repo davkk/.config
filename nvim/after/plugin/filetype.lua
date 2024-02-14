@@ -9,4 +9,7 @@ vim.filetype.add {
     filename = {
         [".eslint-ts-config"] = "jsonc",
     },
+    pattern = {
+        [".*.component.html"] = "angular",
+    },
 }
