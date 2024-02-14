@@ -1,4 +1,4 @@
-local palette = require("rose-pine-tinted.palette")
+local palette = require("fog.palette")
 
 local modes = {
     ["n"] = palette.rose,          -- NORMAL

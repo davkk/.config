@@ -62,16 +62,16 @@ local function lsp()
     local info = ""
 
     if counts.error > 0 then
-        error = " %#DiagnosticSignError#E%s" .. counts.error
+        error = " %#DiagnosticSignError#E" .. counts.error
     end
     if counts.warn > 0 then
-        warn = " %#DiagnosticSignWarn#W%s" .. counts.warn
+        warn = " %#DiagnosticSignWarn#W" .. counts.warn
     end
     if counts.hint > 0 then
-        hint = " %#DiagnosticSignHint#H%s" .. counts.hint
+        hint = " %#DiagnosticSignHint#H" .. counts.hint
     end
     if counts.info > 0 then
-        info = " %#DiagnosticSignInfo#I%s" .. counts.info
+        info = " %#DiagnosticSignInfo#I" .. counts.info
     end
 
     return error .. warn .. hint .. info .. "%#Normal#"
@@ -94,8 +94,8 @@ function StatusLine.build_statusline()
     return table.concat({
         "%#StatusLine#",
         filename(),
-        "  ",
         "%#LineNr#",
+        "  ",
         git_diff(),
         "%=",
         "  ",
