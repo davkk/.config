@@ -57,6 +57,11 @@ return {
                     NormalFloat = { blend = 5 },
                     FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
                     FloatBorder = { fg = "highlight_med", blend = 5 },
+                    ModeMsg = { fg = "highlight_med", bold = true },
+
+                    -- statusline
+                    StatusLineTerm = { link = "StatusLine" },
+                    StatusLineTermNC = { link = "StatusLine" },
 
                     -- tabline
                     TabLine = { fg = "subtle", bg = "none" },
