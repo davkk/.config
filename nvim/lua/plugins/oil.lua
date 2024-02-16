@@ -38,6 +38,9 @@ return {
         },
         use_default_keymaps = false,
         view_options = { show_hidden = true, },
+        float = {
+            border = "solid",
+        }
     },
     config = function(_, opts)
         local oil = require("oil")

@@ -136,10 +136,11 @@ return {
 
             -- nvim-telescope/telescope.nvim
             TelescopeNormal = { blend = 5 },
+            TelescopePromptNormal = { blend = 5 },
             TelescopeBorder = { blend = 5 },
-            TelescopeTitle = { bg = "none", blend = 5 },
+            TelescopeTitle = { fg = "foam", bg = "foam", blend = 5, bold = false },
             TelescopeSelection = { bg = "highlight_med" },
-            TelescopeSelectionCaret = { bg = "highlight_med" },
+            TelescopeSelectionCaret = { bg = "highlight_med", bold = true },
 
             -- nvim-treesitter/nvim-treesitter-context
             TreesitterContext = { bg = "none", link = "Normal" },

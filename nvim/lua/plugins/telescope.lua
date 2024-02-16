@@ -19,14 +19,14 @@ return {
         telescope.setup({
             defaults = {
                 winblend = 5,
+                borderchars = { " " },
                 layout_strategy = "flex",
                 layout_config = {
-                    prompt_position = "top",
+                    prompt_position = "bottom",
                     width = 0.9,
                     height = 0.8,
                 },
                 path_display = { smart = true },
-                sorting_strategy = "ascending",
                 scroll_strategy = "cycle",
                 preview = { hide_on_startup = false },
                 results_title = false,
