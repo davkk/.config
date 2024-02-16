@@ -94,8 +94,10 @@ function StatusLine.build_statusline()
     return table.concat({
         "%#StatusLine#",
         filename(),
+        " ",
+        "%m%r",
+        " ",
         "%#LineNr#",
-        "  ",
         git_diff(),
         "%=",
         "  ",
