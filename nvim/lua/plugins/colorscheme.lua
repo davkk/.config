@@ -1,124 +1,180 @@
+local my_palette = {
+    _nc = "#19161f",
+    surface = "#25222e",
+
+    highlight_low = "#23222b",
+    highlight_med = "#403e4e",
+    highlight_high = "#545161",
+
+    none = "none",
+
+    base = "#1a1821",
+    overlay = "#2f2b3b",
+    muted = "#645c70",
+    subtle = "#8d849a",
+    text = "#dad6e9",
+    love = "#f56389",
+    gold = "#ffb083",
+    rose = "#edb2b5",
+    pine = "#628079",
+    foam = "#b7d7d5",
+    iris = "#d2b1d6",
+
+    error = "#b4637a",
+    warn = "#ea9d34",
+    hint = "#907aa9",
+    info = "#56949f",
+}
+
+local function tint(highlight, palette)
+    if highlight.fg ~= nil then
+        for name, color in pairs(palette) do
+            if highlight.fg == color then
+                highlight.fg = my_palette[name]
+            end
+        end
+    end
+    if highlight.bg ~= nil then
+        for name, color in pairs(palette) do
+            if highlight.bg == color then
+                highlight.bg = my_palette[name]
+            end
+        end
+    end
+end
+
 return {
-    -- {
-    --     dir = "~/.config/nvim/lua/plugins/custom/rose-pine-tinted",
-    --     name = "rose-pine-tinted",
-    --     lazy = false,
-    --     enabled = false,
-    --     priority = 1000,
-    --     config = function()
-    --         require("rose-pine-tinted").setup()
-    --         vim.cmd([[colorscheme rose-pine-tinted]])
-    --     end,
-    -- },
-    {
-        dir = "~/.config/nvim/lua/plugins/custom/fog.nvim",
-        name = "fog",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require("fog").setup({
-                variant = "moon",      -- auto, main, moon, or dawn
-                dark_variant = "moon", -- main, moon, or dawn
-                dim_inactive_windows = false,
-                extend_background_behind_borders = true,
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = false,
+    priority = 1000,
+    opts = {
+        variant = "main",      -- auto, main, moon, or dawn
+        dark_variant = "main", -- main, moon, or dawn
+        dim_inactive_windows = false,
+        extend_background_behind_borders = true,
 
-                enable = {
-                    terminal = true,
-                    legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-                    migrations = true,        -- Handle deprecated options automatically
-                },
+        enable = {
+            terminal = true,
+            legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
+            migrations = true,        -- Handle deprecated options automatically
+        },
 
-                styles = {
-                    bold = true,
-                    italic = false,
-                    transparency = true,
-                },
+        styles = {
+            bold = true,
+            italic = false,
+            transparency = true,
+        },
 
-                groups = {
-                    error = "#b4637a",
-                    warning = "#ea9d34",
-                    hint = "#907aa9",
-                    info = "#56949f",
-                },
+        groups = {
+            error = my_palette.error,
+            warn = my_palette.warn,
+            hint = my_palette.hint,
+            info = my_palette.info,
 
-                highlight_groups = {
-                    -- line
-                    CursorLine = { bg = "overlay", blend = 40 },
-                    CursorLineNr = { fg = "text", bold = true },
-                    LineNr = { fg = "highlight_med" },
-                    ColorColumn = { bg = "overlay", blend = 40 },
+            todo = "love",
+        },
 
-                    -- menu
-                    Pmenu = { blend = 5 },
-                    PmenuSel = { bg = "rose", fg = "base" },
+        highlight_groups = {
+            -- line
+            CursorLine = { bg = "overlay", blend = 40 },
+            CursorLineNr = { fg = "text", bold = true },
+            LineNr = { fg = "highlight_med" },
+            ColorColumn = { bg = "overlay", blend = 40 },
 
-                    -- window
-                    WinSeparator = { bg = "none", fg = "overlay" },
-                    NormalFloat = { blend = 5 },
-                    FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
-                    FloatBorder = { fg = "highlight_med", blend = 5 },
-                    ModeMsg = { fg = "highlight_med", bold = true },
+            -- menu
+            Pmenu = { blend = 5 },
+            PmenuSel = { bg = "rose", fg = "base" },
 
-                    -- statusline
-                    StatusLineTerm = { link = "StatusLine" },
-                    StatusLineTermNC = { link = "StatusLine" },
+            -- window
+            WinSeparator = { bg = "none", fg = "overlay" },
+            NormalFloat = { blend = 5 },
+            FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
+            FloatBorder = { fg = "highlight_med", blend = 5 },
+            ModeMsg = { fg = "highlight_med", bold = true },
 
-                    -- tabline
-                    TabLine = { fg = "subtle", bg = "none" },
-                    TabLineSel = { fg = "text", bg = "none", bold = true },
-                    TabLineFill = { bg = "none" },
+            -- statusline
+            StatusLineTerm = { link = "StatusLine" },
+            StatusLineTermNC = { link = "StatusLine" },
 
-                    -- diagnostics
-                    SpellBad = { sp = "#ea9d34" },
-                    DiagnosticWarn = { fg = "#ea9d34" },
-                    DiagnosticUnderlineWarn = { sp = "#ea9d34" },
-                    DiagnosticSignWarn = { link = "DiagnosticWarn" },
-                    DiagnosticVirtualTextWarn = { link = "DiagnosticWarn" },
-                    DiagnosticFloatingWarn = { link = "DiagnosticWarn" },
+            -- tabline
+            TabLine = { fg = "subtle", bg = "none" },
+            TabLineSel = { fg = "text", bg = "none", bold = true },
+            TabLineFill = { bg = "none" },
 
-                    -- search
-                    Search = { link = "Visual" },
+            -- diagnostics
+            SpellBad = { sp = my_palette.warn },
 
-                    -- lewis6991/gitsigns.nvim
-                    GitSignsAdd = { bg = "none" },
-                    GitSignsChange = { bg = "none" },
-                    GitSignsDelete = { bg = "none" },
+            -- lsp
+            ["@type.qualifier"] = { fg = "subtle" },
+            ["@function.method.call"] = { fg = "rose" },
 
-                    -- j-hui/fidget.nvim
-                    FidgetTask = { fg = "highlight_med" },
-                    FidgetTitle = { fg = "text" },
+            -- search
+            Search = { fg = "none", bg = "highlight_med" },
+            CurSearch = { fg = "none", bg = "highlight_high" },
 
-                    -- hrsh7th/nvim-cmp
-                    CmpItemMenu = { fg = "highlight_high" },
-                    CmpItemAbbrMatchFuzzy = { fg = "rose" },
-                    CmpItemKind = { fg = "iris" },
+            -- lewis6991/gitsigns.nvim
+            GitSignsAdd = { bg = "none" },
+            GitSignsChange = { bg = "none" },
+            GitSignsDelete = { bg = "none" },
 
-                    -- nvim-telescope/telescope.nvim
-                    TelescopeNormal = { blend = 5 },
-                    TelescopeBorder = { blend = 5 },
-                    TelescopeTitle = { bg = "none", blend = 5 },
-                    TelescopeSelection = { bg = "highlight_med" },
-                    TelescopeSelectionCaret = { bg = "highlight_med" },
+            -- j-hui/fidget.nvim
+            FidgetTask = { fg = "highlight_med" },
+            FidgetTitle = { fg = "text" },
 
-                    -- nvim-treesitter/nvim-treesitter-context
-                    TreesitterContext = { bg = "none", link = "Normal" },
+            -- hrsh7th/nvim-cmp
+            CmpItemMenu = { fg = "highlight_high" },
+            CmpItemAbbrMatchFuzzy = { fg = "rose" },
+            CmpItemKind = { fg = "iris" },
 
-                    -- Exafunction/codeium.vim
-                    CodeiumSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
+            -- nvim-telescope/telescope.nvim
+            TelescopeNormal = { blend = 5 },
+            TelescopeBorder = { blend = 5 },
+            TelescopeTitle = { bg = "none", blend = 5 },
+            TelescopeSelection = { bg = "highlight_med" },
+            TelescopeSelectionCaret = { bg = "highlight_med" },
 
-                    -- codota/tabnine.nvim
-                    TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
-                },
+            -- nvim-treesitter/nvim-treesitter-context
+            TreesitterContext = { bg = "none", link = "Normal" },
 
-                before_highlight = function(group, highlight, palette)
-                    -- replace curl with underline
-                    if highlight.undercurl then
-                        highlight.undercurl = false
-                        highlight.underline = true
-                    end
-                end,
-            })
-            vim.cmd([[colorscheme fog]])
+            -- Exafunction/codeium.vim
+            CodeiumSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
+
+            -- codota/tabnine.nvim
+            TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
+        },
+
+        before_highlight = function(group, highlight, palette)
+            -- custom color tint
+            tint(highlight, palette)
+
+            -- replace curl with underline
+            if highlight.undercurl then
+                highlight.undercurl = false
+                highlight.underline = true
+            end
         end,
-    }
+    },
+    config = function(_, opts)
+        require("rose-pine").setup(opts)
+        vim.cmd([[colorscheme rose-pine]])
+
+        --- Terminal
+        vim.g.terminal_color_0 = my_palette.overlay -- black
+        vim.g.terminal_color_8 = my_palette.subtle  -- bright black
+        vim.g.terminal_color_1 = my_palette.love    -- red
+        vim.g.terminal_color_9 = my_palette.love    -- bright red
+        vim.g.terminal_color_2 = my_palette.pine    -- green
+        vim.g.terminal_color_10 = my_palette.pine   -- bright green
+        vim.g.terminal_color_3 = my_palette.gold    -- yellow
+        vim.g.terminal_color_11 = my_palette.gold   -- bright yellow
+        vim.g.terminal_color_4 = my_palette.foam    -- blue
+        vim.g.terminal_color_12 = my_palette.foam   -- bright blue
+        vim.g.terminal_color_5 = my_palette.iris    -- magenta
+        vim.g.terminal_color_13 = my_palette.iris   -- bright magenta
+        vim.g.terminal_color_6 = my_palette.rose    -- cyan
+        vim.g.terminal_color_14 = my_palette.rose   -- bright cyan
+        vim.g.terminal_color_7 = my_palette.text    -- white
+        vim.g.terminal_color_15 = my_palette.text   -- bright white
+    end,
 }

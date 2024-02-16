@@ -7,6 +7,7 @@
 
 !tmux/
 !tmux/**
+tmux/plugins
 
 !zsh/
 !zsh/**
@@ -34,7 +35,6 @@
 !fontconfig/
 !fontconfig/**
 
-plugins/
 .oh-my-zsh/
 
 !nvim/lua/plugins/
