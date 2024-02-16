@@ -41,6 +41,13 @@ local function tint(highlight, palette)
             end
         end
     end
+    if highlight.sp ~= nil then
+        for name, color in pairs(palette) do
+            if highlight.sp == color then
+                highlight.sp = my_palette[name]
+            end
+        end
+    end
 end
 
 return {
