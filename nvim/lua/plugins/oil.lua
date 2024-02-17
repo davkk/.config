@@ -40,6 +40,8 @@ return {
         view_options = { show_hidden = true, },
         float = {
             border = "solid",
+            max_width = math.ceil(vim.o.columns * 0.8),
+            padding = 3,
         }
     },
     config = function(_, opts)
