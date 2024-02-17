@@ -37,7 +37,7 @@ family = "Input Nonicons"
 style = "Italic"
 
 [font.offset]
-x = 1
+x = 0
 y = 0
 
 [font.glyph_offset]
