@@ -7,7 +7,9 @@ return {
         formatters_by_ft = {
             python = { "isort", "black" },
             javascript = { "prettierd", "eslint_d" },
+            javascriptreact = { "prettierd", "eslint_d" },
             typescript = { "prettierd", "eslint_d" },
+            typescriptreact = { "prettierd", "eslint_d" },
             sass = { "prettierd" },
             scss = { "prettierd" },
             css = { "prettierd" },
