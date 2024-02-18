@@ -1,7 +1,7 @@
 # Read `man 5 sway` for a complete reference.
 
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec --no-startup-id dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec --no-startup-id /usr/lib/xdg-desktop-portal -r
 exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
 
@@ -22,7 +22,7 @@ set $up k
 set $right l
 
 # Your preferred terminal emulator
-set $term wezterm
+set $term alacritty
 set $browser brave-browser
 
 # Styles
@@ -32,7 +32,7 @@ set $highlight #ffb083
 set $menu j4-dmenu-desktop
 
 # Wallpaper
-set $wallpaper $HOME/Pictures/wallpaper.jpg
+set $wallpaper $HOME/Pictures/wallpaper1.jpg
 set $default_light 15
 
 ##
@@ -43,17 +43,21 @@ default_border pixel 2
 default_floating_border normal
 hide_edge_borders smart
 
+floating_modifier $mod
+
 ##
 # Output configuration
 ##
 
-output * bg #000000 solid_color
-# output * bg $wallpaper fill
+# output * bg #000000 solid_color
+output * bg $wallpaper fill
 
 output "eDP-1" {
     mode 2880x1800@90.001Hz
     scale 1.25
 }
+
+exec_always gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
 ##
 # Idle configuration
@@ -62,13 +66,14 @@ output "eDP-1" {
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
-set $lock swaylock -f -i $wallpaper -s fill
+set $lock $HOME/.config/sway/lock.sh -- $wallpaper
 
-exec_always swayidle -w \
-      timeout 120 'swaymsg "output * power off"' \
-          resume 'swaymsg "output * power on"; light -S $(default_light)' \
-      timeout 600 'swaymsg "output * power on"; light -S $(default_light); sleep 1; $lock; sleep 1; swaymsg "output * power off"' \
-          resume 'swaymsg "output * power on"; light -S $(default_light)' \
+exec_always pkill swayidle; swayidle -w \
+      timeout 100 'light -O; $HOME/.config/sway/dim-screen.sh' \
+          resume 'light -I' \
+      timeout 200 'swaymsg "output * power off"' \
+          resume 'swaymsg "output * power on"; light -I' \
+      timeout 300 '$lock' \
       before-sleep '$lock'
 
 bindswitch --reload --locked lid:on exec $lock
@@ -104,15 +109,14 @@ bindsym $win+l exec $lock
 # Start a terminal
 bindsym $mod+Return exec $term
 
+# start a browser
+bindsym $mod+b exec $browser
+
 # Kill focused window
 bindsym $mod+Shift+q kill
 
 # Start your launcher
 bindsym $mod+d exec $menu
-
-# Drag floating windows by holding down $mod and left mouse button.
-# Resize them with right mouse button + $mod.
-floating_modifier $mod normal
 
 # Reload the configuration file
 bindsym $mod+Shift+c reload
@@ -157,7 +161,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # for horizontal split
-bindsym $mod+b splith
+bindsym $mod+z splith
 # for vertical split
 bindsym $mod+v splitv
 
@@ -184,7 +188,7 @@ bindsym $mod+space focus mode_toggle
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -235,9 +239,9 @@ bindsym $mod+r mode "resize"
 # Screenshots
 ##
 
-bindsym $win+Shift+s exec $HOME/.config/.scripts/screenshot area
-bindsym Print exec $HOME/.config/.scripts/screenshot output
-bindsym Shift+Print exec $HOME/.config/.scripts/screenshot window
+bindsym $win+Shift+s exec $HOME/.config/sway/screenshot.sh area
+bindsym Print exec $HOME/.config/sway/screenshot.sh output
+bindsym Shift+Print exec $HOME/.config/sway/screenshot.sh window
 
 ##
 # Status Bar
