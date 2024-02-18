@@ -43,7 +43,8 @@ floating_modifier $mod
 # Output configuration
 ##
 exec --no-startup-id xrandr --output eDP --set TearFree on
-exec --no-startup-id picom -b
+exec --no-startup-id picom -b --backend glx --vsync
+
 
 # Wallpaper
 exec_always --no-startup-id feh --no-fehbg --bg-fill $wallpaper
