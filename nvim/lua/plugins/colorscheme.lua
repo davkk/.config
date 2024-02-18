@@ -116,6 +116,9 @@ return {
             ["@type.qualifier"] = { fg = "subtle" },
             ["@function.method.call"] = { fg = "rose" },
 
+            -- quickfix list
+            QuickFixLine = { bg = "highlight_high", bold = true },
+
             -- search
             Search = { fg = "none", bg = "highlight_med" },
             CurSearch = { fg = "none", bg = "highlight_high" },
