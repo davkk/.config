@@ -299,5 +299,5 @@ for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enabl
 
 exec nm-applet
 
-exec swaymsg 'workspace 1; exec $term'
 exec swaymsg 'workspace 2; exec $browser'
+exec swaymsg 'workspace 3; exec $term'
