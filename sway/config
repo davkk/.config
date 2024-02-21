@@ -292,6 +292,10 @@ for_window [class="Matplotlib"] floating enable, resize set width 1000 px height
 for_window [class="matplotlib"] floating enable, resize set width 1000 px height 800 px, sticky on
 for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enable, sticky on
 
+# R windows
+for_window [title="Data: *"] floating enable, resize set width 1000 px height 800 px, sticky on
+for_window [title="R Graphics: *"] floating enable, resize set width 1000 px height 800 px, sticky on
+
 
 ##
 # Startup

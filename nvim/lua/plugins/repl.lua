@@ -1,9 +1,10 @@
 return {
     "pappasam/nvim-repl",
-    ft = "python",
+    ft = { "python", "r", },
     init = function()
         vim.g["repl_filetype_commands"] = {
             python = "ipython --no-autoindent",
+            r = "R",
         }
     end,
     config = function()
@@ -14,9 +15,15 @@ return {
             { desc = "Toggle nvim-repl" }
         )
         vim.keymap.set(
-            { "n", "v" },
+            "n",
             "<leader><cr>",
-            "<cmd>ReplRunCell<cr>",
+            "<Plug>ReplSendCell<cr>",
+            { desc = "nvim-repl run cell" }
+        )
+        vim.keymap.set(
+            "v",
+            "<leader><cr>",
+            "<Plug>ReplSendVisual<cr>",
             { desc = "nvim-repl run cell" }
         )
     end,

@@ -104,6 +104,8 @@ return {
             astro = true,
             texlab = true,
 
+            r_language_server = true,
+
             fsharp_language_server = {
                 cmd = {
                     "fsautocomplete",
