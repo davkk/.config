@@ -84,10 +84,14 @@ return {
 
         highlight_groups = {
             -- line
-            CursorLine = { bg = "overlay", blend = 40 },
+            CursorLine = { bg = "highlight_low" },
+            ColorColumn = { link = "CursorLine" },
             CursorLineNr = { fg = "text", bold = true },
-            LineNr = { fg = "highlight_med" },
-            ColorColumn = { bg = "overlay", blend = 40 },
+            LineNr = { fg = "highlight_high" },
+
+            -- visual
+            Visual = { link = "CursorLine" },
+            Comment = { link = "LineNr" },
 
             -- menu
             Pmenu = { blend = 5 },
@@ -111,6 +115,7 @@ return {
 
             -- diagnostics
             SpellBad = { sp = my_palette.warn },
+            DiagnosticUnnecessary = { fg = "muted", sp = my_palette.hint, underline = true },
 
             -- lsp
             ["@type.qualifier"] = { fg = "subtle" },
@@ -120,8 +125,8 @@ return {
             QuickFixLine = { bg = "highlight_high", bold = true },
 
             -- search
-            Search = { fg = "none", bg = "highlight_med" },
-            CurSearch = { fg = "none", bg = "highlight_high" },
+            Search = { fg = "none", bg = "text", blend = 15 },
+            CurSearch = { link = "Search" },
 
             -- lewis6991/gitsigns.nvim
             GitSignsAdd = { bg = "none" },
