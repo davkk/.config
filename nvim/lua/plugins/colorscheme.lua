@@ -62,7 +62,7 @@ return {
         extend_background_behind_borders = true,
 
         enable = {
-            terminal = true,
+            terminal = false,
             legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
             migrations = true,        -- Handle deprecated options automatically
         },
@@ -174,23 +174,5 @@ return {
     config = function(_, opts)
         require("rose-pine").setup(opts)
         vim.cmd([[colorscheme rose-pine]])
-
-        --- Terminal
-        vim.g.terminal_color_0 = my_palette.overlay -- black
-        vim.g.terminal_color_8 = my_palette.subtle  -- bright black
-        vim.g.terminal_color_1 = my_palette.love    -- red
-        vim.g.terminal_color_9 = my_palette.love    -- bright red
-        vim.g.terminal_color_2 = my_palette.pine    -- green
-        vim.g.terminal_color_10 = my_palette.pine   -- bright green
-        vim.g.terminal_color_3 = my_palette.gold    -- yellow
-        vim.g.terminal_color_11 = my_palette.gold   -- bright yellow
-        vim.g.terminal_color_4 = my_palette.foam    -- blue
-        vim.g.terminal_color_12 = my_palette.foam   -- bright blue
-        vim.g.terminal_color_5 = my_palette.iris    -- magenta
-        vim.g.terminal_color_13 = my_palette.iris   -- bright magenta
-        vim.g.terminal_color_6 = my_palette.rose    -- cyan
-        vim.g.terminal_color_14 = my_palette.rose   -- bright cyan
-        vim.g.terminal_color_7 = my_palette.text    -- white
-        vim.g.terminal_color_15 = my_palette.text   -- bright white
     end,
 }
