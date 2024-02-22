@@ -36,6 +36,7 @@ return {
                         ["<C-y>"] = actions.select_default,
                         ["<C-d>"] = actions.results_scrolling_down,
                         ["<C-u>"] = actions.results_scrolling_up,
+                        ["<C-f>"] = actions.to_fuzzy_refine
                     },
                     n = {
                         ["q"] = actions.close,
