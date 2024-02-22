@@ -122,7 +122,7 @@ return {
             ["@function.method.call"] = { fg = "rose" },
 
             -- quickfix list
-            QuickFixLine = { bg = "highlight_high", bold = true },
+            QuickFixLine = { bg = "text", blend = 15, bold = true },
 
             -- search
             Search = { fg = "none", bg = "text", blend = 15 },
