@@ -90,7 +90,7 @@ return {
             LineNr = { fg = "highlight_high" },
 
             -- visual
-            Visual = { link = "CursorLine" },
+            Visual = { bg = "highlight_med" },
             Comment = { link = "LineNr" },
 
             -- menu
@@ -125,7 +125,7 @@ return {
             QuickFixLine = { bg = "text", blend = 15, bold = true },
 
             -- search
-            Search = { fg = "none", bg = "text", blend = 15 },
+            Search = { fg = "none", bg = "highlight_med" },
             CurSearch = { link = "Search" },
 
             -- lewis6991/gitsigns.nvim
