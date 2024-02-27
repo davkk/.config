@@ -46,6 +46,7 @@ opt.fo:remove("t")
 -- search
 opt.ignorecase = true
 opt.smartcase = true
+opt.inccommand = 'split'
 
 -- netrw
 vim.g.netrw_browse_split = 0
