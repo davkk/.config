@@ -1,0 +1,30 @@
+snippet angs
+    import { Injectable } from '@angular/core';
+
+    @Injectable({ providedIn: ${1:'root'} })
+    export class ${2:ServiceName}Service {
+        constructor() { }
+    }
+
+snippet angc
+    import { Component, OnInit } from '@angular/core';
+
+    @Component({
+        selector: '${1:selector-name}',
+        templateUrl: '${2:name}.component.html'
+    })
+    export class ${3:Name}Component implements OnInit {
+        constructor() { }
+    }
+
+snippet angp
+    import { Pipe, PipeTransform } from '@angular/core';",
+
+    @Pipe({
+        name: '${1:selector-name}'",
+    })
+    export class ${2:Name}Pipe implements PipeTransform {
+        transform(value: any, ...args: any[]): any {
+            $0
+        }
+    }

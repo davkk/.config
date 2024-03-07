@@ -64,13 +64,13 @@ return {
             },
             sources = cmp.config.sources({
                 { name = "codeium" },
-                { name = "luasnip" },
                 {
                     name = "nvim_lsp",
                     group_index = 1,
                     max_item_count = 20,
                     keyword_length = 2,
                 },
+                { name = "luasnip" },
                 { name = "path" },
                 { name = "buffer", keyword_length = 5, },
             }),

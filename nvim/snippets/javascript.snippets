@@ -62,7 +62,7 @@ snippet testc
 
         it('should create', () => {
             const fixture = factory(),
-                { componentInstance as component } = fixture.point;
+                { componentInstance: component } = fixture.point;
 
             expect(component).toBeTruthy();
         });
