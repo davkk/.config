@@ -1,0 +1,69 @@
+snippet desc
+    describe('${1}', () => {
+        ${2}
+    });
+
+snippet its
+    it('${1}', () => {
+        ${2}
+    });
+
+snippet ita
+    it('${1}', async () => {
+        ${2}
+    });
+
+snippet itf
+    it('${1}', () => {
+        const fixture = factory();
+        ${3}
+    });
+
+snippet befe
+    beforeEach(() => {
+        ${1}
+    });
+
+snippet tests
+    import { TestBed } from '@angular/core/testing';
+
+    describe('${1}', () => {
+        let service: ${2};
+
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                providers: [${2}]
+            });
+
+            service = TestBed.inject(${2});
+        });
+
+        it('should create', () => {
+            expect(service).toBeTruthy();
+        });
+    });
+
+snippet testc
+    import { TestBed } from '@angular/core/testing';
+    import { MockInstance, MockRenderFactory } from 'ng-mocks';
+
+    describe('${1}', () => {
+        MockInstance.scope();
+
+        const factory = MockRenderFactory(${2}, []);
+
+        beforeEach(async () => {
+            TestBed.configureTestingModule({
+                declarations: [${2}]
+            }).compileComponents();
+
+            factory.configureTestBed();
+        });
+
+        it('should create', () => {
+            const fixture = factory(),
+                { componentInstance as component } = fixture.point;
+
+            expect(component).toBeTruthy();
+        });
+    });
