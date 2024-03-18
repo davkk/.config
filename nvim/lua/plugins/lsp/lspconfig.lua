@@ -34,6 +34,7 @@ return {
         "williamboman/mason-lspconfig.nvim",
 
         { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+        { "dmmulroy/ts-error-translator.nvim", config = true },
     },
     config = function()
         local mason = require("mason")
