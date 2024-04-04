@@ -152,6 +152,7 @@ return {
 
             -- nvim-treesitter/nvim-treesitter-context
             TreesitterContext = { bg = "none", link = "Normal" },
+            TreesitterContextLineNumber = { bg = "none", fg = "highlight_high", bold = true },
 
             -- Exafunction/codeium.vim
             CodeiumSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
