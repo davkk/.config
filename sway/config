@@ -32,7 +32,7 @@ set $highlight #ffb083
 set $menu j4-dmenu-desktop
 
 # Wallpaper
-set $wallpaper $HOME/Pictures/wallpaper1.jpg
+set $wallpaper $HOME/Pictures/wallpaper.jpg
 set $default_light 15
 
 ##
