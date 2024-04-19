@@ -47,6 +47,7 @@ return {
             underline = true,
             update_in_insert = false,
             float = {
+                source = true,
                 show_header = true,
                 style = "minimal",
                 header = "",
