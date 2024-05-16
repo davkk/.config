@@ -1,3 +1,8 @@
+# Enable Powerlevel10k instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
@@ -36,6 +41,8 @@ alias tmux='tmux -u'
 # -- PLUGINS
 source $XDG_CONFIG_HOME/antigen/antigen.zsh
 
+antigen theme romkatv/powerlevel10k
+
 antigen use oh-my-zsh
 antigen bundle fzf
 
@@ -52,11 +59,6 @@ ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
 
 bindkey '^y' autosuggest-accept
-
-# -- STARSHIP
-export STARSHIP_CONFIG=$HOME/.config/zsh/starship.toml
-eval "$(starship init zsh)"
-
 
 # -- EXPORTS
 export HISTSIZE=100000000
@@ -119,3 +121,6 @@ bindkey -e
 # opam configuration
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
 eval `opam env`
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
