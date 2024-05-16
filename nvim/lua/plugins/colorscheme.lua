@@ -105,6 +105,7 @@ return {
             ModeMsg = { fg = "highlight_med", bold = true },
 
             -- statusline
+            StatusLine = { bold = true },
             StatusLineTerm = { link = "StatusLine" },
             StatusLineTermNC = { link = "StatusLine" },
 

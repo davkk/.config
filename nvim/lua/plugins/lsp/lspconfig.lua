@@ -174,6 +174,21 @@ return {
                 if disable_semantic_tokens[filetype] then
                     client.server_capabilities.semanticTokensProvider = nil
                 end
+
+                -- TODO figure out why it errors
+                -- if client.supports_method("textDocument/codeLens") then
+                --     vim.lsp.codelens.refresh()
+                --     vim.api.nvim_create_autocmd(
+                --         { "BufEnter", "InsertLeave", "CursorHold", },
+                --         {
+                --             buffer = bufnr,
+                --             callback = function()
+                --                 vim.lsp.codelens.refresh({ bufnr = 0 })
+                --             end,
+                --             group = vim.api.nvim_create_augroup("refreshCodelens", {}),
+                --         }
+                --     )
+                -- end
             end,
         })
     end,
