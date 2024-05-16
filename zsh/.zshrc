@@ -1,6 +1,7 @@
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
+
 export GTK_THEME=Adwaita-dark
 
 # -- wayland fix
@@ -28,8 +29,6 @@ HYPHEN_INSENSITIVE="true"
 
 # -- ALIASES
 alias l='ls --color -lhF --group-directories-first'
-alias nv='echo you are stupid'
-alias vim=nvim
 alias python='python3'
 alias tmux='tmux -u'
 
