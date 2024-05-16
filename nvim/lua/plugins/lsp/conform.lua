@@ -41,7 +41,8 @@ return {
                 conform.format({
                     timeout_ms = 4000,
                     async = true,
-                    lsp_fallback = true
+                    lsp_fallback = true,
+                    quiet = true,
                 })
             end,
             { desc = "Format buffer", }
