@@ -59,13 +59,6 @@ return {
                         vim.api.nvim_buf_set_keymap(event.buf, "n", "<leader>oi", ":TSToolsOrganizeImports<cr>", {})
                     end
                 })
-                return {
-                    settings = {
-                        experimental = {
-                            enableProjectDiagnostics = true,
-                        },
-                    },
-                }
             end,
             jsonls = true,
             marksman = true,
