@@ -50,13 +50,13 @@
   # Left prompt segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
-    context                   # user@host
+    # context                   # user@host
     dir                       # current directory
     vcs                       # git status
     command_execution_time    # previous command duration
+    virtualenv                # python virtual environment
     # =========================[ Line #2 ]=========================
     newline                   # \n
-    virtualenv                # python virtual environment
     prompt_char               # prompt symbol
   )
 
@@ -127,7 +127,7 @@
   # Duration format: 1d 2h 3m 4s.
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FORMAT='d h m s'
   # Yellow previous command duration.
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=$yellow
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=$grey
 
   # Grey Git prompt. This makes stale prompts indistinguishable from up-to-date ones.
   typeset -g POWERLEVEL9K_VCS_FOREGROUND=$magenta
