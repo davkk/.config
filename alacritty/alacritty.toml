@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/theme.toml"]
+import = ["~/.config/alacritty/rose-pine-moon.toml"]
 
 live_config_reload = true
 

@@ -56,13 +56,13 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-        variant = "main",      -- auto, main, moon, or dawn
-        dark_variant = "main", -- main, moon, or dawn
+        variant = "moon",      -- auto, main, moon, or dawn
+        dark_variant = "moon", -- main, moon, or dawn
         dim_inactive_windows = false,
         extend_background_behind_borders = true,
 
         enable = {
-            terminal = false,
+            terminal = true,
             legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
             migrations = true,        -- Handle deprecated options automatically
         },
@@ -126,8 +126,7 @@ return {
             QuickFixLine = { bg = "text", blend = 15, bold = true },
 
             -- search
-            Search = { fg = "none", bg = "highlight_med" },
-            CurSearch = { link = "Search" },
+            Search = { fg = "none", bg = "highlight_med", blend = 75 },
 
             -- lewis6991/gitsigns.nvim
             GitSignsAdd = { bg = "none" },
@@ -164,7 +163,7 @@ return {
 
         before_highlight = function(group, highlight, palette)
             -- custom color tint
-            tint(highlight, palette)
+            -- tint(highlight, palette)
 
             -- replace curl with underline
             if highlight.undercurl then
