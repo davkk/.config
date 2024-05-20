@@ -1,5 +1,3 @@
-local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
-
 return {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
@@ -18,6 +16,7 @@ return {
     config = function()
         local lspkind = require("lspkind")
         local cmp = require("cmp")
+        local winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
 
         cmp.setup({
             window = {
@@ -55,14 +54,17 @@ return {
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
 
                 ["<C-a>"] = cmp.mapping(cmp.mapping.complete({
-                    config = { sources = { { name = "codeium" } } }
-                }), { "i" })
+                    config = {
+                        sources = {
+                            { name = "codeium", maxwidth = 50, },
+                        },
+                    }
+                }), { "i", "c" })
             },
             sources = cmp.config.sources({
                 {
                     name = "nvim_lsp",
                     group_index = 1,
-                    max_item_count = 20,
                     keyword_length = 2,
                 },
                 { name = "luasnip" },
@@ -111,6 +113,9 @@ return {
                         codeium = "{…}",
                     },
                 }),
+            },
+            experimental = {
+                ghost_text = true,
             },
         })
 
