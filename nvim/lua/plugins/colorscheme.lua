@@ -84,10 +84,11 @@ return {
 
         highlight_groups = {
             -- line
-            CursorLine = { bg = "highlight_low" },
+            CursorLine = { bg = "base" },
             ColorColumn = { link = "CursorLine" },
             CursorLineNr = { fg = "text", bold = true },
             LineNr = { fg = "highlight_high" },
+            EndOfBuffer = { link = "LineNr" },
 
             -- visual
             Visual = { bg = "highlight_med" },
@@ -102,7 +103,7 @@ return {
             NormalFloat = { blend = 5 },
             FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
             FloatBorder = { fg = "highlight_med", blend = 5 },
-            ModeMsg = { fg = "highlight_med", bold = true },
+            -- ModeMsg = { fg = "highlight_med", bold = true },
 
             -- statusline
             StatusLine = { bold = true },

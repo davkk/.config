@@ -38,7 +38,7 @@ local function filename()
         and vim.bo.buftype == ""
         and vim.fn.filereadable(name) == 0
 
-    return path .. (is_new_file and " [New]" or "")
+    return "[" .. path .. (is_new_file and "][New]" or "]")
 end
 
 ---@return string
@@ -74,12 +74,12 @@ local function lsp()
         info = " %#DiagnosticSignInfo#I" .. counts.info
     end
 
-    return error .. warn .. hint .. info .. "%#Normal#"
+    return error .. warn .. hint .. info .. "%#LineNr#"
 end
 
 ---@return string
 local function location()
-    return "%l:%c"
+    return "[%l:%c]"
 end
 
 ---@return string
@@ -92,17 +92,13 @@ StatusLine = {}
 ---@return string
 function StatusLine.build_statusline()
     return table.concat({
-        "%#StatusLine#",
-        filename(),
-        " ",
-        "%m%r",
         "%#LineNr#",
-        " ",
+        filename(),
+        "%r%m",
+        "  ",
         git_diff(),
         "%=",
-        "  ",
         lsp(),
-        "%#LineNr#",
         "  ",
         location(),
     })
