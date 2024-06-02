@@ -45,6 +45,7 @@ antigen theme romkatv/powerlevel10k
 
 antigen use oh-my-zsh
 antigen bundle fzf
+antigen bundle direnv
 
 antigen bundle 'zsh-users/zsh-syntax-highlighting'
 antigen bundle 'zsh-users/zsh-autosuggestions'
