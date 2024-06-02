@@ -112,6 +112,7 @@
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   typeset -g POWERLEVEL9K_SHORTEN_FOLDER_MARKER=.git
   typeset -g POWERLEVEL9K_DIR_TRUNCATE_BEFORE_MARKER=first
+  typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=80
 
   # Context format when root: user@host. The first part white, the rest grey.
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE="%F{$white}%n%f%F{$grey}@%m%f"
