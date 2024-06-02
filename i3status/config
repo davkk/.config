@@ -19,10 +19,11 @@ order += "tztime local"
 battery all {
     format = "%status %percentage"
     integer_battery_capacity = true
-    status_chr = "⚡"
-    status_bat = "🔋"
-    status_full = "☻ "
-    low_threshold = "40"
+    status_bat = "󰁿"
+    status_chr = "󰂅"
+    status_full = "󰁹"
+    threshold_type = percentage
+    low_threshold = 40
 }
 
 tztime local {
@@ -35,7 +36,7 @@ disk "/" {
 }
 
 volume master {
-    format = "🔊 %volume"
-    format_muted = "🔈 muted (%volume)"
+    format = "󰕾 %volume"
+    format_muted = "󰖁 %volume"
     device = "default"
 }
