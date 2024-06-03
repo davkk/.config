@@ -13,11 +13,11 @@ general {
 
 order += "volume master"
 order += "battery all"
-# order += "disk /"
+order += "disk /"
 order += "tztime local"
 
 battery all {
-    format = "%status %percentage (%remaining)"
+    format = "%status %percentage"
     integer_battery_capacity = true
     status_bat = "󰁿"
     status_chr = "󰂅"
