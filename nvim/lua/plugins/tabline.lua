@@ -1,4 +1,7 @@
 return {
-    "mkitt/tabline.vim",
+    "crispgm/nvim-tabline",
     lazy = false,
+    opts = {
+        show_modify = false,
+    },
 }

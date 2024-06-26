@@ -38,7 +38,7 @@ local function filename()
         and vim.bo.buftype == ""
         and vim.fn.filereadable(name) == 0
 
-    return "[" .. path .. (is_new_file and "][New]" or "]")
+    return "[" .. path .. (is_new_file and "][New]" or "]") .. "%r%m"
 end
 
 ---@return string
@@ -74,12 +74,14 @@ local function lsp()
         info = " %#DiagnosticSignInfo#I" .. counts.info
     end
 
-    return error .. warn .. hint .. info .. "%#LineNr#"
+    return error .. warn .. hint .. info .. "%##"
 end
 
 ---@return string
 local function location()
-    return "[%l:%c]"
+    local col = vim.fn.virtcol(".")
+    local row = vim.fn.line(".")
+    return string.format("[%2d:%-2d]", row, col)
 end
 
 ---@return string
@@ -92,19 +94,17 @@ StatusLine = {}
 ---@return string
 function StatusLine.build_statusline()
     return table.concat({
-        "%#LineNr#",
         filename(),
-        "%r%m",
-        "  ",
-        git_diff(),
         "%=",
         lsp(),
+        "  ",
+        git_diff(),
         "  ",
         location(),
     })
 end
 
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave" }, {
     group = vim.api.nvim_create_augroup("StatusLine", {}),
     callback = function()
         vim.opt.statusline = "%!v:lua.StatusLine.build_statusline()"
