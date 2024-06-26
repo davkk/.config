@@ -1,10 +1,5 @@
 # Read `man 5 sway` for a complete reference.
 
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
-exec --no-startup-id dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec --no-startup-id /usr/lib/xdg-desktop-portal -r
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1
-
 font pango:Input Nonicons,monospace 16px
 
 ##
@@ -34,6 +29,9 @@ set $menu j4-dmenu-desktop
 # Wallpaper
 set $wallpaper $HOME/Pictures/wallpaper.jpg
 set $default_light 15
+
+# Notifications
+set $notify exec dunstify -a sway -r 2001
 
 ##
 # Options
@@ -69,14 +67,16 @@ exec_always gsettings set org.gnome.mutter experimental-features "['scale-monito
 set $lock $HOME/.config/sway/lock.sh $wallpaper
 
 exec swayidle -w \
+      timeout 30 'if pgrep -x swaylock; then light -O; swaymsg "output * dpms off"; fi' \
+          resume 'if pgrep -x swaylock; then swaymsg "output * dpms on"; light -I; fi' \
       timeout 100 'light -O; $HOME/.config/sway/dim-screen.sh' \
           resume 'light -I' \
-      timeout 200 'swaymsg "output * power off"' \
+      timeout 200 'light -O; swaymsg "output * power off"' \
           resume 'swaymsg "output * power on"; light -I' \
       timeout 300 '$lock' \
-      before-sleep '$lock'
+      before-sleep 'playerctl pause; $lock'
 
-bindswitch --reload --locked lid:on exec $lock
+bindswitch --locked lid:on exec $lock
 
 # disable timeout when in fullscreen
 for_window [class="^.*"] inhibit_idle fullscreen
@@ -119,10 +119,11 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 
 # Reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c reload; exec dunstify -u low "  Sway config reloaded!"
+
 
 # Exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+bindsym --locked $mod+Shift+e exec swaynag -t warning -m "You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session." -B "Yes, exit sway" "swaymsg exit"
 
 # Move your focus around
 bindsym $mod+$left focus left
@@ -165,10 +166,10 @@ bindsym $mod+z splith
 # for vertical split
 bindsym $mod+v splitv
 
-# Switch the current container between different layout styles
-# bindsym $mod+s layout stacking
-# bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+# # Switch the current container between different layout styles
+# # bindsym $mod+s layout stacking
+# # bindsym $mod+w layout tabbed
+# bindsym $mod+e layout toggle split
 
 # Make the current focus fullscreen
 bindsym $mod+f fullscreen
@@ -179,7 +180,7 @@ bindsym $mod+Shift+space floating toggle
 # Swap focus between the tiling area and the floating area
 bindsym $mod+space focus mode_toggle
 
-# Move focus to the parent container
+# # Move focus to the parent container
 # bindsym $mod+a focus parent
 
 ##
@@ -187,22 +188,22 @@ bindsym $mod+space focus mode_toggle
 ##
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioStop exec playerctl stop
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+bindsym --locked XF86AudioStop exec playerctl stop
+bindsym --locked XF86AudioNext exec playerctl next
+bindsym --locked XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
 exec light -S $default_light
-bindsym XF86MonBrightnessUp exec light -A 5
-bindsym XF86MonBrightnessDown exec light -U 5
+bindsym --locked XF86MonBrightnessUp exec light -A 5 && $notify " Brightness: $(light)%" -h "int:value:$(light)"
+bindsym --locked XF86MonBrightnessDown exec light -U 5 && $notify " Brightness: $(light)%" -h "int:value:$(light)"
 
 # Toggle touchpad
-bindsym XF86TouchpadToggle input type:touchpad events toggle enabled disabled
+bindsym --inhibited XF86TouchpadToggle input type:touchpad events toggle enabled disabled
 
 ##
 # Scratchpad
@@ -284,11 +285,13 @@ seat seat0 xcursor_theme $cursor_theme $cursor_size
 # App settings
 ##
 
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+
 for_window [class="1Password"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
 for_window [title="Emulator*"] floating enable, sticky on
 for_window [app_id="python3"] floating enable, sticky on
-for_window [class="gnuplot_qt"] floating enable, resize set width 1000 px height 800 px, sticky on
+for_window [app_id="gnuplot_qt"] floating enable, resize set width 1000 px height 800 px, sticky on
 for_window [class="Xplot"] floating enable, sticky on
 for_window [class="Matplotlib"] floating enable, resize set width 1000 px height 800 px, sticky on
 for_window [class="matplotlib"] floating enable, resize set width 1000 px height 800 px, sticky on
@@ -311,8 +314,17 @@ for_window [title="R Graphics: *"] floating enable, resize set width 1000 px hei
 # Startup
 ##
 
-exec nm-applet
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
-exec swaymsg 'workspace 2; exec $browser'
+exec /usr/libexec/xdg-desktop-portal -r &
+exec /usr/libexec/polkit-gnome-authentication-agent-1 &
+exec /usr/libexec/gsd-xsettings &
+
+exec nm-applet &
+exec blueman-applet &
+exec dunst &
+
+# exec swaymsg 'workspace 2; exec $browser'
 exec swaymsg 'workspace 3; exec $term'
 exec swaymsg 'workspace 5; exec thunderbird'

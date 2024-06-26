@@ -1,0 +1,9 @@
+[global]
+offset = 20x20
+notification_limit = 10
+progress_bar_corner_radius = 4
+font = Input Nonicons 12
+show_age_threshold = 30
+
+[experimental]
+per_monitor_dpi = true
