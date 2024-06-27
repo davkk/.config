@@ -84,6 +84,9 @@ return {
             },
             astro = true,
             texlab = true,
+            grammarly = {
+                filetypes = { "markdown", "tex", "text" }
+            },
             r_language_server = true,
             fsharp_language_server = {
                 cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
