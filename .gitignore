@@ -46,6 +46,9 @@ tmux/plugins
 !dunst/
 !dunst/**
 
+!fuzzel/
+!fuzzel/**
+
 *.zwc
 *.zwc.old
 
