@@ -22,6 +22,10 @@ return {
             })
         end)
 
+        vim.keymap.set("n", "<C-c>", function()
+            harpoon.ui:close_menu()
+        end)
+
         for i = 1, 5 do
             vim.keymap.set(
                 "n",
