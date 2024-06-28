@@ -1,5 +1,4 @@
 # Read `man 5 sway` for a complete reference.
-
 font pango:Input Nonicons,monospace 16px
 
 ##
@@ -33,6 +32,11 @@ set $default_light 15
 # Notifications
 set $notify exec dunstify -a sway -r 2001
 
+# Progress bars
+set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
+exec rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
+
+
 ##
 # Options
 ##
@@ -52,10 +56,8 @@ output * bg $wallpaper fill
 
 output "eDP-1" {
     mode 2880x1800@90.001Hz
-    scale 1.25
+    scale 1
 }
-
-exec_always gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
 ##
 # Idle configuration
@@ -67,11 +69,11 @@ exec_always gsettings set org.gnome.mutter experimental-features "['scale-monito
 set $lock $HOME/.config/sway/lock.sh $wallpaper
 
 exec swayidle -w \
-      timeout 30 'if pgrep -x swaylock; then light -O; swaymsg "output * dpms off"; fi' \
-          resume 'if pgrep -x swaylock; then swaymsg "output * dpms on"; light -I; fi' \
       timeout 120 'light -O; $HOME/.config/sway/dim-screen.sh' \
           resume 'light -I' \
       timeout 300 '$lock' \
+      timeout 30 'if pgrep -x swaylock; then light -O; swaymsg "output * dpms off"; fi' \
+          resume 'if pgrep -x swaylock; then swaymsg "output * dpms on"; light -I; fi' \
       before-sleep '$lock'
 
 bindswitch --locked lid:on exec $lock
@@ -186,22 +188,25 @@ bindsym $mod+space focus mode_toggle
 ##
 
 # Pulse Audio controls
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
-bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
+bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $notify -u low "󰕾 $(pactl get-sink-mute @DEFAULT_SINK@)"
 bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym --locked XF86AudioPlay exec playerctl play-pause
-bindsym --locked XF86AudioStop exec playerctl stop
+
+bindsym --locked XF86AudioPlay exec playerctl play-pause && sleep 0.2 && $notify -u low "󰲹 $(playerctl status)"
+bindsym --locked XF86AudioStop exec playerctl stop && $notify -u low "󰲹 Stopped playback"
 bindsym --locked XF86AudioNext exec playerctl next
 bindsym --locked XF86AudioPrev exec playerctl previous
 
 # Sreen brightness controls
 exec light -S $default_light
-bindsym --locked XF86MonBrightnessUp exec light -A 5 && $notify " Brightness: $(light)%" -h "int:value:$(light)"
-bindsym --locked XF86MonBrightnessDown exec light -U 5 && $notify " Brightness: $(light)%" -h "int:value:$(light)"
+bindsym --locked XF86MonBrightnessUp exec light -A 5 && light | cut -d'.' -f1 > $WOBSOCK
+bindsym --locked XF86MonBrightnessDown exec light -U 5 && light | cut -d'.' -f1 > $WOBSOCK
 
 # Toggle touchpad
-bindsym --inhibited XF86TouchpadToggle input type:touchpad events toggle enabled disabled
+bindsym --locked XF86TouchpadToggle \
+        input type:touchpad events toggle enabled disabled; \
+        $notify "Touchpad" "$(swaymsg -t get_inputs -r | jq '.[] | select(.type==\"touchpad\") | .libinput.send_events')"
 
 ##
 # Scratchpad
@@ -257,23 +262,19 @@ bar {
 # GTK
 ##
 
-set $gnome-schema org.gnome.desktop.interface
-set $system_theme 'Adwaita-dark'
-set $system_dpi_scaling_factor 1.1
-set $cursor_size 27
-set $cursor_theme Adwaita
+set $system_dpi_scaling_factor 1.25
+set $cursor_size 28
 
 exec_always {
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
     gsettings set org.gtk.Settings.FileChooser window-size '(1000, 500)'
-    gsettings set $gnome-schema gtk-theme $system_theme
-    gsettings set $gnome-schema text-scaling-factor $system_dpi_scaling_factor
-    gsettings set $gnome-schema cursor-theme $cursor_theme
-    gsettings set $gnome-schema cursor-size $cursor_size
+    gsettings set org.gnome.desktop.interface cursor-size $cursor_size
+    gsettings set org.gnome.desktop.interface text-scaling-factor $system_dpi_scaling_factor
     gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 }
 
 # Mouse
-seat * xcursor_theme $cursor_theme $cursor_size
+seat seat0 xcursor_theme Adwaita $cursor_size
 
 
 ##
@@ -320,6 +321,8 @@ exec nm-applet &
 exec blueman-applet &
 exec dunst &
 
-# exec swaymsg 'workspace 2; exec $browser'
-exec swaymsg 'workspace 3; exec $term'
+assign [class="thunderbird"] -> 5
+
 exec swaymsg 'workspace 5; exec thunderbird'
+exec swaymsg 'workspace 3; exec $term'
+exec swaymsg 'workspace 2; exec $browser'

@@ -8,7 +8,7 @@ args = ["-l"]
 
 [window]
 dynamic_padding = true
-opacity = 0.85
+# opacity = 0.9
 blur = true
 startup_mode = "Windowed"
 decorations_theme_variant = "Dark"
@@ -22,7 +22,7 @@ history = 0
 multiplier = 3
 
 [font]
-size = 22.0
+size = 26.0
 
 [font.normal]
 family = "Input Nonicons"

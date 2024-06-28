@@ -3,36 +3,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-
-export GTK_THEME=Adwaita-dark
-
-# -- wayland fix
-export QT_QPA_PLATFORM=wayland
-export QT_QPA_PLATFORMTHEME="qt5ct"
-export GDK_BACKEND="wayland,x11"
-export XDG_CURRENT_DESKTOP="sway"
-export XDG_SESSION_DESKTOP="sway"
-export XDG_CURRENT_SESSION_TYPE="wayland"
-export MOZ_ENABLE_WAYLAND=1
-
-export QT_ENABLE_HIGHDPI_SCALING=1
-export QT_SCREEN_SCALE_FACTORS=1.25
-export QT_SCALE_FACTOR=1.25
-export QT_AUTO_SCREEN_SCALE_FACTOR=1.25
-export ELM_SCALE=1.25
-export GDK_SCALE=1.25
-export XCURSOR_SIZE=27
 
 # -- ZSH OPTIONS
-
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
+
 
 # -- ALIASES
 alias l='ls --color -lhF --group-directories-first'
@@ -63,7 +41,28 @@ ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
 
 bindkey '^y' autosuggest-accept
 
+
 # -- EXPORTS
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export GDK_BACKEND="wayland,x11"
+export XDG_CURRENT_DESKTOP="sway"
+export XDG_SESSION_DESKTOP="sway"
+export XDG_CURRENT_SESSION_TYPE="wayland"
+export MOZ_ENABLE_WAYLAND=1
+
+# export QT_ENABLE_HIGHDPI_SCALING=1
+# export QT_SCREEN_SCALE_FACTORS=1.25
+# export QT_SCALE_FACTOR=1.25
+# export QT_AUTO_SCREEN_SCALE_FACTOR=1.25
+# export ELM_SCALE=1.25
+# export GDK_SCALE=1.25
+export XCURSOR_SIZE=28
+
 export HISTSIZE=100000000
 export SAVEHIST=$HISTSIZE
 export HISTFILE=$HOME/.local/zsh_history
@@ -105,6 +104,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which vim`
 
+
 # -- CUSTOM FUNCTIONS
 
 # change directory (project)
@@ -116,14 +116,16 @@ sp() {
 }
 zle -N cdp
 
+
 # -- BINDKEYS
 bindkey -e
+
 
 # -- CONFIGS
 
 # opam configuration
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
-eval `opam env`
+eval `opam env` 2>/dev/null
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

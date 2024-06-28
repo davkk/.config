@@ -20,6 +20,7 @@ opt.laststatus = 3
 opt.cmdheight = 1
 
 opt.cursorline = true
+opt.colorcolumn = "80"
 
 opt.scrolloff = 10
 opt.sidescrolloff = 10
@@ -52,7 +53,6 @@ opt.splitbelow = true
 opt.iskeyword:append("-")
 opt.isfname:append("@-@")
 
-opt.colorcolumn = "80"
 opt.signcolumn = "yes"
 
 opt.updatetime = 50

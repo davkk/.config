@@ -7,7 +7,7 @@ mkdir -p $path
 
 if grimshot save $1 $file; then
     cat $file | wl-copy
-    dunstify -u low "󰄀 Screenshot captured!" "$file"
+    dunstify "󰄀 Screenshot captured!" "$file"
 else
-    dunstify -u low "󰄀 Screenshot aborted!"
+    dunstify "󰄀 Screenshot aborted!"
 fi

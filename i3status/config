@@ -13,7 +13,7 @@ general {
 
 order += "volume master"
 order += "battery all"
-order += "disk /"
+# order += "disk /"
 order += "tztime local"
 
 battery all {
@@ -36,7 +36,8 @@ disk "/" {
 }
 
 volume master {
-    format = "󰕾 %volume"
-    format_muted = "󰖁 %volume"
+    # format = "󰕾 %volume"
+    format = ""
+    format_muted = "󰖁 muted"
     device = "default"
 }

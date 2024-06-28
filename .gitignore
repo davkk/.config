@@ -5,6 +5,9 @@
 !nvim/
 !nvim/**
 
+!nvim/lua/plugins/
+!nvim/lua/plugins/**
+
 !tmux/
 !tmux/**
 tmux/plugins
@@ -12,6 +15,12 @@ tmux/plugins
 !zsh/
 !zsh/**
 .zsh_history
+
+.oh-my-zsh/
+
+*.zwc
+*.zwc.old
+*zcompdump*
 
 !i3/
 !i3/**
@@ -35,10 +44,8 @@ tmux/plugins
 !fontconfig/
 !fontconfig/**
 
-.oh-my-zsh/
-
-!nvim/lua/plugins/
-!nvim/lua/plugins/**
+!antigen/
+!antigen/antigen.zsh
 
 !.scripts/
 !.scripts/**
@@ -49,11 +56,5 @@ tmux/plugins
 !fuzzel/
 !fuzzel/**
 
-*.zwc
-*.zwc.old
-
-# Zsh completion-optimization dumpfile
-*zcompdump*
-
-!antigen/
-!antigen/antigen.zsh
+!wob/
+!wob/**

@@ -95,10 +95,10 @@ StatusLine = {}
 function StatusLine.build_statusline()
     return table.concat({
         filename(),
-        "%=",
-        lsp(),
         "  ",
         git_diff(),
+        "%=",
+        lsp(),
         "  ",
         location(),
     })

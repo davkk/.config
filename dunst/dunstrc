@@ -4,6 +4,17 @@ notification_limit = 10
 progress_bar_corner_radius = 4
 font = Input Nonicons 12
 show_age_threshold = 30
+history_length = 5
+stack_duplicates = false
 
 [experimental]
 per_monitor_dpi = true
+
+[urgency_low]
+timeout = 3
+
+[urgency_normal]
+timeout = 5
+
+[urgency_critical]
+timeout = 0
