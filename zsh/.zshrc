@@ -23,21 +23,22 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
-export QT_QPA_PLATFORM=wayland
-export QT_QPA_PLATFORMTHEME="qt5ct"
-export GDK_BACKEND="wayland,x11"
 export XDG_CURRENT_DESKTOP="sway"
 export XDG_SESSION_DESKTOP="sway"
 export XDG_CURRENT_SESSION_TYPE="wayland"
-export MOZ_ENABLE_WAYLAND=1
 
-# export QT_ENABLE_HIGHDPI_SCALING=1
-# export QT_SCREEN_SCALE_FACTORS=1.25
-# export QT_SCALE_FACTOR=1.25
-# export QT_AUTO_SCREEN_SCALE_FACTOR=1.25
-# export ELM_SCALE=1.25
-# export GDK_SCALE=1.25
+export MOZ_ENABLE_WAYLAND=1
 export XCURSOR_SIZE=28
+
+export GDK_BACKEND="wayland,x11"
+export GDK_DPI_SCALE=2
+
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_ENABLE_HIGHDPI_SCALING=1
+export QT_WAYLAND_FORCE_DPI="physical"
+export QT_WAYLAND_FORCE_DPI=192 # 2x scaling
+export QT_QPA_PLATFORM="wayland-egl"
 
 export HISTSIZE=100000000
 export SAVEHIST=$HISTSIZE
