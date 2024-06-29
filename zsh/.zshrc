@@ -18,30 +18,6 @@ alias python='python3'
 alias tmux='tmux -u'
 
 
-# -- PLUGINS
-source $XDG_CONFIG_HOME/antigen/antigen.zsh
-
-antigen theme romkatv/powerlevel10k
-
-antigen use oh-my-zsh
-antigen bundle fzf
-antigen bundle direnv
-
-antigen bundle 'zsh-users/zsh-syntax-highlighting'
-antigen bundle 'zsh-users/zsh-autosuggestions'
-
-antigen apply
-
-typeset -gA ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[precommand]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
-ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
-
-bindkey '^y' autosuggest-accept
-
-
 # -- EXPORTS
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -103,6 +79,30 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 # preferred editor for local and remote sessions
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which vim`
+
+
+# -- PLUGINS
+source $XDG_CONFIG_HOME/antigen/antigen.zsh
+
+antigen theme romkatv/powerlevel10k
+
+antigen use oh-my-zsh
+antigen bundle fzf
+antigen bundle direnv
+
+antigen bundle 'zsh-users/zsh-syntax-highlighting'
+antigen bundle 'zsh-users/zsh-autosuggestions'
+
+antigen apply
+
+typeset -gA ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=blue,underline
+ZSH_HIGHLIGHT_STYLES[precommand]=fg=blue,underline
+ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=blue,underline
+ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
+ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
+
+bindkey '^y' autosuggest-accept
 
 
 # -- CUSTOM FUNCTIONS
