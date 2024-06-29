@@ -321,7 +321,7 @@ exec nm-applet &
 exec blueman-applet &
 exec dunst &
 
-assign [class="thunderbird"] -> 5
+assign [class="thunderbird"] 5
 
 exec swaymsg 'workspace 5; exec thunderbird'
 exec swaymsg 'workspace 3; exec $term'
