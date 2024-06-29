@@ -2,6 +2,19 @@
 font pango:Input Nonicons,monospace 16px
 
 ##
+# COLORS
+##
+# set next split direction indicator to be the same color as the border
+
+#              border background text indicator child_border
+client.focused #4c7899 #285577 #ffffff #285577 #285577
+client.focused_inactive #333333 #5f676a #ffffff #5f676a #5f676a
+client.unfocused #333333 #222222 #888888 #222222 #222222
+client.urgent #2f343a #900000 #ffffff #900000 #900000
+client.placeholder #000000 #0c0c0c #ffffff #0c0c0c #0c0c0c
+
+
+##
 # VARIABLES
 ##
 
@@ -66,7 +79,7 @@ output eDP-1 {
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
-set $lock $HOME/.config/sway/lock.sh $wallpaper
+set $lock $HOME/.config/sway/lock.sh
 
 exec swayidle -w \
       timeout 120 'light -O; $HOME/.config/sway/dim-screen.sh' \
@@ -173,6 +186,10 @@ bindsym $mod+v splitv
 
 # Make the current focus fullscreen
 bindsym $mod+f fullscreen
+
+bindsym $mod+p exec 1password
+bindsym Ctrl+Shift+l exec 1password --lock
+bindsym Ctrl+Shift+space exec 1password --quick-access
 
 # Toggle the current focus between tiling and floating mode
 bindsym $mod+Shift+space floating toggle
@@ -320,6 +337,8 @@ exec /usr/libexec/gsd-xsettings &
 exec nm-applet &
 exec blueman-applet &
 exec dunst &
+exec /usr/bin/1password --silent &
+exec $HOME/.config/.scripts/autotiling &
 
 assign [class="thunderbird"] 5
 
