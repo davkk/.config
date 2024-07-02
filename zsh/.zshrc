@@ -33,12 +33,11 @@ export XCURSOR_SIZE=28
 export GDK_BACKEND="wayland,x11"
 export GDK_DPI_SCALE=2
 
-export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORM="wayland"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export QT_ENABLE_HIGHDPI_SCALING=1
 export QT_WAYLAND_FORCE_DPI="physical"
 export QT_WAYLAND_FORCE_DPI=192 # 2x scaling
-export QT_QPA_PLATFORM="wayland-egl"
 
 export HISTSIZE=100000000
 export SAVEHIST=$HISTSIZE
