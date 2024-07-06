@@ -53,6 +53,7 @@
     # context                   # user@host
     dir                       # current directory
     vcs                       # git status
+    apptainer_container
     virtualenv                # python virtual environment
     command_execution_time    # previous command duration
     # =========================[ Line #2 ]=========================
@@ -170,6 +171,13 @@
   # commands will contain the start times of their commands rather than the end times of
   # their preceding commands.
   typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=false
+
+  # custom prompt to show current apptainer container
+  function prompt_apptainer_container() {
+      if [ -n "$APPTAINER_ENVIRONMENT" ]; then
+          p10k segment -i "󰯭 " -t "$(basename $APPTAINER_CONTAINER)" -f yellow
+      fi
+  }
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
