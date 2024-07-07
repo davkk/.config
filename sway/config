@@ -253,6 +253,8 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
     bindsym $mod+r mode "default"
+
+    bindsym $mod+s sticky toggle
 }
 bindsym $mod+r mode "resize"
 
