@@ -52,14 +52,6 @@ return {
 
                 ["<C-d>"] = cmp.mapping.scroll_docs(4),
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-
-                ["<C-a>"] = cmp.mapping(cmp.mapping.complete({
-                    config = {
-                        sources = {
-                            { name = "codeium", maxwidth = 50, },
-                        },
-                    }
-                }), { "i", "c" })
             },
             sources = cmp.config.sources({
                 {
@@ -110,7 +102,6 @@ return {
                         nvim_lsp = "[LSP]",
                         path = "[path]",
                         luasnip = "[snip]",
-                        codeium = "{…}",
                     },
                 }),
             },
