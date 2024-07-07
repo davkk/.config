@@ -54,6 +54,7 @@
     dir                       # current directory
     vcs                       # git status
     apptainer_container
+    alienv
     virtualenv                # python virtual environment
     command_execution_time    # previous command duration
     # =========================[ Line #2 ]=========================
@@ -175,7 +176,14 @@
   # custom prompt to show current apptainer container
   function prompt_apptainer_container() {
       if [ -n "$APPTAINER_ENVIRONMENT" ]; then
-          p10k segment -i "󰯭 " -t "$(basename $APPTAINER_CONTAINER)" -f yellow
+          p10k segment -i "" -t "$APPTAINER_NAME" -f cyan
+      fi
+  }
+
+  # custom prompt indicator for alienv/O2Physics
+  function prompt_alienv() {
+      if [ -n "$O2PHYSICS_ROOT" ]; then
+          p10k segment -i "󰯭" -t "alienv" -f yellow
       fi
   }
 
