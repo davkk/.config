@@ -9,12 +9,13 @@ return {
     opts = {
         ensure_installed = {
             "lua",
+            "luadoc",
             "vim",
+            "vimdoc",
             "gitcommit",
             "gitignore",
             "git_config",
             "git_rebase",
-            "vimdoc",
             "bash",
             "awk",
             "html",
@@ -26,6 +27,7 @@ return {
             "json",
             "c",
             "cpp",
+            "doxygen",
             "python",
             "yaml",
             "angular"
