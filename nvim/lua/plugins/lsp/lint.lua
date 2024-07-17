@@ -5,8 +5,14 @@ return {
         local lint = require("lint")
         local util = require("lspconfig.util")
 
+        local cppcheck = lint.linters.cppcheck
+        table.insert(cppcheck.args, "--check-level=exhaustive")
+        table.insert(cppcheck.args, "--suppress=missingIncludeSystem")
+        table.insert(cppcheck.args, "--suppress=missingInclude")
+
         lint.linters_by_ft = {
             python = { "ruff" },
+            cpp = { "cppcheck" },
         }
 
         local javascripts = { "javascript", "javascriptreact", "typescript", "typescriptreact" }

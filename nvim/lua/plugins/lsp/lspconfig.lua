@@ -78,7 +78,11 @@ return {
                 }
             },
             gopls = true,
-            clangd = true,
+            clangd = {
+                init_options = {
+                    fallbackFlags = { "-std=c++23" }
+                },
+            },
             angularls = {
                 root_dir = lspconfig.util.root_pattern("angular.json", "Gruntfile.js"),
             },
