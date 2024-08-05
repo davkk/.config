@@ -52,6 +52,7 @@ return {
                     },
                 }
             },
+            biome = true,
             [require("typescript-tools")] = function()
                 vim.api.nvim_create_autocmd("FileType", {
                     pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
@@ -78,9 +79,21 @@ return {
                 }
             },
             gopls = true,
+            neocmake = {
+                init_options = {
+                    scan_cmake_in_package = false,
+                    semantic_token = true,
+                }
+            },
             clangd = {
                 init_options = {
-                    fallbackFlags = { "-std=c++23" }
+                    fallbackFlags = {
+                        "-std=c++23", "-Wsign-conversion", "-Wall", "-Wextra", "-Wshadow", "-Wnon-virtual-dtor",
+                        "-pedantic", "-Wold-style-cast", "-Wcast-align", "-Wunused", "-Woverloaded-virtual", "-Wpedantic",
+                        "-Wconversion", "-Wsign-conversion", "-Wmisleading-indentation", "-Wduplicated-cond",
+                        "-Wduplicated-branches", "-Wlogical-op", "-Wnull-dereference", "-Wuseless-cast",
+                        "-Wdouble-promotion", "-Wformat", "-Wlifetime", "-Wimplicit-fallthrough",
+                    }
                 },
             },
             angularls = {
@@ -95,12 +108,8 @@ return {
             fsharp_language_server = {
                 cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
                 root_dir = function(filename, _)
-                    local root
-                    root = lspconfig.util.find_git_ancestor(filename)
-                    root = root or lspconfig.util.root_pattern("*.sln")(filename)
-                    root = root or lspconfig.util.root_pattern("*.fsproj")(filename)
-                    root = root or lspconfig.util.root_pattern("*.fsx")(filename)
-                    return root
+                    return lspconfig.util.find_git_ancestor(filename)
+                        or lspconfig.util.root_pattern("*.sln", "*.fsproj", "*.fsx")(filename)
                 end,
             },
         }
@@ -126,15 +135,12 @@ return {
             if not config then
                 return
             end
-
             if type(config) == "function" then
                 config = config()
             end
-
             if type(config) ~= "table" then
                 config = {}
             end
-
             (type(server) == "string" and lspconfig[server] or server).setup(
                 vim.tbl_deep_extend("force", {
                     capabilities = capabilities,

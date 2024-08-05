@@ -12,14 +12,19 @@ return {
 
         lint.linters_by_ft = {
             python = { "ruff" },
+            javascript = { "eslint_d" },
+            javascriptreact = { "eslint_d" },
+            typescript = { "eslint_d" },
+            typescriptreact = { "eslint_d" },
             cpp = { "cppcheck" },
+            cmake = { "cmakelint" },
         }
 
-        local javascripts = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
-        local eslint_configs = { ".eslintrc", ".eslintrc.js", ".eslintrc.json" }
-        for js in pairs(javascripts) do
-            lint.linters_by_ft[js] = { "eslint_d" }
-        end
+        local root_patterns = {
+            ruff = { "pyproject.toml", "ruff.toml", ".ruff.toml" },
+            eslint_d = { ".eslintrc", ".eslintrc.js", ".eslintrc.json" },
+            biomejs = { "biome.json" },
+        }
 
         local lint_augroup = vim.api.nvim_create_augroup("Lint", { clear = true })
         vim.api.nvim_create_autocmd({
@@ -29,14 +34,20 @@ return {
             callback = function(args)
                 local ft = vim.bo.filetype
 
-                if
-                    vim.tbl_contains(javascripts, ft)
-                    and util.root_pattern(eslint_configs)(args.file)
-                then
-                    lint.try_lint("eslint_d")
-                else
-                    lint.try_lint()
-                end
+                local linters = vim.tbl_filter(
+                    function(name)
+                        if root_patterns[name] then
+                            return util.root_pattern(
+                                unpack(root_patterns[name])
+                            )(args.file)
+                        else
+                            return true
+                        end
+                    end,
+                    lint._resolve_linter_by_ft(ft)
+                )
+
+                lint.try_lint(linters)
             end
         })
     end
