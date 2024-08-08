@@ -12,19 +12,19 @@ return {
             "n",
             "<leader>rt",
             "<cmd>ReplToggle<cr>",
-            { desc = "Toggle nvim-repl" }
+            { buffer = 0, desc = "Toggle nvim-repl" }
         )
         vim.keymap.set(
             "n",
             "<leader><cr>",
             "<Plug>ReplSendCell<cr>",
-            { desc = "nvim-repl run cell" }
+            { buffer = 0, desc = "nvim-repl run cell" }
         )
         vim.keymap.set(
             "v",
             "<leader><cr>",
             "<Plug>ReplSendVisual<cr>",
-            { desc = "nvim-repl run cell" }
+            { buffer = 0, desc = "nvim-repl run cell" }
         )
     end,
 }
