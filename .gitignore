@@ -58,3 +58,6 @@ tmux/plugins
 
 !wob/
 !wob/**
+
+!xdg-desktop-portal/
+!xdg-desktop-portal/portals.conf
