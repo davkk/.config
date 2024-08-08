@@ -1,8 +1,7 @@
 -- sync jupyter notebook
-vim.api.nvim_buf_set_keymap(
-    0,
+vim.keymap.set(
     "n",
     "<leader>jt",
     "<cmd>!jupytext --sync %<cr>",
-    { desc = "Sync jupytext" }
+    { buffer = 0, desc = "Sync jupytext" }
 )
