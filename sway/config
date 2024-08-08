@@ -265,7 +265,8 @@ mode "resize" {
     bindsym Escape mode "default"
     bindsym $mod+r mode "default"
 
-    bindsym $mod+s sticky toggle
+    bindsym s sticky toggle
+    bindsym b border toggle
 }
 bindsym $mod+r mode "resize"
 
