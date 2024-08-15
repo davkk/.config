@@ -32,19 +32,32 @@ return {
                         },
                         telemetry = { enable = false, },
                     },
-                }
+                },
+                override_capabilities = {
+                    semanticTokensProvider = vim.NIL
+                },
             },
+
             biome = true,
-            [require("typescript-tools")] = true,
+            ["typescript-tools"] = {
+                callback = function(buffer)
+                    vim.keymap.set("n", "<leader>oi", ":TSToolsOrganizeImports<cr>", { buffer = buffer })
+                end,
+            },
+            angularls = { root_dir = util.root_pattern("angular.json", "Gruntfile.js") },
+            astro = true,
             jsonls = true,
-            marksman = true,
             cssls = true,
+
             ocamllsp = {
                 settings = {
                     codelens = { enable = true },
                     extendedHover = { enable = true },
+                    inlayHints = { enable = true },
+                    syntaxDocumentation = { enable = true },
                 },
             },
+
             pyright = {
                 root_dir = util.root_pattern("pyproject.toml"),
                 settings = {
@@ -53,7 +66,9 @@ return {
                     }
                 }
             },
+
             gopls = true,
+
             neocmake = {
                 init_options = {
                     scan_cmake_in_package = false,
@@ -62,14 +77,20 @@ return {
             },
             clangd = {
                 init_options = {
-                    fallbackFlags = { "-stdlib=libc++", }
+                    clangdFileStatus = true,
+                    fallbackFlags = { "-stdlib=libc++" },
                 },
+                callback = function(buffer)
+                    vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })
+                end,
             },
-            angularls = { root_dir = util.root_pattern("angular.json", "Gruntfile.js") },
-            astro = true,
+
+            marksman = true,
             texlab = true,
             grammarly = { filetypes = { "markdown", "tex", "text" } },
+
             r_language_server = true,
+
             fsharp_language_server = {
                 cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
                 root_dir = function(filename, _)
@@ -79,70 +100,48 @@ return {
             },
         }
 
-        local disable_semantic_tokens = {
-            lua = true,
-        }
-
-        local mappings = {
-            ["typescript-tools"] = function()
-                vim.keymap.set("n", "<leader>oi", ":TSToolsOrganizeImports<cr>", { buffer = 0 })
-            end,
-            clangd = function()
-                vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = 0 })
-            end,
-        }
+        lsp.setup_servers(servers)
 
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-            callback = function(args)
-                local bufnr = args.buf
-                local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "must have valid client")
-                local opts = { buffer = 0 }
+            callback = function(event)
+                local opts = { buffer = event.buf }
+
+                local client = assert(vim.lsp.get_client_by_id(event.data.client_id), "must have valid client")
+                local settings = servers[client.name]
+                if type(settings) ~= "table" then
+                    settings = {}
+                end
 
                 vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
                 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
                 vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-
                 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
                 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
                 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-
-                vim.keymap.set("n", "]d", function()
-                    vim.diagnostic.goto_next()
-                end, opts)
-                vim.keymap.set("n", "[d", function()
-                    vim.diagnostic.goto_prev()
-                end, opts)
-
+                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
                 vim.keymap.set("i", "<C-s>", function()
                     require("cmp").mapping.abort()
                     vim.lsp.buf.signature_help()
                 end, opts)
 
-                pcall(mappings[client.name])
-
-                local filetype = vim.bo[bufnr].filetype
-                if disable_semantic_tokens[filetype] then
-                    client.server_capabilities.semanticTokensProvider = nil
+                -- set client-specific keymaps
+                if settings.callback then
+                    settings.callback(event.buf)
                 end
 
-                -- TODO figure out why it errors
-                -- if client.supports_method("textDocument/codeLens") then
-                --     vim.lsp.codelens.refresh()
-                --     vim.api.nvim_create_autocmd(
-                --         { "BufEnter", "InsertLeave", "CursorHold", },
-                --         {
-                --             buffer = bufnr,
-                --             callback = function()
-                --                 vim.lsp.codelens.refresh({ bufnr = 0 })
-                --             end,
-                --             group = vim.api.nvim_create_augroup("refreshCodelens", {}),
-                --         }
-                --     )
-                -- end
+                -- override server capabilities
+                if settings.override_capabilities then
+                    for k, v in pairs(settings.override_capabilities) do
+                        if v == vim.NIL then
+                            v = nil
+                        end
+                        client.server_capabilities[k] = v
+                    end
+                end
             end,
         })
 
@@ -160,7 +159,5 @@ return {
                 border = "solid",
             },
         })
-
-        lsp.setup_servers(servers)
     end,
 }

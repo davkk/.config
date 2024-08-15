@@ -28,7 +28,7 @@ function M.client_capabilities()
 end
 
 function M.setup_servers(servers)
-    for server, config in pairs(servers) do
+    for name, config in pairs(servers) do
         if not config then
             return
         end
@@ -38,7 +38,10 @@ function M.setup_servers(servers)
         if type(config) ~= "table" then
             config = {}
         end
-        (type(server) == "string" and require("lspconfig")[server] or server).setup(
+
+        local ok, _ = pcall(require, 'lspconfig.server_configurations.' .. name)
+        local server = ok and require("lspconfig")[name] or require(name)
+        server.setup(
             vim.tbl_deep_extend("force", {
                 capabilities = M.client_capabilities(),
             }, config or {})
