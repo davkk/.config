@@ -124,7 +124,7 @@ return {
                 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
                 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
                 vim.keymap.set("i", "<C-s>", function()
-                    require("cmp").mapping.abort()
+                    require("cmp").abort()
                     vim.lsp.buf.signature_help()
                 end, opts)
 
