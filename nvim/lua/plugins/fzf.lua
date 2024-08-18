@@ -4,7 +4,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
         local fzf = require("fzf-lua")
-        local actions = require "fzf-lua.actions"
+        local actions = require("fzf-lua.actions")
 
         fzf.setup({
             "fzf-native",
@@ -18,20 +18,19 @@ return {
             },
             keymap = {
                 fzf = {
+                    true,
                     ["ctrl-c"] = "abort",
                     ["ctrl-u"] = "half-page-up",
                     ["ctrl-d"] = "half-page-down",
+                    ["ctrl-q"] = "select-all+accept",
                     ["f2"] = "toggle-preview",
                 },
             },
             actions = {
                 files = {
-                    ["enter"] = actions.file_edit_or_qf,
+                    true,
                     ["ctrl-y"] = actions.file_edit_or_qf,
-                    ["ctrl-x"] = actions.file_split,
-                    ["ctrl-v"] = actions.file_vsplit,
-                    ["ctrl-t"] = actions.file_tabedit,
-                    ["ctrl-q"] = actions.file_sel_to_qf,
+                    ["ctrl-h"] = actions.file_vsplit,
                 },
             },
             helptags = { previewer = "help_native" },
