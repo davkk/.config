@@ -9,6 +9,8 @@ return {
         "williamboman/mason-lspconfig.nvim",
 
         { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+
+        "artemave/workspace-diagnostics.nvim",
     },
     config = function()
         local lsp = require("config.lsp")
@@ -76,10 +78,26 @@ return {
                 }
             },
             clangd = {
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "-j=4",
+                    "--compile-commands-dir=./",
+                    "--clang-tidy",
+                    "--header-insertion=iwyu",
+                    "--completion-style=detailed",
+                    "--function-arg-placeholders",
+                    "--fallback-style=llvm",
+                    "--cross-file-rename",
+                },
+                single_file_support = false,
                 init_options = {
+                    usePlaceholders = true,
+                    completeUnimported = true,
                     clangdFileStatus = true,
                     fallbackFlags = { "-stdlib=libc++" },
                 },
+                populate_diagnostics = true,
                 callback = function(buffer)
                     vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })
                 end,
@@ -128,7 +146,11 @@ return {
                     vim.lsp.buf.signature_help()
                 end, opts)
 
-                -- set client-specific keymaps
+                if settings.populate_diagnostics then
+                    require("workspace-diagnostics").populate_workspace_diagnostics(client, event.buf)
+                end
+
+                -- set server-specific attach
                 if settings.callback then
                     settings.callback(event.buf)
                 end

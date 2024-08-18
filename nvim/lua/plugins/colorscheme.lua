@@ -116,6 +116,10 @@ return {
 
             -- codota/tabnine.nvim
             TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
+
+            -- folke/trouble.nvim
+            TroubleNormal = { link = "Normal" },
+            TroubleNormalNC = { link = "Normal" },
         },
 
         before_highlight = function(_, highlight)

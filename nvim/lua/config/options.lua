@@ -39,7 +39,7 @@ opt.wrap = false
 vim.wo.foldtext = ""
 opt.fo:remove("t")
 
-opt.inccommand = 'split'
+opt.inccommand = "split"
 opt.smartcase = true
 opt.ignorecase = true
 

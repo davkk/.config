@@ -44,7 +44,7 @@ function M.setup_servers(servers)
         server.setup(
             vim.tbl_deep_extend("force", {
                 capabilities = M.client_capabilities(),
-            }, config or {})
+            }, config)
         )
     end
 end
