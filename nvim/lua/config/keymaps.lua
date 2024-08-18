@@ -69,3 +69,11 @@ vim.keymap.set("n", "<Left>", function()
     pcall(vim.cmd, [[checktime]])
     vim.api.nvim_feedkeys("gT", "n", true)
 end, opts)
+
+
+-- toggle diagnostics
+vim.keymap.set(
+    "n",
+    "<leader>td",
+    function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
+)
