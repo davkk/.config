@@ -7,6 +7,7 @@ return {
 
             vim.keymap.set("n", "<leader>gs", vim.cmd.Git, opts)
             vim.keymap.set("n", "<leader>gp", "<cmd>:G push<CR>", opts)
+            vim.keymap.set("n", "<leader>gf", "<cmd>:G push -f<CR>", opts)
             vim.keymap.set("n", "<leader>gP", "<cmd>:G pull origin --rebase<CR>", opts)
 
             -- do git merges easily:
@@ -47,8 +48,32 @@ return {
         end
     },
     {
-        "ThePrimeagen/git-worktree.nvim",
-        dependencies = { "stevearc/oil.nvim" },
-        opts = { update_on_change_command = "Oil ." },
-    }
+        "sindrets/diffview.nvim",
+        lazy = false,
+        opts = {
+            enhanced_diff_hl = true,
+            signs = {
+                fold_closed = "",
+            },
+            file_panel = {
+                win_config = {
+                    position = "bottom",
+                    height = 12,
+                },
+            },
+            file_history_panel = {
+                win_config = {
+                    height = 12,
+                },
+            },
+        },
+        config = function(_, opts)
+            local diffview = require("diffview")
+            diffview.setup(opts)
+
+            vim.keymap.set("n", "<leader>dvo", "<cmd>DiffviewOpen<cr>", { silent = true })
+            vim.keymap.set("n", "<leader>dvc", "<cmd>DiffviewClose<cr>", { silent = true })
+            vim.keymap.set("n", "<leader>dvf", "<cmd>DiffviewFileHistory %<cr>", { silent = true })
+        end
+    },
 }
