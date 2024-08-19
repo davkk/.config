@@ -80,10 +80,7 @@ return {
             clangd = {
                 cmd = {
                     "clangd",
-                    "--background-index",
                     "-j=3",
-                    "--compile-commands-dir=./",
-                    "--clang-tidy",
                     "--header-insertion=iwyu",
                     "--completion-style=detailed",
                     "--function-arg-placeholders",
