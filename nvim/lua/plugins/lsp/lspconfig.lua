@@ -81,7 +81,7 @@ return {
                 cmd = {
                     "clangd",
                     "--background-index",
-                    "-j=4",
+                    "-j=3",
                     "--compile-commands-dir=./",
                     "--clang-tidy",
                     "--header-insertion=iwyu",
@@ -147,7 +147,14 @@ return {
                 end, opts)
 
                 if settings.populate_diagnostics then
-                    require("workspace-diagnostics").populate_workspace_diagnostics(client, event.buf)
+                    vim.api.nvim_buf_create_user_command(
+                        event.buf,
+                        "PopulateWorkspaceDiagnostics",
+                        function()
+                            require("workspace-diagnostics").populate_workspace_diagnostics(client, event.buf)
+                        end,
+                        {}
+                    )
                 end
 
                 -- set server-specific attach
