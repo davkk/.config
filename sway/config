@@ -36,7 +36,7 @@ set $browser brave-browser
 set $highlight #ffb083
 
 # Your preferred application launcher
-set $menu fuzzel
+set $menu j4-dmenu-desktop
 
 # Wallpaper
 set $wallpaper $HOME/Pictures/wallpaper.jpg
