@@ -2,7 +2,12 @@ return {
     "folke/trouble.nvim",
     event = "BufReadPost",
     opts = {
-        open_no_results = true
+        open_no_results = true,
+        icons = {
+            indent = {
+                fold_closed = " ",
+            }
+        },
     },
     config = function(_, opts)
         local trouble = require("trouble")
