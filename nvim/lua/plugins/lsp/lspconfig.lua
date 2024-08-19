@@ -8,9 +8,9 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
 
-        { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-
         "artemave/workspace-diagnostics.nvim",
+
+        { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     },
     config = function()
         local lsp = require("config.lsp")
