@@ -1,30 +1,11 @@
 local M = {}
 
 function M.client_capabilities()
-    local capabilities = vim.tbl_deep_extend(
+    return vim.tbl_deep_extend(
         "force",
         vim.lsp.protocol.make_client_capabilities(),
         require("cmp_nvim_lsp").default_capabilities()
     )
-
-    capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
-
-    capabilities.textDocument.codeLens = {
-        dynamicRegistration = false
-    }
-
-    capabilities.textDocument.completion.completionItem.resolveSupport = {
-        properties = {
-            "documentation",
-            "detail",
-            "additionalTextEdits",
-        },
-    }
-
-    return capabilities
 end
 
 local function try_require(module)
