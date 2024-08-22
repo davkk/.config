@@ -81,7 +81,7 @@ export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
 # export LANGUAGE=en_US.UTF-8
 # export LC_ALL=en_US.UTF-8
 
-export MANPAGER=nvim
+# export MANPAGER=nvim
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
