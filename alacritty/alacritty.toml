@@ -52,7 +52,7 @@ background = "#000000"
 
 [colors.cursor]
 text = "#000000"
-cursor = "#e0def4"
+cursor = "#52ad70"
 
 [cursor]
 style = "Block"
