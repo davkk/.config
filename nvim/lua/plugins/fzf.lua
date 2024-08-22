@@ -8,13 +8,14 @@ return {
 
         fzf.setup({
             "fzf-native",
-            fzf_opts = { ["--layout"] = "default" },
+            fzf_opts = { ["--layout"] = "default", ["--keep-right"] = "" },
             winopts = {
                 border = "none",
                 backdrop = 10,
                 preview = {
                     default = "head",
-                    hidden = "hidden",
+                    layout = "vertical",
+                    vertical = "up:40%",
                 },
             },
             keymap = {
@@ -34,6 +35,7 @@ return {
                     ["ctrl-h"] = actions.file_vsplit,
                 },
             },
+            files = { fd_opts = [[--color=never --type f --hidden --follow --no-ignore]] },
             helptags = { previewer = "help_native" },
         })
 
@@ -68,7 +70,7 @@ return {
         vim.keymap.set(
             "n",
             "<leader>lg",
-            fzf.live_grep_resume,
+            fzf.live_grep_native,
             { desc = "live grep", }
         )
 
