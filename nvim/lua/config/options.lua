@@ -13,6 +13,7 @@ opt.number = true
 
 opt.laststatus = 3
 
+opt.cursorline = true
 opt.colorcolumn = "80"
 
 opt.scrolloff = 8
