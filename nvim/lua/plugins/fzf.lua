@@ -10,6 +10,7 @@ return {
             "fzf-native",
             fzf_opts = { ["--layout"] = "default" },
             winopts = {
+                border = "none",
                 backdrop = 10,
                 preview = {
                     default = "head",
