@@ -18,12 +18,12 @@ return {
             snippet = {
                 expand = function(args) luasnip.lsp_expand(args.body) end,
             },
-            mapping = cmp.mapping.preset.insert {
+            mapping = {
                 ["<Tab>"] = cmp.config.disable,
                 ["<S-Tab>"] = cmp.config.disable,
 
                 ["<C-n>"] = cmp.mapping(function()
-                    if cmp.core.view:visible() or vim.fn.pumvisible() then
+                    if cmp.visible() then
                         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                     else
                         cmp.complete()
