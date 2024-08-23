@@ -25,7 +25,7 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.color_scheme = "Rosé Pine Moon (base16)"
+config.color_scheme = "rose-pine-moon"
 config.colors = {
     background = "#000000",
     cursor_bg = "#52ad70",
