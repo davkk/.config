@@ -10,9 +10,10 @@ return {
             "fzf-native",
             fzf_opts = { ["--layout"] = "default", ["--keep-right"] = "" },
             winopts = {
-                border = "none",
+                border = { " " },
                 backdrop = 10,
                 preview = {
+                    hidden = "hidden",
                     default = "head",
                     layout = "vertical",
                     vertical = "up:40%",
@@ -25,7 +26,8 @@ return {
                     ["ctrl-u"] = "half-page-up",
                     ["ctrl-d"] = "half-page-down",
                     ["ctrl-q"] = "select-all+accept",
-                    ["f2"] = "toggle-preview",
+                    ["f3"] = "toggle-preview",
+                    ["f4"] = "toggle-preview-wrap",
                 },
             },
             actions = {

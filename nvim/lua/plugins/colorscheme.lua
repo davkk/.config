@@ -76,6 +76,9 @@ return {
 
             -- plugins
 
+            -- ibhagwan/fzf-lua
+            FzfLuaBorder = { bg = "overlay", blend = 5 },
+
             -- lewis6991/gitsigns.nvim
             GitSignsAdd = { bg = "none" },
             GitSignsChange = { bg = "none" },
@@ -94,9 +97,6 @@ return {
             TreesitterContext = { bg = "none", link = "Normal" },
             TreesitterContextLineNumber = { bg = "none", fg = "highlight_high", bold = true },
             TreesitterContextBottom = { underline = true, sp = "overlay" },
-
-            -- Exafunction/codeium.vim
-            CodeiumSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
 
             -- codota/tabnine.nvim
             TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
