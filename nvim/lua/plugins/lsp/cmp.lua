@@ -55,6 +55,18 @@ return {
                 trigger_debounce_time = 300,
                 fetching_timeout = 80
             },
+            formatting = {
+                format = function(entry, item)
+                    local menu_icon = {
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[SNIP]",
+                        buffer = "[BUF]",
+                        path = "[PATH]",
+                    }
+                    item.menu = menu_icon[entry.source.name]
+                    return item
+                end,
+            },
             experimental = {
                 ghost_text = true,
             },
