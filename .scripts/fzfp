@@ -1,11 +1,12 @@
-#!/usr/bin/env zsh
-
+#!/usr/bin/env bash
 # fzfp = fuzzy find project
+
+dirs=(~/projects ~/work ~/personal ~/university)
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/projects ~/work ~/personal ~/university -maxdepth 1 -type d | fzf )
+    selected=$(fd --max-depth=1 --type=d . $dirs | fzf --height ~60%)
 fi
 
 if [[ -z $selected ]]; then

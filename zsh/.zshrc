@@ -1,26 +1,20 @@
-# Enable Powerlevel10k instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
-# -- ZSH OPTIONS
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
 
-
-# -- ALIASES
+alias sd='cd `fzfp`'
 alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
 alias tmux='tmux -u'
-alias alice='apptainer shell -s /bin/zsh ~/work/alice/alice.sif'
+alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
 alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest --shellrc'
 
-
-# -- EXPORTS
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
@@ -68,36 +62,23 @@ export PATH=$PATH:$BUN_INSTALL/bin
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
-    --color=fg:#908caa,bg:#232136,hl:#ea9a97
-    --color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97
-    --color=border:#44415a,header:#3e8fb0,gutter:#232136
-    --color=spinner:#f6c177,info:#9ccfd8
-    --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa
-    "
+--color=fg:#908caa,bg:#232136,hl:#ea9a97
+--color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97
+--color=border:#44415a,header:#3e8fb0,gutter:#232136
+--color=spinner:#f6c177,info:#9ccfd8
+--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa
+"
 
 export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
 
-# export LANG=en_US.UTF-8
-# export LANGUAGE=en_US.UTF-8
-# export LC_ALL=en_US.UTF-8
-
-# export MANPAGER=nvim
-
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-# preferred editor for local and remote sessions
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which nvim`
 
-
-# -- PLUGINS
 source $XDG_CONFIG_HOME/antigen/antigen.zsh
 
 antigen theme romkatv/powerlevel10k
-
-antigen use oh-my-zsh
-antigen bundle fzf
-antigen bundle direnv
 
 antigen bundle 'zsh-users/zsh-syntax-highlighting'
 antigen bundle 'zsh-users/zsh-autosuggestions'
@@ -105,35 +86,18 @@ antigen bundle 'zsh-users/zsh-autosuggestions'
 antigen apply
 
 typeset -gA ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[precommand]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=blue,underline
-ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
-ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
+ZSH_HIGHLIGHT_STYLES[alias]="fg=magenta"
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
 
-
-# -- CUSTOM FUNCTIONS
-
-# change directory (project)
-cdp() {
-    selected=`fzfp`
-    if [[ -n "$selected" ]]; then
-        cd "$selected"
-    fi
-}
-zle -N cdp
-
-
-# -- BINDKEYS
 bindkey -e
 bindkey '^y' autosuggest-accept
 
+bindkey "\e[3~" delete-char
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
-# -- CONFIGS
-
-# opam configuration
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
 eval `opam env 2>/dev/null` 2>/dev/null
 
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+source <(fzf --zsh 2>/dev/null)
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
