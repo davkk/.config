@@ -23,15 +23,17 @@ config.window_padding = {
 
 config.color_scheme = color_scheme
 config.colors = {
-    background = "#000000",
+    background = "black",
+    selection_fg = "black",
+    selection_bg = colors.ansi[4],
     tab_bar = {
-        background = "#000000",
+        background = "black",
         active_tab = {
-            bg_color = "#000000",
+            bg_color = "black",
             fg_color = colors.ansi[5],
         },
         inactive_tab = {
-            bg_color = "#000000",
+            bg_color = "black",
             fg_color = colors.ansi[5],
         },
     },
