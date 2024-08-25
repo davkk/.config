@@ -6,7 +6,7 @@ dirs=(~/projects ~/work ~/personal ~/university)
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(fd --max-depth=1 --type=d . $dirs | fzf --height ~60%)
+    selected=$(fd --max-depth=1 --type=d . "${dirs[@]}" | fzf --height ~60%)
 fi
 
 if [[ -z $selected ]]; then
