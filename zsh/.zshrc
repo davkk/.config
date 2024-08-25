@@ -8,7 +8,18 @@ setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
 
-alias sd='cd `fzfp`'
+sd() {
+    selected=`fzfp`
+    if [[ -n "$selected" ]]; then
+        cd $selected
+
+        if [[ -z $MYVIMRC ]]; then
+            wezterm cli set-tab-title `basename $selected`
+        fi
+    fi
+}
+zle -N cdp
+
 alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
 alias tmux='tmux -u'
