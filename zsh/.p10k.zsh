@@ -70,7 +70,7 @@
     # context                 # user@host
     # time                    # current time
     # =========================[ Line #2 ]=========================
-    newline                   # \n
+    # newline                   # \n
   )
 
   # Basic style options that define the overall prompt look.
