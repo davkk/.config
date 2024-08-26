@@ -86,7 +86,6 @@ antigen bundle 'zsh-users/zsh-autosuggestions'
 antigen apply
 
 typeset -gA ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[alias]="fg=magenta"
 ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
 
 bindkey -e
