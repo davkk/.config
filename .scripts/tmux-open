@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+if [[ $# -lt 1 ]]; then
+    exit 1
+fi
+
+mode=$1
+dir=$2
+
+if [[ -n $dir ]]; then
+    selected=$dir
+else
+    selected=`~/.config/.scripts/fzfp`
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=`basename "$selected" | tr . _`
+tmux_running=`pgrep tmux`
+
+case $mode in
+    window)
+        if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+            tmux new-window -c $selected \; rename-window $selected_name
+            exit 0
+        fi
+
+        has_window=`tmux lsw -F "#{window_name}" | grep $selected_name`
+        if [[ -z $has_window ]]; then
+            tmux new-window -c $selected \; rename-window $selected_name
+        fi
+
+        tmux select-window -t $selected_name
+        ;;
+
+    session)
+        if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+            tmux new-session -s $selected_name -c $selected
+            exit 0
+        fi
+
+        has_session=`tmux has-session -t=$selected_name 2> /dev/null`
+        if [[ -z $has_session ]]; then
+            tmux new-session -ds $selected_name -c $selected
+        fi
+
+        tmux switch-client -t $selected_name
+        ;;
+esac
