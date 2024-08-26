@@ -10,6 +10,8 @@ config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.enable_scroll_bar = false
 
 config.max_fps = 144
+config.front_end = "WebGpu"
+config.webgpu_power_preference = "HighPerformance"
 
 config.color_scheme = "rose-pine-moon"
 config.colors = { background = "black" }
