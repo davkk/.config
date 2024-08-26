@@ -8,21 +8,10 @@ setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
 
-sd() {
-    selected=`fzfp`
-    if [[ -n "$selected" ]]; then
-        cd $selected
-
-        if [[ -z $MYVIMRC ]]; then
-            wezterm cli set-tab-title `basename $selected`
-        fi
-    fi
-}
-zle -N cdp
-
 alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
 alias tmux='tmux -u'
+alias sd='cd `fzfp`'
 alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
 alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest --shellrc'
 
