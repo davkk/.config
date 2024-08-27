@@ -6,7 +6,7 @@ if wezterm.config_builder then
 end
 
 config.window_decorations = "RESIZE"
-config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+config.window_padding = { left = 3, right = 3, top = 3, bottom = 3 }
 config.enable_scroll_bar = false
 
 config.max_fps = 144
@@ -21,7 +21,7 @@ config.audible_bell = "Disabled"
 config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
-config.underline_thickness = 2
+config.underline_thickness = "0.06cell"
 
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
