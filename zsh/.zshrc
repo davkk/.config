@@ -87,6 +87,7 @@ antigen apply
 
 typeset -gA ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
+zstyle ':completion:*:default' menu select
 
 bindkey -e
 bindkey '^y' autosuggest-accept
