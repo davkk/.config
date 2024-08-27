@@ -37,7 +37,7 @@ return {
         },
 
         highlight_groups = {
-            ColorColumn = { bg = "base" },
+            ColorColumn = { bg = "highlight_low", blend = 5 },
             CursorLine = { bg = "none" },
             CursorLineNr = { fg = "text", bold = true },
             LineNr = { fg = "highlight_high" },
