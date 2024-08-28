@@ -3,7 +3,7 @@
 
 dirs=(~/projects ~/work ~/personal ~/university)
 
-selected=$(find "${dirs[@]}" -maxdepth 1 -type d | fzf)
+selected=$(find "${dirs[@]}" -maxdepth 1 -type d | fzf --height ~60%)
 if [[ -z $selected ]]; then
     exit 0
 fi

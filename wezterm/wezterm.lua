@@ -15,10 +15,25 @@ config.max_fps = 144
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 
-config.color_scheme = "rose-pine-moon"
-config.colors = { background = "black" }
+local color_scheme = "rose-pine-moon"
+local colors = wezterm.get_builtin_color_schemes()[color_scheme]
+local tab_color = { bg_color = "black", fg_color = colors.brights[1] }
+config.color_scheme = color_scheme
+config.colors = {
+    background = "black",
+    selection_bg = colors.ansi[4],
+    selection_fg = "black",
+    tab_bar = {
+        background = "black",
+        active_tab = tab_color,
+        inactive_tab = tab_color,
+        inactive_tab_hover = tab_color,
+    },
+}
 
 config.audible_bell = "Disabled"
+config.window_close_confirmation = "AlwaysPrompt"
+config.skip_close_confirmation_for_processes_named = {}
 
 config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
 config.adjust_window_size_when_changing_font_size = false
@@ -28,17 +43,18 @@ config.underline_thickness = "0.07cell"
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
-config.show_new_tab_button_in_tab_bar = true
+config.show_new_tab_button_in_tab_bar = false
 config.tab_max_width = 100
 
-config.disable_default_key_bindings = true
-config.keys = {
-    { key = "P", mods = "CTRL", action = wezterm.action.ActivateCommandPalette },
-    { key = "V", mods = "CTRL", action = wezterm.action.PasteFrom "Clipboard" },
-    { key = "C", mods = "CTRL", action = wezterm.action.CopyTo "Clipboard" },
-    { key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
-    { key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
-    { key = "0", mods = "CTRL", action = wezterm.action.ResetFontSize },
-}
+wezterm.on("format-tab-title", function(tab)
+    local tab_title = tab.tab_title
+    local pane_title = tab.active_pane.title
+    return {
+        { Text = string.format("%d:", tab.tab_index + 1) },
+        { Text = (tab_title and #tab_title > 0) and tab_title or pane_title },
+        { Text = tab.is_active and "*" or "" },
+        { Text = " " },
+    }
+end)
 
 return config
