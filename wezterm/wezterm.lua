@@ -5,6 +5,8 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
+config.default_prog = { "/usr/bin/env", "zsh", "-l" }
+
 config.window_decorations = "RESIZE"
 config.window_padding = { left = 3, right = 3, top = 3, bottom = 3 }
 config.enable_scroll_bar = false
@@ -21,7 +23,7 @@ config.audible_bell = "Disabled"
 config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
-config.underline_thickness = "0.06cell"
+config.underline_thickness = "0.07cell"
 
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
