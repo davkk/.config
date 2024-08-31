@@ -8,7 +8,7 @@ return {
 
         fzf.setup({
             "fzf-native",
-            fzf_opts = { ["--layout"] = "default", ["--keep-right"] = "" },
+            fzf_opts = { ["--layout"] = "default" },
             winopts = {
                 border = { " " },
                 backdrop = 10,
@@ -37,7 +37,8 @@ return {
                     ["ctrl-h"] = actions.file_vsplit,
                 },
             },
-            files = { fd_opts = [[--color=never --type f --hidden --follow --no-ignore]] },
+            files = { fd_opts = [[-c=never -t=f -H -L -I]] },
+            grep = { rg_opts = [[--column -p -S --no-heading --trim -e]] },
             helptags = { previewer = "help_native" },
         })
 
