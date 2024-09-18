@@ -11,15 +11,15 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-        variant = "moon",      -- auto, main, moon, or dawn
-        dark_variant = "moon", -- main, moon, or dawn
+        variant = "moon",
+        dark_variant = "moon",
         dim_inactive_windows = false,
         extend_background_behind_borders = true,
 
         enable = {
             terminal = false,
-            legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-            migrations = true,        -- Handle deprecated options automatically
+            legacy_highlights = true,
+            migrations = true,
         },
 
         styles = {
@@ -37,69 +37,39 @@ return {
         },
 
         highlight_groups = {
-            ColorColumn = { bg = "highlight_low", blend = 5 },
-            CursorLine = { bg = "none" },
-            CursorLineNr = { fg = "text", bold = true },
             LineNr = { fg = "highlight_high" },
             EndOfBuffer = { link = "LineNr" },
-
-            Visual = { bg = "overlay" },
-            Search = { fg = "none", bg = "highlight_med", blend = 75 },
-
             Comment = { link = "LineNr" },
-
-            Pmenu = { blend = 5 },
-            PmenuSel = { bg = "rose", fg = "base" },
-
-            WinSeparator = { bg = "none", fg = "overlay" },
+            WinSeparator = { link = "LineNr" },
+            ModeMsg = { link = "LineNr" },
 
             NormalFloat = { blend = 5 },
             FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
             FloatBorder = { fg = "highlight_med", blend = 5 },
 
-            ModeMsg = { link = "LineNr" },
-
-            StatusLine = { fg = "subtle" },
-            StatusLineTerm = { link = "StatusLine" },
-            StatusLineTermNC = { link = "StatusLine" },
-
-            TabLine = { fg = "subtle" },
-            TabLineSel = { fg = "text", bg = "none" },
-            TabLineFill = { bg = "none" },
+            Pmenu = { blend = 5 },
+            PmenuSel = { bg = "rose", fg = "base" },
 
             SpellBad = { sp = diagnostics.warn },
             DiagnosticUnnecessary = { fg = "muted", sp = diagnostics.hint, underline = true },
 
-            QuickFixLine = { bg = "text", blend = 15, bold = true },
+            QuickFixLine = { link = "CurSearch" },
 
             ["@type.qualifier"] = { fg = "subtle" },
-
-            -- plugins
-
-            -- ibhagwan/fzf-lua
-            FzfLuaBorder = { bg = "overlay", blend = 5 },
-
-            -- lewis6991/gitsigns.nvim
-            GitSignsAdd = { bg = "none" },
-            GitSignsChange = { bg = "none" },
-            GitSignsDelete = { bg = "none" },
-
-            -- j-hui/fidget.nvim
-            FidgetTask = { fg = "highlight_med" },
-            FidgetTitle = { fg = "text" },
+            ["@function.method.call"] = { fg = "rose" },
 
             -- hrsh7th/nvim-cmp
             CmpItemMenu = { fg = "highlight_high" },
             CmpItemAbbrMatchFuzzy = { fg = "rose" },
             CmpItemKind = { fg = "iris" },
 
+            -- ibhagwan/fzf-lua
+            FzfLuaBorder = { bg = "overlay", blend = 5 },
+
             -- nvim-treesitter/nvim-treesitter-context
-            TreesitterContext = { bg = "none", link = "Normal" },
+            TreesitterContext = { link = "Normal" },
             TreesitterContextLineNumber = { bg = "none", fg = "highlight_high", bold = true },
             TreesitterContextBottom = { underline = true, sp = "overlay" },
-
-            -- codota/tabnine.nvim
-            TabnineSuggestion = { fg = "muted", bg = "overlay", blend = 40 },
 
             -- folke/trouble.nvim
             TroubleNormal = { link = "Normal" },
