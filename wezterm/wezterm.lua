@@ -17,7 +17,8 @@ config.webgpu_power_preference = "HighPerformance"
 
 local color_scheme = "rose-pine-moon"
 local colors = wezterm.get_builtin_color_schemes()[color_scheme]
-local tab_color = { bg_color = "black", fg_color = colors.brights[1] }
+local inactive_tab_color = { bg_color = "black", fg_color = colors.brights[1] }
+local active_tab_color = { bg_color = "black", fg_color = colors.ansi[8], intensity = "Bold" }
 config.color_scheme = color_scheme
 config.colors = {
     background = "black",
@@ -25,9 +26,9 @@ config.colors = {
     selection_fg = "black",
     tab_bar = {
         background = "black",
-        active_tab = tab_color,
-        inactive_tab = tab_color,
-        inactive_tab_hover = tab_color,
+        active_tab = active_tab_color,
+        inactive_tab = inactive_tab_color,
+        inactive_tab_hover = inactive_tab_color,
     },
 }
 
@@ -50,9 +51,9 @@ wezterm.on("format-tab-title", function(tab)
     local tab_title = tab.tab_title
     local pane_title = tab.active_pane.title
     return {
-        { Text = string.format("%d:", tab.tab_index + 1) },
+        { Text = string.format("%d:[", tab.tab_index + 1) },
         { Text = (tab_title and #tab_title > 0) and tab_title or pane_title },
-        { Text = tab.is_active and "*" or "" },
+        { Text = "]" },
         { Text = " " },
     }
 end)
