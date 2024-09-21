@@ -22,7 +22,7 @@ function Tabline.build_tabline()
         if bufname ~= "" then
             line = line .. vim.fn.fnamemodify(bufname, ":t")
         else
-            line = line .. "[No Name]"
+            line = line .. "No Name"
         end
         line = line .. "]"
         line = line .. " "
