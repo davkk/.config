@@ -91,6 +91,7 @@ zstyle ':completion:*:default' menu select
 
 bindkey -e
 bindkey '^y' autosuggest-accept
+bindkey '^n' complete-word
 
 bindkey "\e[3~" delete-char
 bindkey "^[[1;5C" forward-word
