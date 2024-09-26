@@ -43,6 +43,9 @@ return {
             WinSeparator = { link = "LineNr" },
             ModeMsg = { link = "LineNr" },
 
+            StatusLineTerm = { link = "StatusLine" },
+            StatusLineTermNC = { link = "StatusLineNC" },
+
             NormalFloat = { blend = 5 },
             FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
             FloatBorder = { fg = "highlight_med", blend = 5 },
@@ -56,7 +59,6 @@ return {
             QuickFixLine = { link = "CurSearch" },
 
             ["@type.qualifier"] = { fg = "subtle" },
-            ["@function.method.call"] = { fg = "rose" },
 
             -- hrsh7th/nvim-cmp
             CmpItemMenu = { fg = "highlight_high" },
