@@ -102,7 +102,6 @@ return {
 
             marksman = true,
             texlab = true,
-            grammarly = { filetypes = { "markdown", "tex", "text" } },
 
             r_language_server = true,
 
