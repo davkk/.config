@@ -321,6 +321,7 @@ seat seat0 xcursor_theme Adwaita $cursor_size
 ##
 
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+for_window [app_id="org.mozilla.thunderbird" title="Work Online"] floating enable
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="1Password"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
