@@ -13,8 +13,6 @@ opt.number = true
 
 opt.laststatus = 3
 
-opt.colorcolumn = "80"
-
 opt.scrolloff = 8
 opt.sidescrolloff = 8
 
