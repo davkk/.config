@@ -73,6 +73,9 @@ export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
+# fix java gui apps
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which nvim`
 
