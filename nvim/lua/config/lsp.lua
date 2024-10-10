@@ -25,7 +25,7 @@ function M.setup_servers(servers)
             config = {}
         end
 
-        local server = try_require('lspconfig.server_configurations.' .. name)
+        local server = try_require('lspconfig.configs.' .. name)
             and require('lspconfig')[name]
             or try_require(name)
 
