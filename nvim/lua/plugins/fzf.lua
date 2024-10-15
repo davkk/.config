@@ -71,6 +71,13 @@ return {
         )
 
         vim.keymap.set(
+            "v",
+            "<leader>gw",
+            fzf.grep_visual,
+            { desc = "grep visual", }
+        )
+
+        vim.keymap.set(
             "n",
             "<leader>lg",
             fzf.live_grep_native,
