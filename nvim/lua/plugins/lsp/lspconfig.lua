@@ -51,6 +51,8 @@ return {
             jsonls = true,
             cssls = true,
 
+            ruff_lsp = true,
+
             ocamllsp = {
                 settings = {
                     codelens = { enable = true },

@@ -13,7 +13,6 @@ return {
     keys = { "<leader>f" },
     opts = {
         formatters_by_ft = {
-            python = { "ruff" },
             javascript = { "biome", "prettierd", "eslint_d" },
             javascriptreact = { "biome", "prettierd", "eslint_d" },
             typescript = { "biome", "prettierd", "eslint_d" },
