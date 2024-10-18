@@ -43,6 +43,7 @@ return {
         require("treesitter-context").setup({
             enable = true,
             max_lines = 6,
+            separator = "─"
         })
     end,
 }

@@ -71,7 +71,7 @@ return {
             -- nvim-treesitter/nvim-treesitter-context
             TreesitterContext = { link = "Normal" },
             TreesitterContextLineNumber = { bg = "none", fg = "highlight_high", bold = true },
-            TreesitterContextBottom = { underline = true, sp = "overlay" },
+            TreesitterContextSeparator = { link = "WinSeparator" },
 
             -- folke/trouble.nvim
             TroubleNormal = { link = "Normal" },
