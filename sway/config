@@ -1,6 +1,8 @@
 # Read `man 5 sway` for a complete reference.
 font pango:Input Nonicons,monospace 16px
 
+xwayland enable
+
 ##
 # colors
 ##
@@ -17,17 +19,19 @@ client.placeholder #000000 #0c0c0c #ffffff #0c0c0c #0c0c0c
 # variables
 ##
 
-set $mod Mod1
-set $win Mod4
-set $left h
-set $down j
-set $up k
-set $right l
-set $term wezterm
-set $browser brave-browser
-set $menu j4-dmenu-desktop
-set $wallpaper $HOME/Pictures/wallpaper.jpg
-set $default_light 20
+set {
+    $mod Mod1
+    $win Mod4
+    $left h
+    $down j
+    $up k
+    $right l
+    $term wezterm
+    $browser brave-browser
+    $menu j4-dmenu-desktop
+    $wallpaper $HOME/Pictures/wallpaper.jpg
+    $default_light 20
+}
 
 # notifications
 set $notify exec dunstify -a sway -r 2001
@@ -52,8 +56,10 @@ floating_modifier $mod
 # output configuration
 ##
 
-set $output1 eDP-1
-set $output2 HDMI-A-1
+set {
+    $output1 eDP-1
+    $output2 HDMI-A-1
+}
 
 output * bg $wallpaper fill
 
@@ -63,52 +69,52 @@ output $output1 {
     scale 1
 }
 
-workspace 1 output $output1
-workspace 2 output $output1
-workspace 3 output $output1
-workspace 4 output $output1
-workspace 5 output $output1
-workspace 6 output $output2
-workspace 7 output $output2
-workspace 8 output $output2
-workspace 9 output $output2
+workspace {
+    1 output $output1
+    2 output $output1
+    3 output $output1
+    4 output $output1
+    5 output $output1
+    6 output $output2
+    7 output $output2
+    8 output $output2
+    9 output $output2
+}
 
 
 ##
 # idle configuration
 ##
 
-# this will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. it will also lock your screen before your computer goes to sleep.
 set $lock $HOME/.config/sway/lock.sh
 
 exec swayidle -w \
-      timeout 120 'light -O; $HOME/.config/sway/dim-screen.sh' \
-          resume 'light -I' \
-      timeout 300 '$lock' \
-      timeout 30 'if pgrep -x swaylock; then light -O; swaymsg "output * dpms off"; fi' \
-          resume 'if pgrep -x swaylock; then swaymsg "output * dpms on"; light -I; fi' \
-      before-sleep '$lock'
+         timeout 120 'light -O' \
+         timeout 120 '$HOME/.config/sway/screensaver.sh' \
+             resume 'light -I' \
+         timeout 300 '$lock && swaymsg "output * dpms off"' \
+             resume 'swaymsg "output * dpms on" && light -I' \
+         before-sleep '$lock'
 
-bindswitch --reload --locked lid:on exec light -O && swaymsg "output $output1 disable"
-bindswitch --reload --locked lid:off exec swaymsg "output $output1 enable" && light -I
+bindswitch --reload --locked {
+    lid:on exec light -O && swaymsg "output $output1 disable"
+    lid:off exec swaymsg "output $output1 enable" && light -I
+}
 
 for_window [class="^.*"] inhibit_idle fullscreen
 for_window [app_id="^.*"] inhibit_idle fullscreen
 
-
 input type:touchpad {
-  dwt enabled
-  tap enabled
-  scroll_factor 0.15
-  natural_scroll enabled
-  middle_emulation enabled
+    dwt enabled
+    tap enabled
+    scroll_factor 0.15
+    natural_scroll enabled
+    middle_emulation enabled
 }
 
 input type:keyboard {
-  xkb_layout us,pl
-  xkb_options caps:escape,grp:rctrl_rshift_toggle
+    xkb_layout us,pl
+    xkb_options caps:escape,grp:rctrl_rshift_toggle
 }
 
 
@@ -116,79 +122,101 @@ input type:keyboard {
 # key bindings
 ##
 
-bindsym $mod+Shift+c reload; exec dunstify -u low "  Sway config reloaded!"
-bindsym --locked $mod+Shift+e exec swaynag -t warning -m "You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session." -B "Yes, exit sway" "swaymsg exit"
+bindsym {
+    $mod+Shift+c reload; exec dunstify -u low "  Sway config reloaded!"
+    $mod+Shift+e exec swaynag -t warning -m "You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session." -B "Yes, exit sway" "swaymsg exit"
+}
 
-bindsym $win+l exec $lock
-bindsym $mod+Return exec $term
-bindsym $mod+b exec $browser
-bindsym $mod+Shift+q kill
-bindsym $mod+d exec $menu
+bindsym {
+    $win+l exec $lock
+    $mod+Return exec $term
+    $mod+b exec $browser
+    $mod+Shift+q kill
+    $mod+d exec $menu
+}
 
-bindsym $mod+p exec 1password
-bindsym Ctrl+Shift+l exec 1password --lock
-bindsym Ctrl+Shift+space exec 1password --quick-access
+bindsym {
+    $mod+p exec 1password
+    Ctrl+Shift+l exec 1password --lock
+    Ctrl+Shift+space exec 1password --quick-access
+}
 
-bindsym $mod+z splith
-bindsym $mod+v splitv
-bindsym $mod+f fullscreen
-bindsym $mod+Shift+space floating toggle
-bindsym $mod+space focus mode_toggle
+bindsym {
+    $mod+z splith
+    $mod+v splitv
+    $mod+f fullscreen
+    $mod+Shift+space floating toggle
+    $mod+space focus mode_toggle
+}
 
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+bindsym {
+    $mod+$left focus left
+    $mod+$down focus down
+    $mod+$up focus up
+    $mod+$right focus right
+}
 
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
+bindsym {
+    $mod+Shift+$left move left
+    $mod+Shift+$down move down
+    $mod+Shift+$up move up
+    $mod+Shift+$right move right
+}
 
-bindsym $mod+1 workspace number 1
-bindsym $mod+2 workspace number 2
-bindsym $mod+3 workspace number 3
-bindsym $mod+4 workspace number 4
-bindsym $mod+5 workspace number 5
-bindsym $mod+6 workspace number 6
-bindsym $mod+7 workspace number 7
-bindsym $mod+8 workspace number 8
-bindsym $mod+9 workspace number 9
-bindsym $mod+0 workspace number 10
+bindsym {
+    $mod+1 workspace number 1
+    $mod+2 workspace number 2
+    $mod+3 workspace number 3
+    $mod+4 workspace number 4
+    $mod+5 workspace number 5
+    $mod+6 workspace number 6
+    $mod+7 workspace number 7
+    $mod+8 workspace number 8
+    $mod+9 workspace number 9
+    $mod+0 workspace number 10
+}
 
-bindsym $mod+Shift+1 move container to workspace number 1
-bindsym $mod+Shift+2 move container to workspace number 2
-bindsym $mod+Shift+3 move container to workspace number 3
-bindsym $mod+Shift+4 move container to workspace number 4
-bindsym $mod+Shift+5 move container to workspace number 5
-bindsym $mod+Shift+6 move container to workspace number 6
-bindsym $mod+Shift+7 move container to workspace number 7
-bindsym $mod+Shift+8 move container to workspace number 8
-bindsym $mod+Shift+9 move container to workspace number 9
-bindsym $mod+Shift+0 move container to workspace number 10
+bindsym {
+    $mod+Shift+1 move container to workspace number 1
+    $mod+Shift+2 move container to workspace number 2
+    $mod+Shift+3 move container to workspace number 3
+    $mod+Shift+4 move container to workspace number 4
+    $mod+Shift+5 move container to workspace number 5
+    $mod+Shift+6 move container to workspace number 6
+    $mod+Shift+7 move container to workspace number 7
+    $mod+Shift+8 move container to workspace number 8
+    $mod+Shift+9 move container to workspace number 9
+    $mod+Shift+0 move container to workspace number 10
+}
 
 # suspend system on fn+f12
 bindsym XF86Launch1 exec systemctl suspend
 
 # pactl
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
-bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $notify "󰕾 $(pactl get-sink-mute @DEFAULT_SINK@)"
-bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $notify "󰍬 $(pactl get-source-mute @DEFAULT_SOURCE@)"
+bindsym --locked {
+    XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
+    XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print substr($5,1,length($5)-1)}' > $WOBSOCK
+    XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && $notify "󰕾 $(pactl get-sink-mute @DEFAULT_SINK@)"
+    XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle && $notify "󰍬 $(pactl get-source-mute @DEFAULT_SOURCE@)"
+}
 
 # playerctl
-bindsym --locked XF86AudioPlay exec playerctl play-pause && sleep 0.2 && $notify "󰲹 $(playerctl status)"
-bindsym --locked XF86AudioStop exec playerctl stop && $notify "󰲹 Stopped playback"
-bindsym --locked XF86AudioNext exec playerctl next
-bindsym --locked XF86AudioPrev exec playerctl previous
+bindsym --locked {
+    XF86AudioPlay exec playerctl play-pause && sleep 0.2 && $notify "󰲹 $(playerctl status)"
+    XF86AudioStop exec playerctl stop && $notify "󰲹 Stopped playback"
+    XF86AudioNext exec playerctl next
+    XF86AudioPrev exec playerctl previous
+}
 
 # launch webcam
 bindsym XF86WebCam exec cheese
 
 # screen brightness controls
 exec light -S $default_light
-bindsym --locked XF86MonBrightnessUp exec light -A 5 && light | cut -d'.' -f1 > $WOBSOCK
-bindsym --locked XF86MonBrightnessDown exec light -U 5 && light | cut -d'.' -f1 > $WOBSOCK
+bindsym --locked {
+    XF86MonBrightnessUp exec light -A 5 && light | cut -d'.' -f1 > $WOBSOCK
+    XF86MonBrightnessDown exec light -U 5 && light | cut -d'.' -f1 > $WOBSOCK
+}
 
 # toggle touchpad
 bindsym --locked XF86TouchpadToggle \
@@ -200,11 +228,10 @@ bindsym --locked XF86TouchpadToggle \
 # scratchpad
 ##
 
-# move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
-
-# show the next scratchpad window or hide the focused scratchpad window.
-bindsym $mod+minus scratchpad show
+bindsym {
+    $mod+Shift+minus move scratchpad
+    $mod+minus scratchpad show
+}
 
 
 ##
@@ -212,22 +239,30 @@ bindsym $mod+minus scratchpad show
 ##
 
 mode "resize" {
-    bindsym $left resize shrink width 50px
-    bindsym $down resize grow height 50px
-    bindsym $up resize shrink height 50px
-    bindsym $right resize grow width 50px
+    bindsym {
+        $left resize shrink width 50px
+        $down resize grow height 50px
+        $up resize shrink height 50px
+        $right resize grow width 50px
+    }
 
-    bindsym Left resize shrink width 50px
-    bindsym Down resize grow height 50px
-    bindsym Up resize shrink height 50px
-    bindsym Right resize grow width 50px
+    bindsym {
+        Left resize shrink width 50px
+        Down resize grow height 50px
+        Up resize shrink height 50px
+        Right resize grow width 50px
+    }
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-    bindsym $mod+r mode "default"
+    bindsym {
+        Return mode "default"
+        Escape mode "default"
+        $mod+r mode "default"
+    }
 
-    bindsym s sticky toggle
-    bindsym b border toggle
+    bindsym {
+        s sticky toggle
+        b border toggle
+    }
 }
 bindsym $mod+r mode "resize"
 
@@ -236,9 +271,11 @@ bindsym $mod+r mode "resize"
 # screenshots
 ##
 
-bindsym $win+Shift+s exec $HOME/.config/sway/screenshot.sh area
-bindsym Print exec $HOME/.config/sway/screenshot.sh output
-bindsym Shift+Print exec $HOME/.config/sway/screenshot.sh window
+bindsym {
+    $win+Shift+s exec $HOME/.config/sway/screenshot.sh area
+    Print exec $HOME/.config/sway/screenshot.sh output
+    Shift+Print exec $HOME/.config/sway/screenshot.sh window
+}
 
 
 ##
@@ -257,8 +294,10 @@ bar {
 # GTK
 ##
 
-set $system_dpi_scaling_factor 1.25
-set $cursor_size 28
+set {
+    $system_dpi_scaling_factor 1.25
+    $cursor_size 28
+}
 
 exec_always {
     gsettings set org.gnome.desktop.interface color-scheme prefer-dark
@@ -290,40 +329,44 @@ for_window [class="matplotlib"] floating enable, resize set width 1000 px height
 for_window [class="ROOT"] floating enable, resize set width 1000 px height 800 px
 for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enable
 for_window [title="Picture in picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
-
 for_window [title="Friends List" class="steam"] floating enable
 for_window [title="Steam Settings" class="steam"] floating enable
-
 for_window [window_role="About"] floating enable
 for_window [window_role="Preferences"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-
-# R windows
 for_window [title="Data: *"] floating enable, resize set width 1000 px height 800 px
 for_window [title="R Graphics: *"] floating enable, resize set width 1000 px height 800 px
-
 
 ##
 # startup
 ##
 
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec {
+    systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+}
 
-exec /usr/libexec/xdg-desktop-portal -r &
-exec /usr/libexec/polkit-gnome-authentication-agent-1 &
-exec /usr/libexec/gsd-xsettings &
+exec {
+    /usr/libexec/xdg-desktop-portal -r &
+    /usr/libexec/polkit-gnome-authentication-agent-1 &
+    /usr/libexec/gsd-xsettings &
+}
 
-exec nm-applet &
-exec blueman-applet &
-exec dunst &
-exec /usr/bin/1password --silent &
-exec $HOME/.config/.scripts/autotiling &
+exec {
+    nm-applet &
+    blueman-applet &
+    dunst &
+    /usr/bin/1password --silent &
+    $HOME/.config/.scripts/autotiling &
+}
+
 
 assign [class="thunderbird"] 5
 
-exec swaymsg 'workspace 5; exec thunderbird'
-exec swaymsg 'workspace 3; exec $term'
-exec swaymsg 'workspace 2; exec $browser'
+exec {
+    swaymsg 'workspace 5; exec thunderbird'
+    swaymsg 'workspace 3; exec $term'
+    swaymsg 'workspace 2; exec $browser'
+}
