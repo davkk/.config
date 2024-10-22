@@ -51,14 +51,6 @@ return {
             jsonls = true,
             cssls = true,
 
-            ruff_lsp = {
-                init_options = {
-                    settings = {
-                        args = { "--select", "I" },
-                    }
-                }
-            },
-
             ocamllsp = {
                 settings = {
                     codelens = { enable = true },
