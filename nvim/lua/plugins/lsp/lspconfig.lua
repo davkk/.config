@@ -83,8 +83,6 @@ return {
                     "-j=3",
                     "--header-insertion=iwyu",
                     "--completion-style=detailed",
-                    "--function-arg-placeholders",
-                    "--fallback-style=llvm",
                     "--cross-file-rename",
                 },
                 single_file_support = false,

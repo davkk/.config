@@ -36,7 +36,10 @@ return {
         auto_install = false,
         playground = { enable = true },
         highlight = { enable = true },
-        indent = { enable = true },
+        indent = {
+            enable = true,
+            disable = { "cpp" }
+        },
     },
     config = function(_, opts)
         require("nvim-treesitter.configs").setup(opts)
