@@ -8,7 +8,7 @@ setopt PROMPT_SUBST
 
 HYPHEN_INSENSITIVE="true"
 
-sd() { cd `fzfp` }
+sd() { cd `fzfp $1` }
 alias sd=sd
 
 alias l='ls --color -lhF --group-directories-first'
