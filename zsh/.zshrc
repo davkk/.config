@@ -15,7 +15,7 @@ alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
 alias tmux='tmux -u'
 alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
-alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest --shellrc'
+alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest ninja/latest --shellrc'
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -61,6 +61,7 @@ export PATH=$PATH:$HOME/.cargo/env
 export PATH=$PATH:$VOLTA_HOME/bin
 export PATH=$PATH:$PNPM_HOME
 export PATH=$PATH:$BUN_INSTALL/bin
+export PATH=$PATH:~/work/alice/bin
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
