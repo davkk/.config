@@ -190,7 +190,7 @@ bindsym {
 }
 
 # suspend system on fn+f12
-bindsym XF86Launch1 exec systemctl suspend
+bindsym --locked XF86Launch1 exec systemctl suspend
 
 # pactl
 bindsym --locked {
