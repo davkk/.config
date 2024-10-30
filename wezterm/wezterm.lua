@@ -36,6 +36,7 @@ config.window_close_confirmation = "AlwaysPrompt"
 config.skip_close_confirmation_for_processes_named = {}
 
 config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
+config.freetype_load_target = "Light"
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
 config.underline_thickness = "0.07cell"
