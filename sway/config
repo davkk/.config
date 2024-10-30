@@ -104,6 +104,8 @@ bindswitch --reload --locked {
 for_window [class="^.*"] inhibit_idle fullscreen
 for_window [app_id="^.*"] inhibit_idle fullscreen
 
+input "1267:11830:ELAN9008:00_04F3:2E36" map_to_output eDP-1
+
 input type:touchpad {
     dwt enabled
     tap enabled
@@ -360,6 +362,7 @@ exec {
     dunst &
     /usr/bin/1password --silent &
     $HOME/.config/.scripts/autotiling &
+    rot8 -d eDP-1 --normalization-factor 10 -k &
 }
 
 
