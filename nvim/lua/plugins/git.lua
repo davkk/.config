@@ -47,33 +47,4 @@ return {
             vim.keymap.set("n", "<leader>gD", ":Gitsigns diffthis ");
         end
     },
-    {
-        "sindrets/diffview.nvim",
-        lazy = false,
-        opts = {
-            enhanced_diff_hl = true,
-            signs = {
-                fold_closed = "",
-            },
-            file_panel = {
-                win_config = {
-                    position = "bottom",
-                    height = 12,
-                },
-            },
-            file_history_panel = {
-                win_config = {
-                    height = 12,
-                },
-            },
-        },
-        config = function(_, opts)
-            local diffview = require("diffview")
-            diffview.setup(opts)
-
-            vim.keymap.set("n", "<leader>dvo", "<cmd>DiffviewOpen<cr>", { silent = true })
-            vim.keymap.set("n", "<leader>dvc", "<cmd>DiffviewClose<cr>", { silent = true })
-            vim.keymap.set("n", "<leader>dvf", "<cmd>DiffviewFileHistory %<cr>", { silent = true })
-        end
-    },
 }
