@@ -14,6 +14,8 @@ alias sd=sd
 alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
 alias tmux='tmux -u'
+
+export ALIBUILD_WORK_DIR="$HOME/work/alice/sw"
 alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
 alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest ninja/latest --shellrc'
 
