@@ -45,7 +45,7 @@ return {
         require("nvim-treesitter.configs").setup(opts)
         require("treesitter-context").setup({
             enable = true,
-            max_lines = 6,
+            max_lines = 5,
             separator = "⌄"
         })
     end,
