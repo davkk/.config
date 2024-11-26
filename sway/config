@@ -311,7 +311,7 @@ exec blueman-applet &
 exec dunst &
 exec /usr/bin/1password --silent &
 exec $HOME/.config/.scripts/autotiling &
-exec rot8 -d eDP-1 --normalization-factor 10 -k &
+exec $HOME/.cargo/bin/rot8 -d eDP-1 --normalization-factor 10 -k &
 
 
 assign [class="thunderbird"] 5
