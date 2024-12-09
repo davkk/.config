@@ -6,7 +6,8 @@ setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt PROMPT_SUBST
 
-HYPHEN_INSENSITIVE="true"
+export HYPHEN_INSENSITIVE=false
+export WORDCHARS=
 
 sd() { cd `fzfp $1` }
 alias sd=sd
