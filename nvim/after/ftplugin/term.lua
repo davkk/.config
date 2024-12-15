@@ -7,4 +7,5 @@ set.signcolumn = "no"
 set.scrolloff = 0
 set.sidescrolloff = 0
 
--- set.whichwrap = "<,>,h,l,[,]"
+set.whichwrap:append "h"
+set.whichwrap:append "l"
