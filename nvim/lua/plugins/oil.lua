@@ -5,6 +5,7 @@ return {
     opts = {
         columns = { { "icon", add_padding = false } },
         win_options = {
+            winbar = "%{v:lua.CustomOilBar()}",
             wrap = false,
             colorcolumn = "",
             number = true,
@@ -27,5 +28,11 @@ return {
         local oil = require("oil")
         oil.setup(opts)
         vim.keymap.set("n", "<C-e>", oil.open, { noremap = true, silent = true })
+
+        CustomOilBar = function()
+            local path = vim.fn.expand "%"
+            path = path:gsub("oil://", "")
+            return "  " .. vim.fn.fnamemodify(path, ":.")
+        end
     end,
 }
