@@ -23,13 +23,17 @@ return {
             fzf_opts = { ["--layout"] = "default" },
             winopts = {
                 border = { " " },
-                backdrop = 10,
+                backdrop = 5,
                 preview = {
                     hidden = "hidden",
                     default = "head",
                     layout = "vertical",
                     vertical = "up:40%",
                 },
+                on_create = function()
+                    vim.keymap.set("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']],
+                        { expr = true, buffer = true })
+                end,
             },
             keymap = {
                 fzf = {
