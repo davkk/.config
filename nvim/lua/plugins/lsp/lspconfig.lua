@@ -110,6 +110,8 @@ return {
                         or util.root_pattern("*.sln", "*.fsproj", "*.fsx")(filename)
                 end,
             },
+
+            jdtls = true,
         }
 
         lsp.setup_servers(servers)
