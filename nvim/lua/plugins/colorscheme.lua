@@ -50,6 +50,9 @@ return {
             FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
             FloatBorder = { fg = "highlight_med", blend = 5 },
 
+            WinBar = { bg = "none", fg = "highlight_high", bold = true },
+            WinBarNC = { link = "WinBar" },
+
             Pmenu = { blend = 5 },
             PmenuSel = { bg = "rose", fg = "base" },
 
