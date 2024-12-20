@@ -1,6 +1,6 @@
 return {
     "Saghen/blink.cmp",
-    event = { "InsertEnter" },
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
     version = "v0.*",
     config = function()
