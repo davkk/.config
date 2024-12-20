@@ -5,23 +5,13 @@ return {
     config = function()
         local fzf = require("fzf-lua")
         local actions = require("fzf-lua.actions")
-
-        ---fix sending to qf list to allow cdo
-        ---@param selected string[]
-        ---@param opts unknown
-        local function fix_file_edit_or_qf(selected, opts)
-            for idx, file in pairs(selected) do
-                if not file:match(":%d*:%d*:") then
-                    selected[idx] = string.format("%s:1:1:", file)
-                end
-            end
-            return actions.file_edit_or_qf(selected, opts)
-        end
-
         fzf.setup({
             "fzf-native",
             fzf_opts = { ["--layout"] = "default" },
             winopts = {
+                width = 1,
+                height = 0.6,
+                row = 1,
                 border = { " " },
                 backdrop = 5,
                 preview = {
@@ -49,7 +39,6 @@ return {
             actions = {
                 files = {
                     true,
-                    ["default"] = fix_file_edit_or_qf,
                     ["ctrl-y"] = actions.file_edit_or_qf,
                     ["ctrl-h"] = actions.file_vsplit,
                 },
