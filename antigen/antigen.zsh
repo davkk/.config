@@ -151,7 +151,7 @@ antigen () {
 #   String if record is found
 -antigen-find-record () {
   local bundle=$1
-  
+
   if [[ $# -eq 0 ]]; then
     return 1
   fi
@@ -255,7 +255,7 @@ antigen () {
   return 0
 }
 
-# This function check ZSH_EVAL_CONTEXT to determine if running in interactive shell. 
+# This function check ZSH_EVAL_CONTEXT to determine if running in interactive shell.
 #
 # Usage
 #   -antigen-interactive-mode
@@ -283,7 +283,7 @@ antigen () {
 #     Branch name
 -antigen-parse-branch () {
   local url="$1" branch="$2" branches
-  
+
   local match mbegin mend MATCH MBEGIN MEND
 
   if [[ "$branch" =~ '\*' ]]; then
@@ -558,7 +558,7 @@ antigen () {
   if [[ $#list == 0 ]]; then
     return 1
   fi
-  
+
   # Using a for rather than `source $list` as we need to check for zsh-themes
   # In order to create antigen-compat file. This is only needed for interactive-mode
   # theme switching, for static loading (cache) there is no need.
@@ -646,7 +646,7 @@ antigen () {
 
     shift
   done
-  
+
   # Check if url is just the plugin name. Super short syntax.
   if [[ "${args[url]}" != */* ]]; then
     case "$ANTIGEN_DEFAULT_REPO_URL" in
@@ -731,13 +731,13 @@ antigen () {
     # if it's local then path is just the "url" argument, loc remains the same
     args[dir]=${args[url]}
   fi
-  
+
   # Escape url and branch (may contain semver-like and pipe characters)
   args[url]="${(qq)args[url]}"
   if [[ -n "${args[branch]}" ]]; then
     args[branch]="${(qq)args[branch]}"
   fi
-  
+
   # Escape bundle name (may contain semver-like characters)
   args[name]="${(qq)args[name]}"
 
@@ -824,7 +824,7 @@ antigen-bundle () {
     printf "Seems %s is already installed!\n" ${bundle[name]}
     return 1
   fi
- 
+
   # Clone bundle if we haven't done do already.
   if [[ ! -d "${bundle[dir]}" ]]; then
     if ! -antigen-bundle-install ${(kv)bundle}; then
@@ -838,7 +838,7 @@ antigen-bundle () {
     printf "Antigen: Failed to load %s.\n" ${bundle[btype]} >&2
     return 1
   fi
-  
+
   # Only add it to the record if it could be installed and loaded.
   _ANTIGEN_BUNDLE_RECORD+=("$record")
 }
@@ -1329,7 +1329,7 @@ antigen-update () {
   local url=""
   local make_local_clone=""
   local start=$(date +'%s')
-    
+
   if [[ $# -eq 0 ]]; then
     printf "Antigen: Missing argument.\n" >&2
     return 1
@@ -1343,14 +1343,14 @@ antigen-update () {
 
   url="$(echo "$record" | cut -d' ' -f1)"
   make_local_clone=$(echo "$record" | cut -d' ' -f4)
-  
+
   local branch="master"
   if [[ $url == *\|* ]]; then
     branch="$(-antigen-parse-branch ${url%|*} ${url#*|})"
   fi
 
   printf "Updating %s... " $(-antigen-bundle-short-name "$url" "$branch")
-  
+
   if [[ $make_local_clone == "false" ]]; then
     printf "Bundle has no local clone. Will not be updated.\n" >&2
     return 1
@@ -1361,7 +1361,7 @@ antigen-update () {
     printf "Error! Activate logging and try again.\n" >&2
     return 1
   fi
-  
+
   local took=$(( $(date +'%s') - $start ))
   printf "Done. Took %ds.\n" $took
 }
@@ -1411,7 +1411,7 @@ typeset -g _ANTIGEN_EXTENSIONS; _ANTIGEN_EXTENSIONS=()
 #  -antigen-add-hook antigen-apply antigen-apply-hook ["replace"|"pre"|"post"] ["once"|"repeat"]
 antigen-add-hook () {
   local target="$1" hook="$2" type="$3" mode="${4:-repeat}"
-  
+
   if (( ! $+functions[$target] )); then
     printf "Antigen: Function %s doesn't exist.\n" $target
     return 1
@@ -1429,7 +1429,7 @@ antigen-add-hook () {
   fi
 
   _ANTIGEN_HOOKS_META[$hook]="target $target type $type mode $mode called 0"
-  
+
   # Do shadow for this function if there is none already
   local hook_function="${_ANTIGEN_HOOK_PREFIX}$target"
   if (( ! $+functions[$hook_function] )); then
@@ -1442,7 +1442,7 @@ antigen-add-hook () {
       return \$?
     }"
   fi
-  
+
   return 0
 }
 
@@ -1455,7 +1455,7 @@ antigen-add-hook () {
 
   typeset -a pre_hooks replace_hooks post_hooks;
   typeset -a hooks; hooks=(${(s|:|)_ANTIGEN_HOOKS[$target]})
-  
+
   typeset -A meta;
   for hook in $hooks; do
     meta=(${(s: :)_ANTIGEN_HOOKS_META[$hook]})
@@ -1501,7 +1501,7 @@ antigen-add-hook () {
       [[ $? == -1 ]] && WARN "$hook shortcircuited" && return $ret
     fi
   done
-  
+
   if [[ $replace_hook == 0 ]]; then
     WARN "${_ANTIGEN_HOOK_PREFIX}$target $args"
     noglob ${_ANTIGEN_HOOK_PREFIX}$target $args
@@ -1515,7 +1515,7 @@ antigen-add-hook () {
     noglob $hook $args
     [[ $? == -1 ]] && WARN "$hook shortcircuited" && return $ret
   done
-  
+
   LOG "Return from hook ${target} with ${ret}"
 
   return $ret
@@ -1534,7 +1534,7 @@ antigen-remove-hook () {
     hooks[$hooks[(I)$hook]]=()
   fi
   _ANTIGEN_HOOKS[${target}]="${(j|:|)hooks}"
-  
+
   if [[ $#hooks == 0 ]]; then
     # Destroy base hook
     eval "function $(functions -- ${_ANTIGEN_HOOK_PREFIX}$target | sed s/${_ANTIGEN_HOOK_PREFIX}//)"
@@ -1555,7 +1555,7 @@ antigen-remove-hook () {
     eval "function $(functions -- ${_ANTIGEN_HOOK_PREFIX}$target | sed s/${_ANTIGEN_HOOK_PREFIX}//)"
     unfunction -- "${_ANTIGEN_HOOK_PREFIX}$target" 2> /dev/null
   done
-  
+
   _ANTIGEN_HOOKS=()
   _ANTIGEN_HOOKS_META=()
   _ANTIGEN_EXTENSIONS=()
@@ -1571,14 +1571,14 @@ antigen-ext () {
     eval $func
     local ret=$?
     WARN "$func return code was $ret"
-    if (( $ret == 0 )); then 
+    if (( $ret == 0 )); then
       LOG "LOADED EXTENSION $ext" EXT
       -antigen-$ext-execute && _ANTIGEN_EXTENSIONS+=($ext)
     else
       WARN "IGNORING EXTENSION $func" EXT
       return 1
     fi
-    
+
   else
     printf "Antigen: No extension defined or already loaded: %s\n" $func >&2
     return 1
@@ -1618,7 +1618,7 @@ antigen-ext-init () {
     return -1 # Stop right there
   }
   antigen-add-hook antigen-bundle antigen-bundle-defer replace
-  
+
   # Hooks antigen-apply in order to release hooked functions
   antigen-apply-defer () {
     WARN "Defer pre-apply" DEFER PRE-APPLY
@@ -1640,14 +1640,14 @@ antigen-ext-init () {
   # Default lock path.
   -antigen-set-default ANTIGEN_LOCK $ADOTDIR/.lock
   typeset -g _ANTIGEN_LOCK_PROCESS=false
-  
+
   # Use env variable to determine if we should load this extension
   -antigen-set-default ANTIGEN_MUTEX true
   # Set ANTIGEN_MUTEX to false to avoid loading this extension
   if [[ $ANTIGEN_MUTEX == true ]]; then
     return 0;
   fi
-  
+
   # Do not use mutex
   return 1;
 }
@@ -1715,7 +1715,7 @@ antigen-ext-init () {
       else
         WARN "Bundle ${bundle[name]} already cloned locally." PARALLEL
       fi
-      
+
       repositories+=(${bundle[url]})
     done
 
@@ -1735,7 +1735,7 @@ antigen-ext-init () {
     for bundle in ${_PARALLEL_BUNDLE[@]}; do
       antigen-bundle $bundle
     done
-    
+
 
     WARN "Parallel install done" PARALLEL
   }
@@ -1752,7 +1752,7 @@ antigen-ext-init () {
     antigen-add-hook antigen-bundle antigen-bundle-parallel replace
   }
   antigen-add-hook antigen-apply antigen-apply-parallel pre once
-  
+
   antigen-apply-parallel-execute () {
       WARN "Parallel replace-apply" PARALLEL REPLACE-APPLY
       antigen-remove-hook antigen-bundle-parallel
@@ -1873,14 +1873,14 @@ EOC
 
   # Cache auto config files to check for changes (.zshrc, .antigenrc etc)
   -antigen-set-default ANTIGEN_AUTO_CONFIG true
-  
+
   # Default cache path.
   -antigen-set-default ANTIGEN_CACHE $ADOTDIR/init.zsh
   -antigen-set-default ANTIGEN_RSRC $ADOTDIR/.resources
   if [[ $ANTIGEN_CACHE == false ]]; then
     return 1
   fi
-  
+
   return 0
 }
 
@@ -1916,21 +1916,21 @@ EOC
     antigen-remove-hook -antigen-load-source-cached
     antigen-remove-hook antigen-bundle-cached
   }
-  
+
   antigen-add-hook antigen-apply antigen-apply-cached post once
-  
+
   # Defer antigen-bundle.
   antigen-bundle-cached () {
     _ZCACHE_CAPTURE_BUNDLE+=("${(j: :)${@}}")
   }
   antigen-add-hook antigen-bundle antigen-bundle-cached pre
-  
+
   # Defer loading.
   -antigen-load-env-cached () {
     local bundle
     typeset -A bundle; bundle=($@)
     local location=${bundle[dir]}/${bundle[loc]}
-    
+
     # Load to path if there is no sourceable
     if [[ ${bundle[loc]} == "/" ]]; then
       _ZCACHE_BUNDLE_SOURCE+=("${location}")
@@ -1940,13 +1940,13 @@ EOC
     _ZCACHE_BUNDLE_SOURCE+=("${location}")
   }
   antigen-add-hook -antigen-load-env -antigen-load-env-cached replace
-  
+
   # Defer sourcing.
   -antigen-load-source-cached () {
     _ZCACHE_BUNDLE_SOURCE+=($@)
   }
   antigen-add-hook -antigen-load-source -antigen-load-source-cached replace
-  
+
   return 0
 }
 
