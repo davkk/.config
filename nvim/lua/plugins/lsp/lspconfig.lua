@@ -1,33 +1,37 @@
+local function client_capabilities()
+    return vim.tbl_deep_extend(
+        "force",
+        vim.lsp.protocol.make_client_capabilities(),
+        require("blink.cmp").get_lsp_capabilities()
+    )
+end
+
+local function try_require(module)
+    local ok, result = pcall(require, module)
+    return ok and result or nil
+end
+
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "LspInfo", "Mason" },
     dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-
+        "Saghen/blink.cmp",
         "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
-
-        "artemave/workspace-diagnostics.nvim",
-
         { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     },
     config = function()
-        local lsp = require("config.lsp")
+        require("mason").setup()
+
         local util = require("lspconfig.util")
-
-        local mason = require("mason")
-        local mason_lspconfig = require("mason-lspconfig")
-        mason.setup()
-        mason_lspconfig.setup({
-            ensure_installed = { "lua_ls", "jsonls", "marksman", "cssls" },
-        })
-
         local servers = {
             lua_ls = {
                 settings = {
                     Lua = {
-                        diagnostics = { globals = { "vim" }, },
+                        diagnostics = {
+                            globals = { "vim" },
+                            disable = { "missing-fields" },
+                        },
                         workspace = {
                             library = vim.api.nvim_get_runtime_file("", true),
                             checkThirdParty = false,
@@ -92,7 +96,6 @@ return {
                     clangdFileStatus = true,
                     fallbackFlags = { "-stdlib=libc++" },
                 },
-                populate_diagnostics = true,
                 callback = function(buffer)
                     vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })
                 end,
@@ -106,7 +109,7 @@ return {
             fsharp_language_server = {
                 cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
                 root_dir = function(filename, _)
-                    return util.find_git_ancestor(filename)
+                    return vim.fs.dirname(vim.fs.find(".git", { path = filename, upward = true })[1])
                         or util.root_pattern("*.sln", "*.fsproj", "*.fsx")(filename)
                 end,
             },
@@ -114,7 +117,34 @@ return {
             jdtls = true,
         }
 
-        lsp.setup_servers(servers)
+        for name, config in pairs(servers) do
+            if not config then
+                return
+            end
+            if type(config) == "function" then
+                config = config()
+            end
+            if type(config) ~= "table" then
+                config = {}
+            end
+
+            local server = try_require('lspconfig.configs.' .. name)
+                and require('lspconfig')[name]
+                or try_require(name)
+
+            if server then
+                server.setup(
+                    vim.tbl_deep_extend("force", {
+                        capabilities = client_capabilities(),
+                    }, config)
+                )
+            else
+                vim.notify(
+                    string.format("Cannot find server: '%s'", name),
+                    vim.log.levels.WARN
+                )
+            end
+        end
 
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -131,27 +161,7 @@ return {
 
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
                 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-                vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-                vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
                 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-                vim.keymap.set("i", "<C-s>", function()
-                    require("cmp").abort()
-                    vim.lsp.buf.signature_help()
-                end, opts)
-
-                if settings.populate_diagnostics then
-                    vim.api.nvim_buf_create_user_command(
-                        event.buf,
-                        "PopulateWorkspaceDiagnostics",
-                        function()
-                            require("workspace-diagnostics").populate_workspace_diagnostics(client, event.buf)
-                        end,
-                        {}
-                    )
-                end
 
                 -- set server-specific attach
                 if settings.callback then

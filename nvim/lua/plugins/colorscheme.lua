@@ -68,6 +68,10 @@ return {
             CmpItemAbbrMatchFuzzy = { fg = "rose" },
             CmpItemKind = { fg = "iris" },
 
+            -- Saghen/blink.cmp
+            BlinkCmpDoc = { link = "Pmenu" },
+            BlinkCmpDocBorder = { link = "Pmenu" },
+
             -- ibhagwan/fzf-lua
             FzfLuaBorder = { bg = "overlay", blend = 5 },
 
