@@ -2,6 +2,7 @@ return {
     "ThePrimeagen/harpoon",
     lazy = false,
     branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
         settings = {
             save_on_toggle = true,
@@ -16,10 +17,7 @@ return {
             harpoon:list():add()
         end)
         vim.keymap.set("n", "<leader>h", function()
-            harpoon.ui:toggle_quick_menu(harpoon:list(), {
-                border = "solid",
-                ui_width_ratio = 0.85,
-            })
+            harpoon.ui:toggle_quick_menu(harpoon:list())
         end)
 
         vim.keymap.set("n", "<C-c>", function()
