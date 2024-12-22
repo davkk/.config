@@ -10,7 +10,14 @@ export HYPHEN_INSENSITIVE=false
 export WORDCHARS=
 
 sd() { cd `fzfp $1` }
-alias sd=sd
+
+nvim() {
+    if [ -n "$NVIM" ]; then
+        echo "Error: Nested Neovim session not allowed"
+        return 1
+    fi
+    command nvim "$@"
+}
 
 alias l='ls --color -lhF --group-directories-first'
 alias python='python3'
