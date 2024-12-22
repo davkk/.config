@@ -33,7 +33,6 @@ return {
             warn = diagnostics.warn,
             hint = diagnostics.hint,
             info = diagnostics.info,
-            todo = "love",
         },
 
         highlight_groups = {
