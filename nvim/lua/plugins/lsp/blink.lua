@@ -1,7 +1,7 @@
 return {
     "Saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
-    dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
+    dependencies = { "L3MON4D3/LuaSnip" },
     version = "v0.*",
     config = function()
         require("blink.cmp").setup({
