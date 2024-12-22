@@ -25,6 +25,7 @@ return {
                                     return ({
                                         LSP = "[LSP]",
                                         Buffer = "[BUF]",
+                                        cmdline = "[CMD]",
                                         Path = "[PATH]",
                                         Snippets = "[SNIP]",
                                     })[ctx.source_name] or ctx.source_name
@@ -36,7 +37,6 @@ return {
                 documentation = { auto_show = true },
                 ghost_text = { enabled = true },
             },
-            signature = { enabled = true },
             snippets = {
                 expand = function(snippet)
                     require("luasnip").lsp_expand(snippet)
