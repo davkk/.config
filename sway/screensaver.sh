@@ -4,6 +4,8 @@ if [[ `powerprofilesctl get` != 'power-saver' ]]; then
     exit 0
 fi
 
+light -O
+
 min_brightness=0
 fade_step_time=0.01
 

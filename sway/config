@@ -83,12 +83,9 @@ workspace 9 output $output2
 set $lock $HOME/.config/sway/lock.sh
 
 exec swayidle -w \
-         timeout 120 'light -O' \
-         timeout 120 '$HOME/.config/sway/screensaver.sh' \
-             resume 'light -I' \
-         timeout 300 '$lock && swaymsg "output * dpms off"' \
-             resume 'swaymsg "output * dpms on" && light -I' \
-         before-sleep '$lock'
+        timeout 120 '$HOME/.config/sway/screensaver.sh' \
+            resume 'light -I' \
+        before-sleep '$lock'
 
 bindswitch --reload --locked {
     lid:on exec light -O && swaymsg "output $output1 disable"
