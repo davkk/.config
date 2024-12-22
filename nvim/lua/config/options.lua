@@ -12,6 +12,7 @@ opt.relativenumber = true
 opt.number = true
 
 opt.laststatus = 3
+opt.signcolumn = "yes"
 
 opt.scrolloff = 8
 opt.sidescrolloff = 8
@@ -25,6 +26,7 @@ opt.breakindent = true
 opt.linebreak = true
 opt.wrap = false
 
+opt.formatoptions:remove "o"
 opt.formatoptions:remove "t"
 
 opt.inccommand = "split"
@@ -39,8 +41,6 @@ opt.splitbelow = true
 opt.iskeyword:append "-"
 opt.isfname:append "@-@"
 
-opt.signcolumn = "yes"
-
 opt.updatetime = 50
 
 opt.undofile = true
@@ -50,6 +50,7 @@ opt.backup = false
 opt.errorbells = false
 
 opt.shortmess:append "c"
+opt.more = false
 
 opt.completeopt = { "menu", "menuone", "noselect" }
 
@@ -65,8 +66,4 @@ opt.listchars = {
     nbsp = "␣",
 }
 
-opt.formatoptions:remove "o"
-
 opt.diffopt:append "algorithm:histogram"
-
-opt.wildchar = vim.fn.char2nr("")
