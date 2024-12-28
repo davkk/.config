@@ -1,7 +1,6 @@
 return {
     "Saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
-    dependencies = { "L3MON4D3/LuaSnip" },
     version = "*",
     opts = {
         keymap = {
@@ -36,9 +35,6 @@ return {
         },
         sources = {
             default = { "lsp", "path", "luasnip", "snippets", "buffer" },
-        },
-        snippets = {
-            expand = function(snippet) require("luasnip").lsp_expand(snippet) end,
         },
     },
 }

@@ -49,3 +49,6 @@ vim.keymap.set("n", "<leader>st", function()
     vim.wo.winfixheight = true
     vim.cmd.term()
 end)
+
+vim.keymap.set({ "i", "s" }, "<C-k>", function() vim.snippet.jump(-1) end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-j>", function() vim.snippet.jump(1) end, { silent = true })
