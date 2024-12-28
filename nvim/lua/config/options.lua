@@ -67,3 +67,5 @@ opt.listchars = {
 }
 
 opt.diffopt:append "algorithm:histogram"
+
+opt.guicursor = vim.o.guicursor .. ",t:ver25-blinkon0-TermCursor"
