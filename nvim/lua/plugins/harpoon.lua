@@ -1,6 +1,14 @@
 return {
     "ThePrimeagen/harpoon",
-    lazy = false,
+    keys = {
+        "<leader>a",
+        "<leader>h",
+        "<leader>1",
+        "<leader>2",
+        "<leader>3",
+        "<leader>4",
+        "<leader>5",
+    },
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {

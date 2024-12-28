@@ -1,7 +1,7 @@
 return {
     {
         "tpope/vim-fugitive",
-        lazy = false,
+        event = "VeryLazy",
         config = function()
             local opts = { noremap = true, silent = true }
 
@@ -17,7 +17,7 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
-        event = "BufReadPost",
+        event = { "BufReadPost", "BufNewFile" },
         opts = {
             signs = {
                 add = { text = "│" },

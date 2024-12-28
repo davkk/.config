@@ -1,6 +1,6 @@
 return {
     "folke/trouble.nvim",
-    event = "BufReadPost",
+    keys = { "<leader>tt", "]t", "[t" },
     opts = {
         open_no_results = true,
         icons = {
