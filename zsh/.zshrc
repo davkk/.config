@@ -59,6 +59,7 @@ export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.config/.scripts/
 export PATH=$PATH:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/env
 export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:$HOME/.yarn/bin
