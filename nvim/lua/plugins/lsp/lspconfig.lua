@@ -1,16 +1,3 @@
-local function client_capabilities()
-    return vim.tbl_deep_extend(
-        "force",
-        vim.lsp.protocol.make_client_capabilities(),
-        require("blink.cmp").get_lsp_capabilities()
-    )
-end
-
-local function try_require(module)
-    local ok, result = pcall(require, module)
-    return ok and result or nil
-end
-
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
@@ -18,12 +5,13 @@ return {
     dependencies = {
         "Saghen/blink.cmp",
         "williamboman/mason.nvim",
-        { "pmizio/typescript-tools.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     },
     config = function()
         require("mason").setup()
 
+        local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")
+
         local servers = {
             lua_ls = {
                 settings = {
@@ -45,9 +33,16 @@ return {
             },
 
             biome = true,
-            ["typescript-tools"] = {
-                callback = function(buffer)
-                    vim.keymap.set("n", "<leader>oi", ":TSToolsOrganizeImports<cr>", { buffer = buffer })
+            ts_ls = {
+                callback = function(client, buffer)
+                    vim.keymap.set("n", "<leader>oi", function()
+                        local params = {
+                            command = "_typescript.organizeImports",
+                            arguments = { vim.api.nvim_buf_get_name(0) },
+                            title = "Organize Imports",
+                        }
+                        client:exec_cmd(params, { buffer = buffer })
+                    end, { buffer = buffer, desc = "Organize Imports" })
                 end,
             },
             angularls = { root_dir = util.root_pattern("angular.json", "Gruntfile.js") },
@@ -96,7 +91,7 @@ return {
                     clangdFileStatus = true,
                     fallbackFlags = { "-stdlib=libc++" },
                 },
-                callback = function(buffer)
+                callback = function(_, buffer)
                     vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })
                 end,
             },
@@ -117,6 +112,12 @@ return {
             jdtls = true,
         }
 
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            vim.lsp.protocol.make_client_capabilities(),
+            require("blink.cmp").get_lsp_capabilities()
+        )
+
         for name, config in pairs(servers) do
             if not config then
                 return
@@ -127,23 +128,11 @@ return {
             if type(config) ~= "table" then
                 config = {}
             end
-
-            local server = try_require('lspconfig.configs.' .. name)
-                and require('lspconfig')[name]
-                or try_require(name)
-
-            if server then
-                server.setup(
-                    vim.tbl_deep_extend("force", {
-                        capabilities = client_capabilities(),
-                    }, config)
-                )
-            else
-                vim.notify(
-                    string.format("Cannot find server: '%s'", name),
-                    vim.log.levels.WARN
-                )
-            end
+            lspconfig[name].setup(
+                vim.tbl_deep_extend("force", {
+                    capabilities = capabilities,
+                }, config)
+            )
         end
 
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -165,7 +154,7 @@ return {
 
                 -- set server-specific attach
                 if settings.callback then
-                    settings.callback(event.buf)
+                    settings.callback(client, event.buf)
                 end
 
                 -- override server capabilities
