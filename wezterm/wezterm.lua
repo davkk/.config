@@ -1,20 +1,20 @@
 local wezterm = require("wezterm")
+local config = wezterm.config_builder()
 
-local config = {}
-if wezterm.config_builder then
-    config = wezterm.config_builder()
-end
-
+-- startup
 config.default_prog = { "/usr/bin/env", "zsh", "-l" }
 
+-- window
 config.window_decorations = "RESIZE"
-config.window_padding = { left = 3, right = 3, top = 3, bottom = 3 }
-config.enable_scroll_bar = false
-
-config.max_fps = 144
+config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+config.window_close_confirmation = "AlwaysPrompt"
+config.skip_close_confirmation_for_processes_named = {}
+config.audible_bell = "Disabled"
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
+config.max_fps = 144
 
+-- colors
 local color_scheme = "rose-pine-moon"
 local colors = wezterm.get_builtin_color_schemes()[color_scheme]
 local tab_color = { bg_color = "black", fg_color = colors.brights[1] }
@@ -31,10 +31,7 @@ config.colors = {
     },
 }
 
-config.audible_bell = "Disabled"
-config.window_close_confirmation = "AlwaysPrompt"
-config.skip_close_confirmation_for_processes_named = {}
-
+-- fonts
 config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
 config.freetype_load_target = "Light"
 config.adjust_window_size_when_changing_font_size = false
@@ -42,6 +39,7 @@ config.warn_about_missing_glyphs = false
 config.underline_thickness = "0.07cell"
 config.default_cursor_style = "SteadyBar"
 
+-- tabs
 config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
