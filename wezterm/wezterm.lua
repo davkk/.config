@@ -10,8 +10,10 @@ config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.window_close_confirmation = "AlwaysPrompt"
 config.skip_close_confirmation_for_processes_named = {}
 config.audible_bell = "Disabled"
+
+local gpus = wezterm.gui.enumerate_gpus()
+config.webgpu_preferred_adapter = gpus[1]
 config.front_end = "WebGpu"
-config.webgpu_power_preference = "HighPerformance"
 config.max_fps = 144
 
 -- colors
@@ -36,7 +38,7 @@ config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
 config.freetype_load_target = "Light"
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
-config.underline_thickness = "0.07cell"
+config.underline_thickness = "0.08cell"
 config.default_cursor_style = "SteadyBar"
 
 -- tabs
