@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 
-blurred=/tmp/blured_lock_wallpaper.jpg
+tmpdir=/tmp/swaylock
+mkdir -p $tmpdir
 
-grim - | ffmpeg -y -i pipe: -vf "gblur=sigma=50:steps=6,eq=brightness=0.03" $blurred
+outputs=`swaymsg -t get_outputs | jq -r '.[] | select(.active == true) | .name'`
+args=""
 
-if [[ -f $blurred ]]; then
-    swaylock -f -i $blurred -s fill
-    rm $blurred
+if [[ -d $tmpdir ]]; then
+    for output in $outputs; do
+        image=/tmp/swaylock/${output}.jpg
+        grim -o $output - \
+            | ffmpeg -y -i pipe: -vf "gblur=sigma=50:steps=6,eq=brightness=0.03" $image
+
+        args="$args -i $output:$image"
+    done
+
+    swaylock -f -s fill $args
 else
     swaylock -f -c 111111 -s fill
 fi
+
+rm -rf $tmpdir
