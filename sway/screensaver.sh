@@ -2,7 +2,7 @@
 
 light -O
 
-if [[ `powerprofilesctl get` != 'performance' ]]; then
+if [[ `powerprofilesctl get` == "performance" ]]; then
     exit 0
 fi
 
