@@ -28,6 +28,7 @@ set $right l
 set $term wezterm
 set $browser brave-browser
 set $menu j4-dmenu-desktop
+set $rotation $HOME/.cargo/bin/rot8 -d eDP-1 --normalization-factor 10 -k &
 set $wallpaper $HOME/Pictures/wallpaper.jpg
 set $default_light 20
 
@@ -83,13 +84,12 @@ workspace 9 output $output2
 set $lock $HOME/.config/sway/lock.sh
 
 exec swayidle -w \
-        timeout 120 '$HOME/.config/sway/screensaver.sh' \
-            resume 'light -I' \
-        before-sleep '$lock'
+    timeout 120 "$HOME/.config/sway/screensaver.sh" resume "light -I" \
+    before-sleep "touch /tmp/lid_lock"
 
 bindswitch --reload --locked {
-    lid:on exec light -O && swaymsg "output $output1 disable"
-    lid:off exec swaymsg "output $output1 enable" && light -I
+    lid:on exec $HOME/.config/sway/output.sh $output1 disable && pkill rot8
+    lid:off exec $HOME/.config/sway/output.sh $output1 enable && $rotation
 }
 
 for_window [class="^.*"] inhibit_idle fullscreen
@@ -308,8 +308,7 @@ exec blueman-applet &
 exec dunst &
 exec /usr/bin/1password --silent &
 exec $HOME/.config/.scripts/autotiling &
-exec $HOME/.cargo/bin/rot8 -d eDP-1 --normalization-factor 10 -k &
-
+exec $rotation
 
 assign [class="thunderbird"] 5
 
