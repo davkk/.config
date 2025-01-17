@@ -85,7 +85,7 @@ set $lock $HOME/.config/sway/lock.sh
 
 exec swayidle -w \
     timeout 120 "$HOME/.config/sway/screensaver.sh" resume "light -I" \
-    before-sleep "touch /tmp/lid_lock"
+    before-sleep "touch /tmp/lid_lock && $lock"
 
 bindswitch --reload --locked {
     lid:on exec $HOME/.config/sway/output.sh $output1 disable && pkill rot8
