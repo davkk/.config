@@ -9,7 +9,10 @@ setopt PROMPT_SUBST
 export HYPHEN_INSENSITIVE=false
 export WORDCHARS=
 
-sd() { cd `fzfp $1` }
+sd() {
+    newdir=`fzfp $1`
+    [ -n "$newdir" ] && cd $newdir || echo "no directory selected"
+}
 
 nvim() {
     if [ -n "$NVIM" ]; then
