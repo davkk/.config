@@ -34,7 +34,7 @@ config.colors = {
 }
 
 -- fonts
-config.font = wezterm.font_with_fallback { "Input Mono", "nonicons" }
+config.font = wezterm.font_with_fallback { "Input Mono" }
 config.freetype_load_target = "Light"
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
