@@ -1,19 +1,15 @@
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "LspInfo", "Mason" },
-    dependencies = {
-        "Saghen/blink.cmp",
-        "williamboman/mason.nvim",
-    },
+    cmd = { "LspInfo" },
+    dependencies = { "Saghen/blink.cmp" },
     config = function()
-        require("mason").setup()
-
         local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")
 
         local servers = {
             lua_ls = {
+                cmd = { vim.env.HOME .. "/.local/share/lua-language-server/bin/lua-language-server" },
                 settings = {
                     Lua = {
                         diagnostics = {
@@ -99,17 +95,9 @@ return {
             marksman = true,
             texlab = true,
 
-            r_language_server = true,
-
-            fsharp_language_server = {
-                cmd = { "fsautocomplete", "--project-graph-enabled", "--adaptive-lsp-server-enabled" },
-                root_dir = function(filename, _)
-                    return vim.fs.dirname(vim.fs.find(".git", { path = filename, upward = true })[1])
-                        or util.root_pattern("*.sln", "*.fsproj", "*.fsx")(filename)
-                end,
+            jdtls = {
+                cmd = { vim.env.HOME .. "/.local/share/jdtls/bin/jdtls" },
             },
-
-            jdtls = true,
         }
 
         local capabilities = vim.tbl_deep_extend(

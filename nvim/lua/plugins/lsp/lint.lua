@@ -9,7 +9,7 @@ return {
         lint.linters.o2_linter = {
             cmd = "python",
             stdin = false,
-            args = { "/home/davkk/work/alice/O2Physics/Scripts/o2_linter.py" },
+            args = { vim.env.HOME .. "/work/alice/O2Physics/Scripts/o2_linter.py" },
             stream = "stdout",
             ignore_exitcode = true,
             parser = parser.from_pattern(
