@@ -4,6 +4,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
         local fzf = require("fzf-lua")
+        local defaults = require("fzf-lua.config").defaults
         local actions = require("fzf-lua.actions")
         fzf.setup({
             "fzf-native",
@@ -43,7 +44,7 @@ return {
                     ["ctrl-h"] = actions.file_vsplit,
                 },
             },
-            grep = { rg_opts = [[--column -p -S --no-heading --trim -e]] },
+            grep = { rg_opts = defaults.grep.rg_opts:sub(1, #defaults.grep.rg_opts - 2) .. [[--trim -e]] },
             helptags = { previewer = "help_native" },
         })
 
