@@ -42,7 +42,7 @@ local function filename()
 end
 
 ---@return string
-local function lsp()
+local function lsp_diagnostics()
     local sev = vim.diagnostic.severity
     local levels = {
         error = sev.ERROR,
@@ -81,12 +81,43 @@ end
 local function location()
     local col = vim.fn.virtcol(".")
     local row = vim.fn.line(".")
-    return string.format("[%2d:%-2d]", row, col)
+    return string.format("[%3d:%-3d]", row, col)
 end
 
 ---@return string
 local function git_diff()
     return "%{get(b:,'gitsigns_status','')}"
+end
+
+local loader = { "   ", "∙  ", "∙∙ ", "∙∙∙", " ∙∙", "  ∙" }
+local loader_idx = 1
+local last_update = 0
+local lsp_loading = false
+
+vim.api.nvim_create_autocmd("LspProgress", {
+    pattern = "*",
+    callback = function(args)
+        local value = args.data.params.value
+        lsp_loading = value.kind ~= "end"
+        vim.schedule(function() vim.cmd("redrawstatus") end)
+    end
+})
+
+---@return string
+local function lsp_progress()
+    if not lsp_loading then
+        loader_idx = 1
+        last_update = 0
+        return ""
+    end
+
+    local current_time = vim.uv.now()
+    if current_time - last_update >= 100 then
+        loader_idx = (loader_idx % #loader) + 1
+        last_update = current_time
+    end
+
+    return loader[loader_idx]
 end
 
 StatusLine = {}
@@ -98,13 +129,13 @@ function StatusLine.build_statusline()
         "  ",
         git_diff(),
         "%=",
-        lsp(),
+        lsp_loading and lsp_progress() or lsp_diagnostics(),
         "  ",
         location(),
     })
 end
 
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave", "DiagnosticChanged" }, {
     group = vim.api.nvim_create_augroup("StatusLine", {}),
     callback = function()
         vim.opt.statusline = "%!v:lua.StatusLine.build_statusline()"
