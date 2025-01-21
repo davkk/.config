@@ -1,3 +1,4 @@
+-- FILE PATH
 ---@param path string
 ---@return string
 local function shorten_path(path)
@@ -26,7 +27,7 @@ local function shorten_path(path)
 end
 
 ---@return string
-local function filename()
+local function filepath()
     local path = vim.fn.expand("%:p:~")
 
     if #path == 0 then return "[No Name]" end
@@ -41,6 +42,7 @@ local function filename()
     return "[" .. path .. (is_new_file and "][New]" or "]") .. "%r%m"
 end
 
+-- LSP DIAGNOSTICS
 ---@return string
 local function lsp_diagnostics()
     local sev = vim.diagnostic.severity
@@ -77,6 +79,7 @@ local function lsp_diagnostics()
     return error .. warn .. hint .. info .. "%##"
 end
 
+-- CURSOR LOCATION
 ---@return string
 local function location()
     local col = vim.fn.virtcol(".")
@@ -84,48 +87,68 @@ local function location()
     return string.format("[%3d:%-3d]", row, col)
 end
 
+-- GIT DIFF
 ---@return string
 local function git_diff()
     return "%{get(b:,'gitsigns_status','')}"
 end
 
-local loader = { "   ", "∙  ", "∙∙ ", "∙∙∙", " ∙∙", "  ∙" }
+-- LSP PROGRESS LOADER
+local loader = { "∙  ", "∙∙ ", "∙∙∙", " ∙∙", "  ∙", "  " }
 local loader_idx = 1
-local last_update = 0
+local loader_timer = nil
 local lsp_loading = false
+
+local function start_animation()
+    if loader_timer then return end
+    loader_timer = vim.uv.new_timer()
+    loader_timer:start(0, 120, vim.schedule_wrap(function()
+        if lsp_loading then
+            loader_idx = (loader_idx % #loader) + 1
+            vim.cmd [[redrawstatus]]
+        end
+    end))
+end
+
+local function stop_animation()
+    if loader_timer then
+        loader_timer:stop()
+        loader_timer:close()
+        loader_timer = nil
+    end
+    loader_idx = 1
+end
+
+---@return string
+local function lsp_progress()
+    if not lsp_loading and #vim.lsp.get_clients() > 0 then
+        lsp_loading = true
+        start_animation()
+    end
+    return lsp_loading and loader[loader_idx] or ""
+end
 
 vim.api.nvim_create_autocmd("LspProgress", {
     pattern = "*",
     callback = function(args)
         local value = args.data.params.value
-        lsp_loading = value.kind ~= "end"
-        vim.schedule(function() vim.cmd("redrawstatus") end)
+        if value.kind == "begin" then
+            lsp_loading = true
+            start_animation()
+        elseif value.kind == "end" then
+            lsp_loading = false
+            stop_animation()
+            vim.cmd [[redrawstatus]]
+        end
     end
 })
-
----@return string
-local function lsp_progress()
-    if not lsp_loading then
-        loader_idx = 1
-        last_update = 0
-        return ""
-    end
-
-    local current_time = vim.uv.now()
-    if current_time - last_update >= 100 then
-        loader_idx = (loader_idx % #loader) + 1
-        last_update = current_time
-    end
-
-    return loader[loader_idx]
-end
 
 StatusLine = {}
 
 ---@return string
 function StatusLine.build_statusline()
     return table.concat({
-        filename(),
+        filepath(),
         "  ",
         git_diff(),
         "%=",
