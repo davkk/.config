@@ -85,7 +85,6 @@ return {
                     usePlaceholders = true,
                     completeUnimported = true,
                     clangdFileStatus = true,
-                    fallbackFlags = { "-stdlib=libc++" },
                 },
                 callback = function(_, buffer)
                     vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })

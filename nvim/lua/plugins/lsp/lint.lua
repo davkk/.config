@@ -27,7 +27,7 @@ return {
             typescript = { "eslint_d" },
             typescriptreact = { "eslint_d" },
             cmake = { "cmakelint" },
-            cpp = { "o2_linter" }
+            cpp = { "o2_linter", "cpplint" }
         }
 
         local root_patterns = {
@@ -35,6 +35,7 @@ return {
             eslint_d = { ".eslintrc", ".eslintrc.js", ".eslintrc.json" },
             biomejs = { "biome.json" },
             o2_linter = { "PWGCF", ".mega-linter.yml" },
+            cpplint = { "CPPLINT.cfg" },
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("Lint", { clear = true })
@@ -48,9 +49,7 @@ return {
                 local linters = vim.tbl_filter(
                     function(name)
                         if root_patterns[name] then
-                            return util.root_pattern(
-                                unpack(root_patterns[name])
-                            )(args.file)
+                            return util.root_pattern(unpack(root_patterns[name]))(args.file) ~= nil
                         else
                             return true
                         end
