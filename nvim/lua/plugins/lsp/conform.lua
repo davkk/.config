@@ -22,6 +22,7 @@ return {
             scss = { "prettierd" },
             css = { "prettierd" },
             cmake = { "gersemi" },
+            zig = { "zigfmt" },
         },
         formatters = {
             eslint_d = {

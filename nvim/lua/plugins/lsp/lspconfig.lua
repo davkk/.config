@@ -97,6 +97,8 @@ return {
             jdtls = {
                 cmd = { vim.env.HOME .. "/.local/share/jdtls/bin/jdtls" },
             },
+
+            zls = true,
         }
 
         local capabilities = vim.tbl_deep_extend(
