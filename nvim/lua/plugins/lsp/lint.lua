@@ -21,7 +21,7 @@ return {
         }
 
         lint.linters_by_ft = {
-            python = { "ruff" },
+            python = { "ruff", "pylint" },
             javascript = { "eslint_d" },
             javascriptreact = { "eslint_d" },
             typescript = { "eslint_d" },
@@ -36,6 +36,7 @@ return {
             biomejs = { "biome.json" },
             o2_linter = { "PWGCF", ".mega-linter.yml" },
             cpplint = { "CPPLINT.cfg" },
+            pylint = { "CPPLINT.cfg" },
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("Lint", { clear = true })
