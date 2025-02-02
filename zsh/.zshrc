@@ -81,6 +81,7 @@ export FZF_DEFAULT_OPTS="
 --color=border:#44415a,header:#3e8fb0,gutter:#232136
 --color=spinner:#f6c177,info:#9ccfd8
 --color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa
+--bind ctrl-y:accept
 "
 
 export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
