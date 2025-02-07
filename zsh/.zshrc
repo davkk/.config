@@ -120,3 +120,5 @@ eval `opam env 2>/dev/null` 2>/dev/null
 
 source <(fzf --zsh 2>/dev/null)
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+eval "$(direnv hook zsh)" 2>/dev/null
