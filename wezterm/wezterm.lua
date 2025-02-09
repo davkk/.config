@@ -39,7 +39,6 @@ config.freetype_load_target = "Light"
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
 config.underline_thickness = "0.08cell"
-config.default_cursor_style = "SteadyBar"
 
 -- tabs
 config.use_fancy_tab_bar = false
