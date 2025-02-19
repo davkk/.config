@@ -2,7 +2,6 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "LspInfo" },
-    dependencies = { "Saghen/blink.cmp" },
     config = function()
         local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")
@@ -101,11 +100,7 @@ return {
             zls = true,
         }
 
-        local capabilities = vim.tbl_deep_extend(
-            "force",
-            vim.lsp.protocol.make_client_capabilities(),
-            require("blink.cmp").get_lsp_capabilities()
-        )
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
 
         for name, config in pairs(servers) do
             if not config then
@@ -127,19 +122,38 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(event)
-                local opts = { buffer = event.buf }
-
                 local client = assert(vim.lsp.get_client_by_id(event.data.client_id), "must have valid client")
                 local settings = servers[client.name]
                 if type(settings) ~= "table" then
                     settings = {}
                 end
 
-                vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+                if client.server_capabilities.completionProvider then
+                    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+                end
+                if client.server_capabilities.definitionProvider then
+                    vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+                end
 
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-                vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+                if client:supports_method("textDocument/completion") then
+                    vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+                end
+
+                vim.keymap.set({ "i", "x" }, "<C-n>", function()
+                    if tonumber(vim.fn.pumvisible()) ~= 0 then
+                        return "<C-n>"
+                    else
+                        if next(vim.lsp.get_clients { bufnr = 0 }) then
+                            vim.lsp.completion.trigger()
+                        else
+                            return vim.bo.omnifunc == "" and "<C-x><C-n>" or "<C-x><C-o>"
+                        end
+                    end
+                end, { buffer = event.buf, expr = true })
+
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = event.buf })
+                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
+                vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
 
                 -- set server-specific attach
                 if settings.callback then

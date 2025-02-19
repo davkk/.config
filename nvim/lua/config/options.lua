@@ -52,9 +52,8 @@ opt.errorbells = false
 opt.shortmess:append "c"
 opt.more = false
 
-opt.completeopt = { "menu", "menuone", "noselect" }
-
-opt.shada = { "'10", "<0", "s10", "h" }
+opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
+opt.pumheight = 10
 
 opt.list = true
 opt.listchars = {

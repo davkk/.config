@@ -54,6 +54,8 @@ return {
 
             Pmenu = { blend = 5 },
             PmenuSel = { bg = "rose", fg = "base" },
+            PmenuKindSel = { link = "PmenuSel" },
+            PmenuExtraSel = { link = "PmenuSel" },
 
             SpellBad = { sp = diagnostics.warn },
             DiagnosticUnnecessary = { fg = "muted", sp = diagnostics.hint, underline = true },

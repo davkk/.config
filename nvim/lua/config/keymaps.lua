@@ -37,6 +37,8 @@ vim.keymap.set("n", "<right>", "gt", opts)
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
 vim.keymap.set("t", "<S-Space>", "<Space>")
 
+vim.opt.wildchar = vim.fn.char2nr("")
+
 -- Open a terminal at the bottom of the screen with a fixed height.
 vim.keymap.set("n", "<leader>st", function()
     vim.cmd.new()
