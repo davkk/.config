@@ -68,6 +68,7 @@ opt.listchars = {
     nbsp = "␣",
 }
 
+opt.diffopt:append "linematch:60"
 opt.diffopt:append "algorithm:histogram"
 
 opt.guicursor:append "t:blinkon0-TermCursor"
