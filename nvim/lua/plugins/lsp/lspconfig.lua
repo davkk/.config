@@ -1,3 +1,45 @@
+local item_kind_map = {
+    [1] = "Text",
+    [2] = "Method",
+    [3] = "Function",
+    [4] = "Constructor",
+    [5] = "Field",
+    [6] = "Variable",
+    [7] = "Class",
+    [8] = "Interface",
+    [9] = "Module",
+    [10] = "Property",
+    [11] = "Unit",
+    [12] = "Value",
+    [13] = "Enum",
+    [14] = "Keyword",
+    [15] = "Snippet",
+    [16] = "Color",
+    [17] = "File",
+    [18] = "Reference",
+    [19] = "Folder",
+    [20] = "EnumMember",
+    [21] = "Constant",
+    [22] = "Struct",
+    [23] = "Event",
+    [24] = "Operator",
+    [25] = "TypeParameter",
+}
+
+---@param label string
+---@return string
+local function format_label(label)
+    local limit = vim.o.columns * 0.5
+    if #label > limit then
+        label = label:sub(1, limit)
+        local last_comma = label:match(".*(),")
+        if last_comma then
+            return label:sub(1, last_comma) .. " …)"
+        end
+    end
+    return label
+end
+
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
@@ -135,8 +177,17 @@ return {
                     vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
                 end
 
-                if client:supports_method("textDocument/completion") then
-                    vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+                if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+                    vim.lsp.completion.enable(true, client.id, event.buf, {
+                        autotrigger = true,
+                        convert = function(item)
+                            return {
+                                abbr = format_label(item.label),
+                                kind = item_kind_map[item.kind],
+                                menu = ""
+                            }
+                        end
+                    })
                 end
 
                 vim.keymap.set({ "i", "x" }, "<C-n>", function()

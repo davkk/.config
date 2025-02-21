@@ -53,7 +53,6 @@ opt.backup = false
 opt.errorbells = false
 
 opt.shortmess:append "c"
-opt.more = false
 
 opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
 opt.pumheight = 10
