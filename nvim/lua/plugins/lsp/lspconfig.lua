@@ -200,6 +200,10 @@ return {
                             return vim.bo.omnifunc == "" and "<C-x><C-n>" or "<C-x><C-o>"
                         end
                     end
+                end, { buffer = event.buf, expr = true, remap = true })
+
+                vim.keymap.set({ "i", "x" }, "<C-c>", function()
+                    return tonumber(vim.fn.pumvisible()) ~= 0 and "<C-e>" or "<C-c>"
                 end, { buffer = event.buf, expr = true })
 
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = event.buf })
