@@ -105,7 +105,7 @@ local function start_animation()
     loader_timer:start(0, 120, vim.schedule_wrap(function()
         if lsp_loading then
             loader_idx = (loader_idx % #loader) + 1
-            vim.cmd [[redrawstatus]]
+            vim.cmd.redrawstatus()
         end
     end))
 end
@@ -138,7 +138,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
         elseif value.kind == "end" then
             lsp_loading = false
             stop_animation()
-            vim.cmd [[redrawstatus]]
+            vim.cmd.redrawstatus()
         end
     end
 })
