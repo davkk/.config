@@ -1,64 +1,54 @@
 vim.g.mapleader = vim.keycode("<space>")
 vim.g.maplocalleader = vim.keycode("<cr>")
 
-vim.g.netrw_browse_split = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
+vim.o.foldenable = true
+vim.o.foldlevel = 99
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
-vim.wo.foldtext = ""
+vim.o.relativenumber = true
+vim.o.number = true
 
-local opt = vim.opt
+vim.o.laststatus = 3
+vim.o.signcolumn = "yes"
 
-opt.shell = "/usr/bin/zsh"
+vim.o.scrolloff = 8
+vim.o.sidescrolloff = 8
 
-opt.relativenumber = true
-opt.number = true
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
 
-opt.laststatus = 3
-opt.signcolumn = "yes"
+vim.o.breakindent = true
+vim.o.linebreak = true
+vim.o.wrap = false
 
-opt.scrolloff = 8
-opt.sidescrolloff = 8
+vim.opt.formatoptions:remove "o"
+vim.opt.formatoptions:remove "t"
 
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
-opt.expandtab = true
+vim.o.inccommand = "split"
+vim.o.smartcase = true
+vim.o.ignorecase = true
 
-opt.breakindent = true
-opt.linebreak = true
-opt.wrap = false
+vim.opt.clipboard:append "unnamedplus"
 
-opt.formatoptions:remove "o"
-opt.formatoptions:remove "t"
+vim.o.splitright = true
+vim.o.splitbelow = true
 
-opt.inccommand = "split"
-opt.smartcase = true
-opt.ignorecase = true
+vim.opt.iskeyword:append "-"
+vim.opt.isfname:append "@-@"
 
-opt.clipboard = "unnamedplus"
+vim.o.updatetime = 50
 
-opt.splitright = true
-opt.splitbelow = true
+vim.o.undofile = true
+vim.o.swapfile = false
+vim.o.backup = false
 
-opt.iskeyword:append "-"
-opt.isfname:append "@-@"
+vim.opt.shortmess:append "c"
 
-opt.updatetime = 50
-
-opt.undofile = true
-opt.swapfile = false
-opt.backup = false
-
-opt.errorbells = false
-
-opt.shortmess:append "c"
-
-opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
-opt.pumheight = 10
-
-opt.list = true
-opt.listchars = {
+vim.o.list = true
+vim.opt.listchars = {
     tab = "» ",
     trail = "·",
     extends = "→",
@@ -67,7 +57,5 @@ opt.listchars = {
     nbsp = "␣",
 }
 
-opt.diffopt:append "linematch:60"
-opt.diffopt:append "algorithm:histogram"
-
-opt.guicursor:append "t:blinkon0-TermCursor"
+vim.opt.diffopt:append "linematch:60"
+vim.opt.diffopt:append "algorithm:histogram"

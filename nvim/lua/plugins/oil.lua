@@ -31,6 +31,10 @@ return {
         local oil = require("oil")
         oil.setup(opts)
 
+        vim.g.netrw_browse_split = 0
+        vim.g.netrw_banner = 0
+        vim.g.netrw_winsize = 25
+
         vim.keymap.set("n", "<C-e>", oil.open, { noremap = true, silent = true })
     end,
 }

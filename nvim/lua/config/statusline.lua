@@ -1,38 +1,13 @@
+local utils = require("utils")
+
 -- FILE PATH
----@param path string
----@return string
-local function shorten_path(path)
-    local len = #path
-    local max_len = vim.o.columns / 2
-
-    local sep = package.config:sub(1, 1)
-
-    if len <= max_len then
-        return path
-    end
-
-    local segments = vim.split(path, sep)
-    for idx = 1, #segments - 1 do
-        if len <= max_len then
-            break
-        end
-
-        local segment = segments[idx]
-        local shortened = segment:sub(1, vim.startswith(segment, '.') and 2 or 1)
-        segments[idx] = shortened
-        len = len - (#segment - #shortened)
-    end
-
-    return table.concat(segments, sep)
-end
-
 ---@return string
 local function filepath()
     local path = vim.fn.expand("%:p:~")
 
     if #path == 0 then return "[No Name]" end
 
-    path = shorten_path(path)
+    path = utils.shorten_path(path, vim.o.columns / 2)
 
     local name = vim.fn.expand("%")
     local is_new_file = name ~= ""

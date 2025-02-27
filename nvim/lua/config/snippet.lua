@@ -1,5 +1,5 @@
----@param trigger string trigger string for snippet
----@param body string | string[] snippet text that will be expanded
+---@param trigger string
+---@param body string | string[]
 ---@param opts? vim.keymap.set.Opts
 function vim.snippet.add(trigger, body, opts)
     vim.keymap.set("ia", trigger, function()

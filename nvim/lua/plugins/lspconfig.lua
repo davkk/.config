@@ -1,52 +1,11 @@
-local item_kind_map = {
-    [1] = "Text",
-    [2] = "Method",
-    [3] = "Function",
-    [4] = "Constructor",
-    [5] = "Field",
-    [6] = "Variable",
-    [7] = "Class",
-    [8] = "Interface",
-    [9] = "Module",
-    [10] = "Property",
-    [11] = "Unit",
-    [12] = "Value",
-    [13] = "Enum",
-    [14] = "Keyword",
-    [15] = "Snippet",
-    [16] = "Color",
-    [17] = "File",
-    [18] = "Reference",
-    [19] = "Folder",
-    [20] = "EnumMember",
-    [21] = "Constant",
-    [22] = "Struct",
-    [23] = "Event",
-    [24] = "Operator",
-    [25] = "TypeParameter",
-}
-
----@param label string
----@return string
-local function format_label(label)
-    local limit = vim.o.columns * 0.5
-    if #label > limit then
-        label = label:sub(1, limit)
-        local last_comma = label:match(".*(),")
-        if last_comma then
-            return label:sub(1, last_comma) .. " …)"
-        end
-    end
-    return label
-end
-
 return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "LspInfo" },
+    cmd = { "LspInfo", "LspStart", "LspStop" },
     config = function()
         local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")
+        local completion = require("config.completion")
 
         local servers = {
             lua_ls = {
@@ -58,7 +17,10 @@ return {
                             disable = { "missing-fields" },
                         },
                         workspace = {
-                            library = vim.api.nvim_get_runtime_file("", true),
+                            library = {
+                                vim.env.VIMRUNTIME,
+                                "${3rd}/luv/library",
+                            },
                             checkThirdParty = false,
                         },
                         telemetry = { enable = false, },
@@ -128,7 +90,7 @@ return {
                     clangdFileStatus = true,
                 },
                 callback = function(_, buffer)
-                    vim.keymap.set("n", "<leader><tab>", "<cmd>ClangdSwitchSourceHeader<cr>", { buffer = buffer })
+                    vim.keymap.set("n", "<leader><tab>", vim.cmd.ClangdSwitchSourceHeader, { buffer = buffer })
                 end,
             },
 
@@ -142,7 +104,7 @@ return {
             zls = true,
         }
 
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        local capabilities = completion.get_capabilities()
 
         for name, config in pairs(servers) do
             if not config then
@@ -170,45 +132,11 @@ return {
                     settings = {}
                 end
 
-                if client.server_capabilities.completionProvider then
-                    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-                end
-                if client.server_capabilities.definitionProvider then
-                    vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
-                end
-
-                if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-                    vim.lsp.completion.enable(true, client.id, event.buf, {
-                        autotrigger = true,
-                        convert = function(item)
-                            return {
-                                abbr = format_label(item.label),
-                                kind = item_kind_map[item.kind],
-                                menu = ""
-                            }
-                        end
-                    })
-                end
-
-                vim.keymap.set({ "i", "x" }, "<C-n>", function()
-                    if tonumber(vim.fn.pumvisible()) ~= 0 then
-                        return "<C-n>"
-                    else
-                        if next(vim.lsp.get_clients { bufnr = 0 }) then
-                            vim.lsp.completion.trigger()
-                        else
-                            return vim.bo.omnifunc == "" and "<C-x><C-n>" or "<C-x><C-o>"
-                        end
-                    end
-                end, { buffer = event.buf, expr = true, remap = true })
-
-                vim.keymap.set({ "i", "x" }, "<C-c>", function()
-                    return tonumber(vim.fn.pumvisible()) ~= 0 and "<C-e>" or "<C-c>"
-                end, { buffer = event.buf, expr = true })
-
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = event.buf })
                 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
                 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
+
+                completion.setup(client, event.buf)
 
                 -- set server-specific attach
                 if settings.callback then
