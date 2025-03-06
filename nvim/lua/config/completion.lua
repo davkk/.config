@@ -68,22 +68,6 @@ function M.setup(client, buffer)
             convert = convert
         })
     end
-
-    vim.keymap.set({ "i", "x" }, "<C-n>", function()
-        if tonumber(vim.fn.pumvisible()) ~= 0 then
-            return "<C-n>"
-        else
-            if next(vim.lsp.get_clients { bufnr = 0 }) then
-                vim.lsp.completion.trigger()
-            else
-                return vim.bo.omnifunc == "" and "<C-x><C-n>" or "<C-x><C-o>"
-            end
-        end
-    end, { buffer = buffer, expr = true, remap = true })
-
-    vim.keymap.set({ "i", "x" }, "<C-c>", function()
-        return tonumber(vim.fn.pumvisible()) ~= 0 and "<C-e>" or "<C-c>"
-    end, { buffer = buffer, expr = true })
 end
 
 function M.get_capabilities()
