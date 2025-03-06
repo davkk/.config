@@ -15,17 +15,9 @@ return {
             conceallevel = 3,
             concealcursor = "n",
         },
-        keymaps = { ["<C-y>"] = "actions.select" },
-        use_default_keymaps = true,
         delete_to_trash = true,
-        view_options = { show_hidden = true, },
+        view_options = { show_hidden = true },
         cleanup_delay_ms = 200,
-        watch_for_changes = true,
-        float = {
-            border = "solid",
-            max_width = math.ceil(vim.o.columns * 0.6),
-            padding = 3,
-        },
     },
     config = function(_, opts)
         local oil = require("oil")
