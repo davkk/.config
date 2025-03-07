@@ -160,20 +160,5 @@ return {
                 end
             end,
         })
-
-        vim.diagnostic.config({
-            severity_sort = true,
-            virtual_text = true,
-            underline = true,
-            update_in_insert = false,
-            float = {
-                source = true,
-                show_header = true,
-                style = "minimal",
-                header = "",
-                prefix = "",
-                border = "solid",
-            },
-        })
     end,
 }

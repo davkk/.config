@@ -5,6 +5,7 @@ require("config.keymaps")
 
 require("config.lazy")
 
+require("config.diagnostic")
 require("config.terminal")
 require("config.statusline")
 require("config.tabline")
