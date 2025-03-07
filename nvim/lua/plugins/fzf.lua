@@ -25,8 +25,6 @@ return {
                 fzf = {
                     true,
                     ["ctrl-c"] = "abort",
-                    ["ctrl-u"] = "half-page-up",
-                    ["ctrl-d"] = "half-page-down",
                     ["ctrl-q"] = "select-all+accept",
                     ["f3"] = "toggle-preview",
                     ["f4"] = "toggle-preview-wrap",
