@@ -82,15 +82,8 @@ vim.api.nvim_create_user_command("ToggleDiagnostics", function()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, {})
 
-local timer = nil
+local utils = require("utils")
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     group = vim.api.nvim_create_augroup("UserDiagnostic", {}),
-    callback = function()
-        if timer then
-            timer:stop()
-        end
-        timer = vim.defer_fn(function()
-            set_qf_diagnostics()
-        end, 300)
-    end,
+    callback = utils.debounce(set_qf_diagnostics, 300),
 })

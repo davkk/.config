@@ -1,4 +1,5 @@
 local utils = require("utils")
+local group = vim.api.nvim_create_augroup("UserStatusLine", {})
 
 -- FILE PATH
 ---@return string
@@ -63,9 +64,67 @@ local function location()
 end
 
 -- GIT DIFF
----@return string
-local function git_diff()
-    return "%{get(b:,'gitsigns_status','')}"
+local function parse_shortstat(output)
+    local diffs = {}
+    local inserts = output:match("(%d+) insertions?") or nil
+    local deletions = output:match("(%d+) deletions?") or nil
+    local changed = output:match("(%d+) files? changed") or nil
+    if inserts ~= nil then table.insert(diffs, "+" .. inserts) end
+    if deletions ~= nil then table.insert(diffs, "-" .. deletions) end
+    if changed ~= nil then table.insert(diffs, "~" .. changed) end
+    return table.concat(diffs, " ")
+end
+
+local function get_git_diff(buffer)
+    if
+        vim.api.nvim_get_option_value("bufhidden", { buf = buffer.bufnr }) ~= ""
+        or vim.api.nvim_get_option_value("buftype", { buf = buffer.bufnr }) == "nofile"
+        or vim.fn.filereadable(buffer.name) ~= 1
+    then
+        return ""
+    end
+
+    local cwd = vim.fn.fnamemodify(buffer.name, ":h")
+    local output = ""
+    vim.fn.jobstart({ "git", "diff", "--shortstat", buffer.name }, {
+        cwd = cwd,
+        stdout_buffered = true,
+        on_stdout = function(_, data)
+            if data and #data > 0 then
+                output = table.concat(data, "\n")
+            end
+        end,
+        on_exit = function(_, exit_code)
+            if exit_code == 0 then
+                local ok, result = pcall(function()
+                    return parse_shortstat(vim.trim(output))
+                end)
+
+                if ok then
+                    vim.api.nvim_buf_set_var(buffer.bufnr, "git_changes", result)
+                end
+            end
+        end
+    })
+    return ""
+end
+
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+    group = group,
+    callback = function(args)
+        local buffer = { bufnr = args.buf, name = vim.api.nvim_buf_get_name(args.buf) }
+        get_git_diff(buffer)
+    end
+})
+
+local function git_changes()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local ok, changes = pcall(vim.api.nvim_buf_get_var, bufnr, "git_changes")
+    if ok and changes then
+        return changes
+    else
+        return ""
+    end
 end
 
 -- LSP PROGRESS LOADER
@@ -77,12 +136,14 @@ local lsp_loading = false
 local function start_animation()
     if loader_timer then return end
     loader_timer = vim.uv.new_timer()
-    loader_timer:start(0, 120, vim.schedule_wrap(function()
-        if lsp_loading then
-            loader_idx = (loader_idx % #loader) + 1
-            vim.cmd.redrawstatus()
-        end
-    end))
+    if loader_timer ~= nil then
+        loader_timer:start(0, 120, vim.schedule_wrap(function()
+            if lsp_loading then
+                loader_idx = (loader_idx % #loader) + 1
+                vim.cmd.redrawstatus()
+            end
+        end))
+    end
 end
 
 local function stop_animation()
@@ -104,6 +165,7 @@ local function lsp_progress()
 end
 
 vim.api.nvim_create_autocmd("LspProgress", {
+    group = group,
     pattern = "*",
     callback = function(args)
         local value = args.data.params.value
@@ -125,7 +187,7 @@ function StatusLine.build_statusline()
     return table.concat({
         filepath(),
         "  ",
-        git_diff(),
+        git_changes(),
         "%=",
         lsp_loading and lsp_progress() or lsp_diagnostics(),
         "  ",
@@ -134,7 +196,7 @@ function StatusLine.build_statusline()
 end
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave", "DiagnosticChanged" }, {
-    group = vim.api.nvim_create_augroup("StatusLine", {}),
+    group = group,
     callback = function()
         vim.opt.statusline = "%!v:lua.StatusLine.build_statusline()"
     end,

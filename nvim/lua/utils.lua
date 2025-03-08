@@ -26,4 +26,20 @@ function M.shorten_path(path, max_len)
     return table.concat(segments, sep)
 end
 
+---@param fn function
+---@param delay number
+---@return function
+function M.debounce(fn, delay)
+    local timer = nil
+    return function(...)
+        if timer then
+            vim.fn.timer_stop(timer)
+        end
+        local args = { ... }
+        timer = vim.fn.timer_start(delay, function()
+            fn(unpack(args))
+        end)
+    end
+end
+
 return M
