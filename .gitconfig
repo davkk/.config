@@ -1,0 +1,18 @@
+[user]
+    email = dawid.karp@int.pl
+    name = Dawid Karpiński
+    github = davkk
+
+[rerere]
+    enabled = true
+
+[merge]
+    tool = nvimdiff
+    conflictstyle = zdiff3
+
+[mergetool]
+    prompt = false
+    keepBackup = false
+
+[mergetool "nvimdiff"]
+    layout = "LOCAL,BASE,REMOTE / MERGED"
