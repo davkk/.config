@@ -64,29 +64,36 @@ local function location()
 end
 
 -- GIT DIFF
+---@param output string
+---@return string
 local function parse_shortstat(output)
     local diffs = {}
     local inserts = output:match("(%d+) insertions?") or nil
-    local deletions = output:match("(%d+) deletions?") or nil
-    local changed = output:match("(%d+) files? changed") or nil
     if inserts ~= nil then table.insert(diffs, "+" .. inserts) end
+    local deletions = output:match("(%d+) deletions?") or nil
     if deletions ~= nil then table.insert(diffs, "-" .. deletions) end
+    local changed = output:match("(%d+) files? changed") or nil
     if changed ~= nil then table.insert(diffs, "~" .. changed) end
     return table.concat(diffs, " ")
 end
 
-local function get_git_diff(buffer)
+---@param bufnr number
+---@return string
+local function get_git_diff(bufnr)
+    local name = vim.api.nvim_buf_get_name(bufnr)
+
     if
-        vim.api.nvim_get_option_value("bufhidden", { buf = buffer.bufnr }) ~= ""
-        or vim.api.nvim_get_option_value("buftype", { buf = buffer.bufnr }) == "nofile"
-        or vim.fn.filereadable(buffer.name) ~= 1
+        vim.api.nvim_get_option_value("bufhidden", { buf = bufnr }) ~= ""
+        or vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "nofile"
+        or vim.fn.filereadable(name) ~= 1
     then
         return ""
     end
 
-    local cwd = vim.fn.fnamemodify(buffer.name, ":h")
+    local cwd = vim.fn.fnamemodify(name, ":h")
     local output = ""
-    vim.fn.jobstart({ "git", "diff", "--shortstat", buffer.name }, {
+
+    vim.fn.jobstart({ "git", "diff", "--shortstat", name }, {
         cwd = cwd,
         stdout_buffered = true,
         on_stdout = function(_, data)
@@ -101,7 +108,7 @@ local function get_git_diff(buffer)
                 end)
 
                 if ok then
-                    vim.api.nvim_buf_set_var(buffer.bufnr, "git_changes", result)
+                    vim.api.nvim_buf_set_var(bufnr, "git_changes", result)
                 end
             end
         end
@@ -112,11 +119,11 @@ end
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
     group = group,
     callback = function(args)
-        local buffer = { bufnr = args.buf, name = vim.api.nvim_buf_get_name(args.buf) }
-        get_git_diff(buffer)
+        get_git_diff(args.buf)
     end
 })
 
+---@return string
 local function git_changes()
     local bufnr = vim.api.nvim_get_current_buf()
     local ok, changes = pcall(vim.api.nvim_buf_get_var, bufnr, "git_changes")
