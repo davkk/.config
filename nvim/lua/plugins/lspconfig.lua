@@ -1,7 +1,5 @@
 return {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "LspInfo", "LspStart", "LspStop" },
     config = function()
         local lspconfig = require("lspconfig")
         local util = require("lspconfig.util")

@@ -22,6 +22,5 @@ require("lazy").setup({
         colorscheme = { "rose-pine" },
         missing = false,
     },
-    defaults = { lazy = true },
     change_detection = { enabled = false },
 })

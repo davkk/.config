@@ -8,9 +8,6 @@ end
 
 return {
     "stevearc/conform.nvim",
-    event = "BufWritePre",
-    cmd = { "ConformInfo" },
-    keys = { "<leader>f" },
     opts = {
         formatters_by_ft = {
             python = { "ruff_format", "ruff_organize_imports" },
