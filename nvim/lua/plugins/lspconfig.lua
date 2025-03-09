@@ -7,7 +7,6 @@ return {
 
         local servers = {
             lua_ls = {
-                cmd = { vim.env.HOME .. "/.local/share/lua-language-server/bin/lua-language-server" },
                 settings = {
                     Lua = {
                         diagnostics = {
@@ -95,11 +94,19 @@ return {
             marksman = true,
             texlab = true,
 
-            jdtls = {
-                cmd = { vim.env.HOME .. "/.local/share/jdtls/bin/jdtls" },
-            },
+            jdtls = true,
 
             zls = true,
+            ltex_plus = {
+                settings = {
+                    ltex = {
+                        additionalRules = {
+                            enablePickyRules = true,
+                        },
+                        enabled = true
+                    },
+                },
+            },
         }
 
         local capabilities = completion.get_capabilities()
