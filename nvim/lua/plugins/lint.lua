@@ -3,7 +3,6 @@ return {
     config = function()
         local lint = require("lint")
         local parser = require("lint.parser")
-        local util = require("lspconfig.util")
 
         lint.linters.o2_linter = {
             cmd = "python",
@@ -38,7 +37,7 @@ return {
             pylint = { "CPPLINT.cfg" },
         }
 
-        local lint_augroup = vim.api.nvim_create_augroup("Lint", { clear = true })
+        local lint_augroup = vim.api.nvim_create_augroup("UserLint", { clear = true })
         vim.api.nvim_create_autocmd({
             "BufEnter", "BufWritePost", "InsertLeave", "TextChanged"
         }, {
@@ -49,7 +48,7 @@ return {
                 local linters = vim.tbl_filter(
                     function(name)
                         if root_patterns[name] then
-                            return util.root_pattern(unpack(root_patterns[name]))(args.file) ~= nil
+                            return vim.fs.root(args.file, root_patterns[name]) ~= nil
                         else
                             return true
                         end

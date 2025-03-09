@@ -1,8 +1,7 @@
 ---@param names string[]
 local has_in_root = function(names)
-    return function(self, ctx)
-        local util = require("conform.util")
-        return util.root_file(names)(self, ctx)
+    return function(_, ctx)
+        return vim.fs.root(ctx.filename, names)
     end
 end
 

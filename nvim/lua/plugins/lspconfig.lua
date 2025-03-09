@@ -2,7 +2,6 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
         local lspconfig = require("lspconfig")
-        local util = require("lspconfig.util")
         local completion = require("config.completion")
 
         local servers = {
@@ -41,7 +40,7 @@ return {
                     end, { buffer = buffer, desc = "Organize Imports" })
                 end,
             },
-            angularls = { root_dir = util.root_pattern("angular.json", "Gruntfile.js") },
+            angularls = { root_dir = vim.fs.root(0, { "angular.json", "Gruntfile.js" }) },
             astro = true,
             jsonls = true,
             cssls = true,
@@ -56,7 +55,7 @@ return {
             },
 
             pyright = {
-                root_dir = util.root_pattern("pyproject.toml"),
+                root_dir = vim.fs.root(0, { "pyproject.toml" }),
                 settings = {
                     python = {
                         analysis = { typeCheckingMode = "standard" }
