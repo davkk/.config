@@ -97,11 +97,10 @@ return {
 
             zls = true,
             ltex_plus = {
+                filetypes = { "tex" },
                 settings = {
                     ltex = {
-                        additionalRules = {
-                            enablePickyRules = true,
-                        },
+                        additionalRules = { enablePickyRules = true },
                         enabled = true
                     },
                 },
