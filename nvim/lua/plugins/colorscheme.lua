@@ -36,7 +36,7 @@ return {
         },
 
         highlight_groups = {
-            LineNr = { fg = "highlight_high" },
+            LineNr = { fg = "highlight_med" },
             EndOfBuffer = { link = "LineNr" },
             Comment = { link = "LineNr" },
             WinSeparator = { link = "LineNr" },
@@ -59,20 +59,11 @@ return {
             PmenuExtra = { link = "Pmenu" },
 
             SpellBad = { sp = diagnostics.warn },
-            DiagnosticUnnecessary = { fg = "muted", sp = diagnostics.hint, underline = true },
+            DiagnosticUnnecessary = { sp = diagnostics.hint, underline = true },
 
             QuickFixLine = { link = "CurSearch" },
 
             ["@type.qualifier"] = { fg = "subtle" },
-
-            -- hrsh7th/nvim-cmp
-            CmpItemMenu = { fg = "highlight_high" },
-            CmpItemAbbrMatchFuzzy = { fg = "rose" },
-            CmpItemKind = { fg = "iris" },
-
-            -- Saghen/blink.cmp
-            BlinkCmpDoc = { link = "Pmenu" },
-            BlinkCmpDocBorder = { link = "Pmenu" },
 
             -- ibhagwan/fzf-lua
             FzfLuaBorder = { bg = "overlay", blend = 5 },
@@ -81,10 +72,6 @@ return {
             TreesitterContext = { link = "Normal" },
             TreesitterContextLineNumber = { bg = "none", fg = "highlight_high", bold = true },
             TreesitterContextSeparator = { link = "WinSeparator" },
-
-            -- folke/trouble.nvim
-            TroubleNormal = { link = "Normal" },
-            TroubleNormalNC = { link = "Normal" },
         },
 
         before_highlight = function(_, highlight)
