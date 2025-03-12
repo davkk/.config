@@ -57,7 +57,8 @@ return {
             PmenuExtraSel = { link = "PmenuSel" },
             PmenuExtra = { link = "Pmenu" },
 
-            SpellBad = { sp = diagnostics.warn },
+            SpellCap = { sp = diagnostics.hint, undercurl = true },
+            SpellBad = { sp = diagnostics.warn, undercurl = true },
             DiagnosticUnnecessary = { sp = diagnostics.hint, underline = true },
 
             QuickFixLine = { link = "CurSearch" },
@@ -73,9 +74,9 @@ return {
             TreesitterContextSeparator = { link = "WinSeparator" },
         },
 
-        before_highlight = function(_, highlight)
+        before_highlight = function(name, highlight)
             -- replace curl with underline
-            if highlight.undercurl then
+            if highlight.undercurl and name:sub(1, 5) ~= "Spell" then
                 highlight.undercurl = false
                 highlight.underline = true
             end

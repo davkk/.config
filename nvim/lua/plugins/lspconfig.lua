@@ -27,7 +27,6 @@ return {
                 },
             },
 
-            biome = true,
             ts_ls = {
                 callback = function(client, buffer)
                     vim.keymap.set("n", "<leader>oi", function()
@@ -41,7 +40,7 @@ return {
                 end,
             },
             angularls = { root_dir = vim.fs.root(0, { "angular.json", "Gruntfile.js" }) },
-            astro = true,
+
             jsonls = true,
             cssls = true,
 
@@ -71,6 +70,7 @@ return {
                     semantic_token = true,
                 }
             },
+
             clangd = {
                 cmd = {
                     "clangd",
@@ -93,18 +93,7 @@ return {
             marksman = true,
             texlab = true,
 
-            jdtls = true,
-
             zls = true,
-            ltex_plus = {
-                filetypes = { "tex" },
-                settings = {
-                    ltex = {
-                        additionalRules = { enablePickyRules = true },
-                        enabled = true
-                    },
-                },
-            },
         }
 
         local capabilities = completion.get_capabilities()

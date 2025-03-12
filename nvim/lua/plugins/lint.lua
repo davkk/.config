@@ -25,7 +25,9 @@ return {
             typescript = { "eslint_d" },
             typescriptreact = { "eslint_d" },
             cmake = { "cmakelint" },
-            cpp = { "o2_linter", "cpplint" }
+            cpp = { "o2_linter", "cpplint" },
+            tex = { "vale", "proselint" },
+            markdown = { "vale", "proselint" },
         }
 
         local root_patterns = {
@@ -35,6 +37,7 @@ return {
             o2_linter = { "PWGCF", ".mega-linter.yml" },
             cpplint = { "CPPLINT.cfg" },
             pylint = { "CPPLINT.cfg" },
+            vale = { ".vale.ini" },
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("UserLint", { clear = true })
