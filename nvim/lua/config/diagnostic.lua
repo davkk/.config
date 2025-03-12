@@ -60,7 +60,7 @@ local function set_qf_diagnostics()
         })
     end
 
-    vim.fn.setqflist({}, qf_id and "u" or " ", {
+    vim.fn.setqflist({}, qf_id and "r" or " ", {
         title = qf_title,
         items = items,
         id = qf_id,
