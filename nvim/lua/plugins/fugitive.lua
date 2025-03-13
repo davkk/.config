@@ -8,15 +8,16 @@ return {
         vim.keymap.set("n", "<leader>gf", function() vim.cmd.Git "push -f" end, opts)
 
         vim.keymap.set("n", "<leader>gd", function()
-            vim.cmd.Gvdiffsplit()
-            vim.cmd.wincmd "p"
+            vim.cmd [[ Gvdiffsplit! ]]
         end, opts)
         vim.keymap.set("n", "<leader>gD", function()
-            vim.cmd.Gvdiffsplit(vim.fn.input("diff> "))
-            vim.cmd.wincmd "p"
+            vim.cmd("Gvdiffsplit!" .. vim.fn.input("diff> "))
         end, opts)
 
-        vim.keymap.set("n", "<leader>gb", function() vim.cmd.Git("blame") end, opts)
+        vim.keymap.set("n", "<leader>gb", function()
+            vim.cmd.Git("blame")
+            vim.cmd.norm "A"
+        end, opts)
 
         vim.keymap.set("n", "gh", function() vim.cmd.diffget "//2" end, opts)
         vim.keymap.set("n", "gl", function() vim.cmd.diffget "//3" end, opts)
