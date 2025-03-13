@@ -127,9 +127,11 @@ return {
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = event.buf })
                 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
                 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
+
                 vim.keymap.set("n", "K", function()
                     vim.lsp.buf.hover { border = "solid" }
                 end, { buffer = event.buf })
+
                 vim.keymap.set({ "i", "x" }, "<C-s>", function()
                     vim.lsp.buf.signature_help { border = "solid" }
                 end, { buffer = event.buf })

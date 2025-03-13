@@ -1,5 +1,6 @@
 local M = {}
 local utils = require("utils")
+local group = vim.api.nvim_create_augroup("UserCompletion", {})
 
 vim.opt.wildchar = vim.fn.char2nr("")
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
@@ -68,6 +69,28 @@ function M.setup(client, buffer)
             convert = convert
         })
     end
+
+    vim.keymap.set("i", "<cr>", function()
+        return tonumber(vim.fn.pumvisible()) ~= 0
+            and "<C-e><cr>"
+            or "<cr>"
+    end, { buffer = buffer, expr = true })
+
+    vim.keymap.set("i", "<bs>", function()
+        return tonumber(vim.fn.pumvisible()) ~= 0 and #vim.lsp.get_clients() > 0
+            and vim.schedule(utils.debounce(vim.lsp.completion.trigger, 100))
+            or "<bs>"
+    end, { buffer = buffer, expr = true })
+
+    vim.api.nvim_create_autocmd("InsertCharPre", {
+        buffer = buffer,
+        group = group,
+        callback = function()
+            if #vim.lsp.get_clients() > 0 then
+                vim.schedule(utils.debounce(vim.lsp.completion.trigger, 300))
+            end
+        end,
+    })
 end
 
 function M.get_capabilities()
