@@ -27,7 +27,6 @@ return {
             cmake = { "cmakelint" },
             cpp = { "o2_linter", "cpplint" },
             tex = { "vale", "proselint" },
-            markdown = { "vale", "proselint" },
         }
 
         local root_patterns = {
