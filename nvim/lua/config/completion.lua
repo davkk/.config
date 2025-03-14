@@ -78,18 +78,18 @@ function M.setup(client, buffer)
 
     vim.keymap.set("i", "<bs>", function()
         return tonumber(vim.fn.pumvisible()) ~= 0 and #vim.lsp.get_clients() > 0
-            and vim.schedule(utils.debounce(vim.lsp.completion.trigger, 100))
+            and utils.debounce(function() vim.schedule(vim.lsp.completion.trigger) end, 300)()
             or "<bs>"
     end, { buffer = buffer, expr = true })
 
     vim.api.nvim_create_autocmd("InsertCharPre", {
         buffer = buffer,
         group = group,
-        callback = function()
-            if #vim.lsp.get_clients() > 0 then
-                vim.schedule(utils.debounce(vim.lsp.completion.trigger, 300))
+        callback = utils.debounce(function()
+            if tonumber(vim.fn.pumvisible()) == 0 and #vim.lsp.get_clients() > 0 then
+                vim.schedule(vim.lsp.completion.trigger)
             end
-        end,
+        end, 300),
     })
 end
 
