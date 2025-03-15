@@ -35,7 +35,7 @@ return {
         },
 
         highlight_groups = {
-            LineNr = { fg = "highlight_med" },
+            LineNr = { fg = "highlight_high" },
             EndOfBuffer = { link = "LineNr" },
             Comment = { link = "LineNr" },
             WinSeparator = { link = "LineNr" },
