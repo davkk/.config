@@ -78,7 +78,11 @@ function M.setup(client, buffer)
 
     vim.keymap.set("i", "<bs>", function()
         return tonumber(vim.fn.pumvisible()) ~= 0 and #vim.lsp.get_clients() > 0
-            and utils.debounce(function() vim.schedule(vim.lsp.completion.trigger) end, 300)()
+            and utils.debounce(function()
+                vim.schedule(function()
+                    pcall(vim.lsp.completion.trigger)
+                end)
+            end, 300)()
             or "<bs>"
     end, { buffer = buffer, expr = true })
 
@@ -87,7 +91,9 @@ function M.setup(client, buffer)
         group = group,
         callback = utils.debounce(function()
             if tonumber(vim.fn.pumvisible()) == 0 and #vim.lsp.get_clients() > 0 then
-                vim.schedule(vim.lsp.completion.trigger)
+                vim.schedule(function()
+                    pcall(vim.lsp.completion.trigger)
+                end)
             end
         end, 300),
     })

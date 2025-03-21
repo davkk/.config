@@ -1,7 +1,6 @@
 return {
     "stevearc/oil.nvim",
     opts = {
-        columns = { { "icon", add_padding = false } },
         win_options = {
             wrap = false,
             colorcolumn = "",

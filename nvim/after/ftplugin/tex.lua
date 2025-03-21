@@ -14,7 +14,7 @@ vim.snippet.add("fig", [[
 ]], { buffer = 0 })
 
 local nbs = " "
-local words = { "in", "of", "and", "or", "a", "the", "w", "oraz", "i", "do", "od", "na", "e.g.,", "as", "by" }
+local words = { "in", "of", "and", "or", "a", "the", "w", "oraz", "i", "do", "od", "na", "e.g.,", "as", "by", "to" }
 local group = vim.api.nvim_create_augroup("UserTex", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
     group = group,

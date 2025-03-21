@@ -57,7 +57,7 @@ return {
                 root_dir = vim.fs.root(0, { "pyproject.toml" }),
                 settings = {
                     python = {
-                        analysis = { typeCheckingMode = "standard" }
+                        analysis = { typeCheckingMode = "basic" }
                     }
                 }
             },
