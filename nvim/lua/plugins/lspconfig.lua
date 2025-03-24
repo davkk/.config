@@ -27,6 +27,7 @@ return {
                 },
             },
 
+            eslint = true,
             ts_ls = {
                 callback = function(client, buffer)
                     vim.keymap.set("n", "<leader>oi", function()
@@ -53,6 +54,7 @@ return {
                 },
             },
 
+            ruff = true,
             pyright = {
                 root_dir = vim.fs.root(0, { "pyproject.toml" }),
                 settings = {
@@ -92,6 +94,7 @@ return {
 
             marksman = true,
             texlab = true,
+            vale_ls = true,
 
             zls = true,
         }
