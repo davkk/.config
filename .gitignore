@@ -23,11 +23,6 @@ tmux/plugins
 *.zwc.old
 *zcompdump*
 
-!i3/
-!i3/**
-!i3status/
-!i3status/**
-
 !sway/
 !sway/**
 
@@ -38,15 +33,6 @@ tmux/plugins
 
 !wezterm/
 !wezterm/**
-
-!alacritty/
-!alacritty/**
-
-!fontconfig/
-!fontconfig/**
-
-!antigen/
-!antigen/antigen.zsh
 
 !.scripts/
 !.scripts/**

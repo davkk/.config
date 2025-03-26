@@ -1,3 +1,7 @@
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -14,26 +18,12 @@ sd() {
     [ -n "$newdir" ] && cd $newdir || echo "no directory selected"
 }
 
-nvim() {
-    if [ -n "$NVIM" ]; then
-        echo "Error: Nested Neovim session not allowed"
-        return 1
-    fi
-    command nvim "$@"
-}
-
-alias l='ls --color -lhF --group-directories-first'
-alias python='python3'
+alias l='ls --color -lahF --group-directories-first'
 alias tmux='tmux -u'
-alias pyenv='source .venv/bin/activate'
 
 export ALIBUILD_WORK_DIR="$HOME/work/alice/sw"
 alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
 alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest ninja/latest --shellrc'
-
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
 
 export XDG_CURRENT_DESKTOP="sway"
 export XDG_SESSION_DESKTOP="sway"
@@ -58,13 +48,11 @@ export BUN_INSTALL=$HOME/.bun
 export ANDROID_SDK_ROOT=$HOME/.android
 export ANDROID_AVD_HOME=$HOME/.android
 
-export PATH=$PATH:$HOME/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.config/.scripts/
 export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/env
-export PATH=$PATH:/usr/local/bin
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.dotnet/tools
 export PATH=$PATH:$HOME/.android/cmdline-tools/latest/bin
@@ -86,25 +74,12 @@ export FZF_DEFAULT_OPTS="
 
 export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
 
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
-
 # fix java gui apps
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 export SUDO_EDITOR=`which nvim`
 export EDITOR=`which nvim`
 
-source $XDG_CONFIG_HOME/antigen/antigen.zsh
-
-antigen theme romkatv/powerlevel10k
-
-antigen bundle 'zsh-users/zsh-syntax-highlighting'
-antigen bundle 'zsh-users/zsh-autosuggestions'
-
-antigen apply
-
-typeset -gA ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets)
 zstyle ':completion:*:default' menu select
 
 bindkey -e
@@ -119,7 +94,9 @@ bindkey "^[[1;5D" backward-word
 eval `opam env 2>/dev/null` 2>/dev/null
 
 source <(fzf --zsh 2>/dev/null)
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+[[ ! -f ${XDG_CONFIG_HOME}/zsh/powerlevel10k/powerlevel10k.zsh-theme ]] || source $XDG_CONFIG_HOME/zsh/powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f ${XDG_CONFIG_HOME}/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 if command -v direnv >/dev/null 2>&1; then
     export DIRENV_LOG_FORMAT=

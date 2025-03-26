@@ -29,3 +29,6 @@
 [submodule "nvim/pack/vendor/start/rose-pine"]
 	path = nvim/pack/vendor/start/rose-pine
 	url = git@github.com:rose-pine/neovim.git
+[submodule "zsh/powerlevel10k"]
+	path = zsh/powerlevel10k
+	url = git@github.com:romkatv/powerlevel10k.git
