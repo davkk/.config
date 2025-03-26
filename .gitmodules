@@ -1,0 +1,31 @@
+[submodule "nvim/pack/vendor/start/conform.nvim"]
+	path = nvim/pack/vendor/start/conform.nvim
+	url = git@github.com:stevearc/conform.nvim.git
+[submodule "nvim/pack/vendor/start/vim-fugitive"]
+	path = nvim/pack/vendor/start/vim-fugitive
+	url = git@github.com:tpope/vim-fugitive.git
+[submodule "nvim/pack/vendor/start/fzf-lua"]
+	path = nvim/pack/vendor/start/fzf-lua
+	url = git@github.com:ibhagwan/fzf-lua.git
+[submodule "nvim/pack/vendor/start/harpoon"]
+	path = nvim/pack/vendor/start/harpoon
+	url = git@github.com:ThePrimeagen/harpoon.git
+	branch = harpoon2
+[submodule "nvim/pack/vendor/start/plenary.nvim"]
+	path = nvim/pack/vendor/start/plenary.nvim
+	url = git@github.com:nvim-lua/plenary.nvim.git
+[submodule "nvim/pack/vendor/start/nvim-lspconfig"]
+	path = nvim/pack/vendor/start/nvim-lspconfig
+	url = git@github.com:neovim/nvim-lspconfig.git
+[submodule "nvim/pack/vendor/start/oil.nvim"]
+	path = nvim/pack/vendor/start/oil.nvim
+	url = git@github.com:stevearc/oil.nvim.git
+[submodule "nvim/pack/vendor/start/nvim-treesitter"]
+	path = nvim/pack/vendor/start/nvim-treesitter
+	url = git@github.com:nvim-treesitter/nvim-treesitter.git
+[submodule "nvim/pack/vendor/start/undotree"]
+	path = nvim/pack/vendor/start/undotree
+	url = git@github.com:mbbill/undotree.git
+[submodule "nvim/pack/vendor/start/rose-pine"]
+	path = nvim/pack/vendor/start/rose-pine
+	url = git@github.com:rose-pine/neovim.git
