@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+local action = wezterm.action
 
 -- startup
 config.default_prog = { "/usr/bin/env", "zsh", "-l" }
@@ -59,5 +60,11 @@ wezterm.on("format-tab-title", function(tab)
         { Text = " " },
     }
 end)
+
+-- key bindings
+config.keys = {
+    { key = "UpArrow",   mods = "SHIFT", action = action.ScrollToPrompt(-1) },
+    { key = "DownArrow", mods = "SHIFT", action = action.ScrollToPrompt(1) },
+}
 
 return config
