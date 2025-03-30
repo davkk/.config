@@ -1,5 +1,5 @@
 # Read `man 5 sway` for a complete reference.
-font pango:Input Nonicons,monospace 16px
+font pango:Input Mono,monospace 16px
 
 xwayland enable
 
