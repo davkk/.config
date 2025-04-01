@@ -80,7 +80,7 @@ function M.setup(client, buffer)
         return tonumber(vim.fn.pumvisible()) ~= 0 and #vim.lsp.get_clients() > 0
             and utils.debounce(function()
                 vim.schedule(function()
-                    pcall(vim.lsp.completion.trigger)
+                    pcall(vim.lsp.completion.get)
                 end)
             end, 300)()
             or "<bs>"
@@ -92,7 +92,7 @@ function M.setup(client, buffer)
         callback = utils.debounce(function()
             if tonumber(vim.fn.pumvisible()) == 0 and #vim.lsp.get_clients() > 0 then
                 vim.schedule(function()
-                    pcall(vim.lsp.completion.trigger)
+                    pcall(vim.lsp.completion.get)
                 end)
             end
         end, 300),
