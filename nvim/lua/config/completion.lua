@@ -5,6 +5,7 @@ local group = vim.api.nvim_create_augroup("UserCompletion", {})
 vim.opt.wildchar = vim.fn.char2nr("")
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
 vim.o.pumheight = 10
+vim.o.pumblend = 5
 
 local item_kind_map = {
     [1] = "Text",
