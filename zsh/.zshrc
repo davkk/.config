@@ -18,6 +18,16 @@ sd() {
     [ -n "$newdir" ] && cd $newdir || echo "no directory selected"
 }
 
+review() {
+  local target=${1:-origin/main}
+  local fork=$(git merge-base --fork-point $target)
+  local files=$(git diff --name-only $fork..)
+  if [[ -n "$files" ]]; then
+      nvim -p $(echo "$files") +"tabdo Gvdiffsplit! $@ $fork" +tabfirst
+  fi
+}
+
+
 alias l='ls --color -lahF --group-directories-first'
 alias tmux='tmux -u'
 
