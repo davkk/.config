@@ -20,7 +20,7 @@ config.max_fps = 144
 -- colors
 local color_scheme = "rose-pine-moon"
 local colors = wezterm.get_builtin_color_schemes()[color_scheme]
-local tab_color = { bg_color = "black", fg_color = colors.brights[1] }
+local tab_color = { bg_color = "black", fg_color = "#524f67" }
 config.color_scheme = color_scheme
 config.colors = {
     background = "black",
@@ -28,7 +28,11 @@ config.colors = {
     selection_fg = "black",
     tab_bar = {
         background = "black",
-        active_tab = tab_color,
+        active_tab = {
+            bg_color = "black",
+            fg_color = colors.foreground,
+            intensity = "Bold",
+        },
         inactive_tab = tab_color,
         inactive_tab_hover = tab_color,
     },
@@ -52,11 +56,11 @@ wezterm.on("format-tab-title", function(tab)
     local tab_title = tab.tab_title
     local pane_title = tab.active_pane.title
     return {
+        { Text = " " },
         { Text = string.format("%d:", tab.tab_index + 1) },
         { Text = "[" },
         { Text = (tab_title and #tab_title > 0) and tab_title or pane_title },
         { Text = "]" },
-        { Text = tab.is_active and "*" or "" },
         { Text = " " },
     }
 end)

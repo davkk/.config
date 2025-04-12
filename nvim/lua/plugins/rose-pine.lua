@@ -31,23 +31,28 @@ require("rose-pine").setup {
     },
 
     highlight_groups = {
-        LineNr = { fg = "highlight_high" },
-        EndOfBuffer = { link = "LineNr" },
-        Comment = { link = "LineNr" },
-        WinSeparator = { link = "LineNr" },
-        ModeMsg = { link = "LineNr" },
+        NormalFloat = { bg = "base", blend = 5 },
+        FloatTitle = { bg = "base", blend = 5 },
+        FloatBorder = { bg = "base", blend = 5 },
 
+        LineNr = { fg = "highlight_med" },
+        EndOfBuffer = { link = "LineNr" },
+        WinSeparator = { link = "LineNr" },
+        NonText = { link = "LineNr" },
+
+        Comment = { fg = "highlight_high", italic = true },
+
+        StatusLine = { fg = "highlight_high" },
         StatusLineTerm = { link = "StatusLine" },
         StatusLineTermNC = { link = "StatusLineNC" },
 
-        NormalFloat = { blend = 5 },
-        FloatTitle = { bg = "base", fg = "highlight_med", blend = 5 },
-        FloatBorder = { fg = "highlight_med", blend = 5 },
+        ModeMsg = { link = "StatusLine" },
+        TabLine = { link = "StatusLine" },
 
-        WinBar = { bg = "none", fg = "highlight_high", bold = true },
+        WinBar = { link = "StatusLine" },
         WinBarNC = { link = "WinBar" },
 
-        Pmenu = { blend = 5 },
+        Pmenu = { bg = "base", blend = 5 },
         PmenuSel = { bg = "rose", fg = "base" },
         PmenuKindSel = { link = "PmenuSel" },
         PmenuExtraSel = { link = "PmenuSel" },
@@ -62,7 +67,7 @@ require("rose-pine").setup {
         ["@type.qualifier"] = { fg = "subtle" },
 
         -- ibhagwan/fzf-lua
-        FzfLuaBorder = { bg = "overlay", blend = 5 },
+        FzfLuaBorder = { bg = "base", blend = 5 },
 
         -- nvim-treesitter/nvim-treesitter-context
         TreesitterContext = { link = "Normal" },
