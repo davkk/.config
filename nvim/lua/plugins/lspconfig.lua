@@ -94,6 +94,8 @@ local servers = {
     vale_ls = true,
 
     zls = true,
+
+    tinymist = true,
 }
 
 local capabilities = completion.get_capabilities()
