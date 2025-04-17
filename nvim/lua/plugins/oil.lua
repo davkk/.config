@@ -13,6 +13,12 @@ oil.setup {
         conceallevel = 3,
         concealcursor = "n",
     },
+    confirmation = {
+        border = "solid",
+        win_options = {
+            winblend = 5,
+        },
+    },
     delete_to_trash = true,
     view_options = { show_hidden = true },
     cleanup_delay_ms = 200,
