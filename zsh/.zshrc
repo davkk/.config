@@ -13,6 +13,8 @@ setopt PROMPT_SUBST
 export HYPHEN_INSENSITIVE=false
 export WORDCHARS=
 
+export MANPAGER="nvim +Man!"
+
 sd() {
     newdir=`fzfp $1`
     [ -n "$newdir" ] && cd $newdir || echo "no directory selected"
