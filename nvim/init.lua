@@ -1,3 +1,5 @@
+require("config.colorscheme")
+
 require("config.filetype")
 
 require("config.options")
@@ -10,7 +12,6 @@ require("config.tabline")
 require("config.completion")
 require("config.snippet")
 
-require("plugins.rose-pine")
 require("plugins.lspconfig")
 require("plugins.treesitter")
 require("plugins.harpoon")

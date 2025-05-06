@@ -10,7 +10,7 @@ fzf.setup {
         height = 0.6,
         row = 1,
         border = { " " },
-        backdrop = 5,
+        backdrop = 100,
         preview = {
             hidden = "hidden",
             default = "head",

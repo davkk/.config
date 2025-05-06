@@ -76,11 +76,11 @@ export PATH=$PATH:$BUN_INSTALL/bin
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
---color=fg:#908caa,bg:#232136,hl:#ea9a97
---color=fg+:#e0def4,bg+:#393552,hl+:#ea9a97
---color=border:#44415a,header:#3e8fb0,gutter:#232136
---color=spinner:#f6c177,info:#9ccfd8
---color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa
+--color=fg:#e0e2ea,bg:#14161B,hl:#a6dbff
+--color=fg+:#eef1f8,bg+:#2c2e33,hl+:#8cf8f7
+--color=border:#4f5258,header:#c4c6cd,gutter:-1
+--color=spinner:#fce094,info:#9b9ea4
+--color=pointer:#a6dbff,marker:#b4f6c0,prompt:#a6dbff
 --bind ctrl-y:accept
 "
 

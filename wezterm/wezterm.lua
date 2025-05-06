@@ -18,25 +18,7 @@ config.front_end = "WebGpu"
 config.max_fps = 144
 
 -- colors
-local color_scheme = "rose-pine-moon"
-local colors = wezterm.get_builtin_color_schemes()[color_scheme]
-local tab_color = { bg_color = "black", fg_color = "#524f67" }
-config.color_scheme = color_scheme
-config.colors = {
-    background = "black",
-    selection_bg = colors.ansi[4],
-    selection_fg = "black",
-    tab_bar = {
-        background = "black",
-        active_tab = {
-            bg_color = "black",
-            fg_color = colors.foreground,
-            intensity = "Bold",
-        },
-        inactive_tab = tab_color,
-        inactive_tab_hover = tab_color,
-    },
-}
+config.color_scheme = "neovim"
 
 -- fonts
 config.font = wezterm.font_with_fallback { "Input Mono" }
