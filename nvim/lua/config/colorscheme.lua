@@ -48,7 +48,7 @@ local Normal = get "Normal"
 ext("Normal", { bg = "#000000" })
 
 ext("Comment", { italic = true, bold = false })
-ext("Constant", { fg = blend(Normal.bg, Normal.fg, 0.7) })
+ext("Constant", { fg = blend(Normal.bg, Normal.fg, 0.9) })
 
 set("NormalFloat", { bg = Normal.bg, blend = 5 })
 set("FloatBorder", { link = "NormalFloat" })
