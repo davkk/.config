@@ -40,21 +40,23 @@ local function ext(name, def)
     set(name, vim.tbl_extend("force", {}, get(name), def))
 end
 
-local DiagnosticHint = get "DiagnosticHint"
-local DiagnosticWarn = get "DiagnosticWarn"
-local LineNr = get "LineNr"
-local Normal = get "Normal"
-
 ext("Normal", { bg = "#000000" })
 
-ext("Comment", { italic = true, bold = false })
+local Normal = get "Normal"
+ext("LineNr", { fg = blend(Normal.bg, Normal.fg, 0.5) })
+
+local LineNr = get "LineNr"
+ext("Comment", { fg = LineNr.fg, italic = true, bold = false })
 ext("Constant", { fg = blend(Normal.bg, Normal.fg, 0.9) })
 
-set("NormalFloat", { bg = Normal.bg, blend = 5 })
+local Pmenu = get "Pmenu"
+set("NormalFloat", { bg = Pmenu.bg, blend = 5 })
 set("FloatBorder", { link = "NormalFloat" })
 set("FloatTitle", { link = "NormalFloat" })
 
-set("DiagnosticUnnecessary", { sp = DiagnosticHint.sp, underline = true })
+local DiagnosticHint = get "DiagnosticHint"
+local DiagnosticWarn = get "DiagnosticWarn"
+set("DiagnosticUnnecessary", { sp = DiagnosticHint.fg, underline = true })
 set("SpellCap", { sp = DiagnosticHint.sp, undercurl = true })
 set("SpellBad", { sp = DiagnosticWarn.sp, undercurl = true })
 
@@ -89,7 +91,6 @@ set("diffChanged", { link = "DiffChange" })
 set("diffRemoved", { link = "DiffDelete" })
 
 local NormalFloat = get "NormalFloat"
-
 set("FzfLuaNormal", { bg = NormalFloat.bg, fg = NormalFloat.fg, blend = 5 })
 set("FzfLuaBorder", { bg = NormalFloat.bg, fg = NormalFloat.fg, blend = 5 })
 set("FzfLuaTitle", { bg = NormalFloat.bg, fg = NormalFloat.fg, blend = 5 })

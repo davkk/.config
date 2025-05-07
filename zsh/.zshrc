@@ -76,9 +76,9 @@ export PATH=$PATH:$BUN_INSTALL/bin
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
---color=fg:#e0e2ea,bg:#14161B,hl:#a6dbff
---color=fg+:#eef1f8,bg+:#2c2e33,hl+:#8cf8f7
---color=border:#4f5258,header:#c4c6cd,gutter:-1
+--color=fg:#e0e2ea,bg:#2c2e33,hl:#a6dbff
+--color=fg+:#eef1f8,bg+:#4f5258,hl+:#8cf8f7
+--color=border:#4f5258,header:#c4c6cd,gutter:#2c2e33
 --color=spinner:#fce094,info:#9b9ea4
 --color=pointer:#a6dbff,marker:#b4f6c0,prompt:#a6dbff
 --bind ctrl-y:accept

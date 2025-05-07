@@ -38,8 +38,8 @@ intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
 bg_color = "none"
-fg_color = "#4f5258"
+fg_color = "#707175"
 
 [colors.tab_bar.inactive_tab_hover]
 bg_color = "none"
-fg_color = "#4f5258"
+fg_color = "#707175"
