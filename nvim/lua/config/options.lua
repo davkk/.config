@@ -54,3 +54,5 @@ vim.opt.listchars = {
 
 vim.opt.diffopt:append "linematch:60"
 vim.opt.diffopt:append "algorithm:histogram"
+
+vim.opt.guicursor:append("t:ver100")
