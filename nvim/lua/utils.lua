@@ -37,9 +37,38 @@ function M.debounce(fn, delay)
         end
         local args = { ... }
         timer = vim.fn.timer_start(delay, function()
-            fn(unpack(args))
+            fn(unpack(args)) ---@diagnostic disable-line: deprecated
         end)
     end
+end
+
+---@generic T
+---@param tbl T
+---@return T | nil
+function M.tbl_copy(tbl)
+    if not tbl then
+        return nil
+    end
+    local new = {}
+    for idx, value in ipairs(tbl) do
+        new[idx] = value
+    end
+    return new
+end
+
+---@generic T
+---@param original T[]
+---@param value T
+---@return T | nil
+function M.append(original, value)
+    if not original then
+        return nil
+    end
+    local new = M.tbl_copy(original)
+    if new then
+        table.insert(new, value)
+    end
+    return new
 end
 
 return M

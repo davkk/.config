@@ -100,8 +100,4 @@ function M.setup(client, buffer)
     })
 end
 
-function M.get_capabilities()
-    return vim.lsp.protocol.make_client_capabilities()
-end
-
 return M
