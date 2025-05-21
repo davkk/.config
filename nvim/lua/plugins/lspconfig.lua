@@ -21,6 +21,7 @@ vim.lsp.enable({
     "vale_ls",
     "zls",
     "tinymist",
+    "astro",
 })
 
 local callbacks = {
