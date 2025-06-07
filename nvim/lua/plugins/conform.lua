@@ -19,6 +19,7 @@ conform.setup {
         css = { "prettierd" },
         cmake = { "gersemi" },
         zig = { "zigfmt" },
+        typst = { "typstyle" },
     },
     formatters = {
         eslint_d = {
