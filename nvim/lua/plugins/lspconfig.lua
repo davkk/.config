@@ -63,14 +63,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
         vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
 
-        vim.keymap.set("n", "K", function()
-            vim.lsp.buf.hover { border = "solid" }
-        end, { buffer = event.buf })
-
-        vim.keymap.set({ "i", "x" }, "<C-s>", function()
-            vim.lsp.buf.signature_help { border = "solid" }
-        end, { buffer = event.buf })
-
         completion.setup(client, event.buf)
 
         local callback = callbacks[client.name]
