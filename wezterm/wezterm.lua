@@ -6,7 +6,7 @@ local action = wezterm.action
 config.default_prog = { "/usr/bin/env", "zsh", "-l" }
 
 -- window
-config.window_decorations = "RESIZE"
+config.window_decorations = "NONE"
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.window_close_confirmation = "AlwaysPrompt"
 config.skip_close_confirmation_for_processes_named = {}
