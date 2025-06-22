@@ -45,11 +45,7 @@ local callbacks = {
     end,
 }
 
-local override_capabilities = {
-    lua_ls = {
-        semanticTokensProvider = vim.NIL
-    }
-}
+local override_capabilities = {}
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -69,6 +65,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if callback ~= nil then
             callback(client, event.buf)
         end
+
+        client.server_capabilities.semanticTokensProvider = nil
 
         local capabilities = override_capabilities[client.name]
         if capabilities then
