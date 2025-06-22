@@ -11,6 +11,7 @@ require("config.statusline")
 require("config.tabline")
 require("config.completion")
 require("config.snippet")
+require("config.context")
 
 require("plugins.lspconfig")
 require("plugins.treesitter")
