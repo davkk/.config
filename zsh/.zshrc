@@ -20,7 +20,7 @@ sd() {
 
 review() {
   local target=${1:-origin/main}
-  local fork=$(git merge-base --fork-point $target)
+  local fork=$(git merge-base HEAD $target)
   local files=$(git diff --name-only $fork..)
   if [[ -n "$files" ]]; then
       nvim -p $(echo "$files") +"tabdo Gvdiffsplit! $@ $fork" +tabfirst
