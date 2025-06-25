@@ -8,7 +8,6 @@
 
 [merge]
     tool = nvimdiff
-    conflictstyle = zdiff3
 
 [mergetool]
     prompt = false
@@ -16,6 +15,7 @@
 
 [mergetool "nvimdiff"]
     layout = "LOCAL,BASE,REMOTE / MERGED"
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
