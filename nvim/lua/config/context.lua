@@ -3,11 +3,14 @@ local enabled = true
 local config = {
     "function_declaration",
     "function_definition",
+    "method_declaration",
     "method_definition",
+    "class_declaration",
     "class_definition",
     "class_specifier",
     "struct_specifier",
     "interface_declaration",
+    "expression_statement",
 }
 
 local buf_id = nil
