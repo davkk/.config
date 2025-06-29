@@ -84,16 +84,26 @@ local function display_context()
 
     local last_line = vim.fn.line("$")
     local line_width = tostring(last_line):len()
-    if line_width <= 2 then
+    if vim.api.nvim_get_option_value("diff", { win = 0 }) then
+        line_width = 5
+    elseif line_width <= 2 then
         line_width = 3
     end
     line_width = line_width + 2
 
-    context_text = string.format("%" .. line_width .. "d %s", relative_line, context_text)
+    local line_number_text = string.format("%" .. line_width .. "d", relative_line)
+    context_text = line_number_text .. " " .. context_text
 
     local context_buf = get_context_buffer()
-
     vim.api.nvim_buf_set_lines(context_buf, 0, -1, false, { context_text })
+
+    vim.hl.range(
+        context_buf,
+        vim.api.nvim_create_namespace("TreesitterContextNamespace"),
+        "TreesitterContextLineNr",
+        { 0, 0 },
+        { 0, #line_number_text }
+    )
 
     local cur_win = vim.api.nvim_get_current_win()
     local win_width = vim.api.nvim_win_get_width(cur_win)

@@ -46,6 +46,7 @@ local Normal = get "Normal"
 ext("LineNr", { fg = blend(Normal.bg, Normal.fg, 0.5) })
 
 local LineNr = get "LineNr"
+set("TreesitterContextLineNr", { fg = LineNr.fg, bold = true })
 ext("Comment", { fg = LineNr.fg, italic = true, bold = false })
 ext("Constant", { fg = blend(Normal.bg, Normal.fg, 0.9) })
 
