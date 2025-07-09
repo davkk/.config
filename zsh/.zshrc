@@ -23,7 +23,7 @@ review() {
   local fork=$(git merge-base HEAD $target)
   local files=$(git diff --name-only $fork..)
   if [[ -n "$files" ]]; then
-      nvim -p $(echo "$files") +"tabdo Gvdiffsplit! $@ $fork" +tabfirst
+      nvim -p $(echo "$files") +"tabdo GitDiff $fork" +tabfirst
   fi
 }
 
