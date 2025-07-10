@@ -14,7 +14,7 @@
     keepBackup = false
 
 [mergetool "nvimdiff"]
-    layout = "LOCAL,BASE,REMOTE / MERGED"
+    layout = "LOCAL,REMOTE / MERGED"
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
