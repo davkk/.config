@@ -1,13 +1,16 @@
 local completion = require("config.completion")
 
 vim.lsp.config("*", {
-    capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = vim.lsp.protocol.make_client_capabilities(),
+    flags = {
+        debounce_text_changes = 2000,
+        allow_incremental_sync = true,
+    },
 })
 
 vim.lsp.enable({
     "lua_ls",
     "ts_ls",
-    "eslint",
     "angularls",
     "jsonls",
     "cssls",
@@ -18,7 +21,6 @@ vim.lsp.enable({
     "gopls",
     "marksman",
     "texlab",
-    "vale_ls",
     "zls",
     "tinymist",
     "astro",
