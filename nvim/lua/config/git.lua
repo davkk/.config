@@ -8,13 +8,14 @@ local function git_diff(ref)
     local track = vim.system({ "git", "ls-files", "--error-unmatch", filepath }):wait()
     local is_tracked = track.code == 0
 
-    local content
+    local lines = {}
     if is_tracked then
         local show = vim.system({ "git", "show", ("%s:%s"):format(ref, filepath) }):wait()
         if show.code ~= 0 then
             return
         end
-        content = show.stdout
+        lines = vim.split(show.stdout, "\n")
+        lines = { unpack(lines, 1, #lines - 1) }
     end
 
     vim.cmd [[leftabove vsplit]]
@@ -25,7 +26,7 @@ local function git_diff(ref)
     vim.bo[buf].bufhidden = "wipe"
 
     vim.api.nvim_win_set_buf(0, buf)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(content or "", "\n"))
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
     vim.bo[buf].modifiable = false
 
