@@ -17,7 +17,11 @@ vim.lint.config {
         ---@type vim.Diagnostic[]
         local diagnostics = {}
         for _, result in ipairs(data or {}) do
-            local line = unpack(vim.api.nvim_buf_get_lines(bufnr, result.Line - 1, result.Line, false))
+            local line = vim.api.nvim_buf_get_lines(bufnr, result.Line - 1, result.Line, false)[1]
+            if not line then
+                goto continue
+            end
+
             local col_ok, column = pcall(vim.str_byteindex, line, result.Span[1])
             if not col_ok then
                 column = 1
@@ -36,6 +40,8 @@ vim.lint.config {
                 severity = vim.diagnostic.severity.INFO,
                 source = "vale",
             })
+
+            ::continue::
         end
 
         return diagnostics
