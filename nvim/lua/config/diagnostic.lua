@@ -84,6 +84,6 @@ end, {})
 
 local utils = require("utils")
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
-    group = vim.api.nvim_create_augroup("UserDiagnostic", {}),
+    group = vim.api.nvim_create_augroup("user.diagnostic", {}),
     callback = utils.debounce(set_qf_diagnostics, 300),
 })

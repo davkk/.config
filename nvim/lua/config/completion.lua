@@ -1,6 +1,6 @@
 local M = {}
 local utils = require("utils")
-local group = vim.api.nvim_create_augroup("UserCompletion", {})
+local group = vim.api.nvim_create_augroup("user.completion", {})
 
 vim.opt.wildchar = vim.fn.char2nr("")
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }

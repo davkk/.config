@@ -13,7 +13,7 @@ vim.snippet.add("fig", [[
 \end{figure}
 ]], { buffer = 0 })
 
-local group = vim.api.nvim_create_augroup("UserTex", { clear = true })
+local group = vim.api.nvim_create_augroup("user.tex", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
     group = group,
     buffer = 0,
