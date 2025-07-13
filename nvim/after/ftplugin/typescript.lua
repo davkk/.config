@@ -1,37 +1,37 @@
-local opts = { buffer = 0 }
+local snippet = require("core.snippet")
 
-vim.snippet.add("desc", [[
+snippet.add("desc", [[
 describe('${1}', () => {
     ${2}
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("its", [[
+snippet.add("its", [[
 it('${1}', () => {
     ${2}
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("its", [[
+snippet.add("its", [[
 it('${1}', () => {
     ${2}
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("ita", [[
+snippet.add("ita", [[
 it('${1}', async () => {
     ${2}
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("itf", [[
+snippet.add("itf", [[
 it('${1}', () => {
     const fixture = factory();
     ${3}
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("tests", [[
+snippet.add("tests", [[
 import { TestBed } from '@angular/core/testing';
 
 describe('${1}', () => {
@@ -49,9 +49,9 @@ describe('${1}', () => {
         expect(service).toBeTruthy();
     });
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("testc", [[
+snippet.add("testc", [[
 import { TestBed } from '@angular/core/testing';
 import { MockInstance, MockRenderFactory } from 'ng-mocks';
 
@@ -75,18 +75,18 @@ describe('${1}', () => {
         expect(component).toBeTruthy();
     });
 });
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("angs", [[
+snippet.add("angs", [[
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: ${1:'root'} })
 export class ${2:ServiceName}Service {
     constructor() { }
 }
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("angc", [[
+snippet.add("angc", [[
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -96,17 +96,7 @@ import { Component, OnInit } from '@angular/core';
 export class ${3:Name}Component implements OnInit {
     constructor() { }
 }
-]], opts)
+]], { buffer = 0 })
 
-vim.snippet.add("angp", [[
-import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-    name: '${1:selector-name}'
-})
-export class ${2:Name}Pipe implements PipeTransform {
-    transform(value: any, ...args: any[]): any {
-        $0
-    }
-}
-]], opts)
+

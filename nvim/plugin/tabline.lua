@@ -56,7 +56,3 @@ function Tabline.build_tabline()
 end
 
 vim.opt.tabline = "%!v:lua.Tabline.build_tabline()"
-
-local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<left>", "gT", opts)
-vim.keymap.set("n", "<right>", "gt", opts)

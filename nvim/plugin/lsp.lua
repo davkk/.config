@@ -1,5 +1,3 @@
-local completion = require("config.completion")
-
 vim.lsp.config("*", {
     capabilities = vim.lsp.protocol.make_client_capabilities(),
     flags = {
@@ -49,6 +47,55 @@ local callbacks = {
 
 local override_capabilities = {}
 
+local item_kind_map = {
+    [1] = "Text",
+    [2] = "Method",
+    [3] = "Function",
+    [4] = "Constructor",
+    [5] = "Field",
+    [6] = "Variable",
+    [7] = "Class",
+    [8] = "Interface",
+    [9] = "Module",
+    [10] = "Property",
+    [11] = "Unit",
+    [12] = "Value",
+    [13] = "Enum",
+    [14] = "Keyword",
+    [15] = "Snippet",
+    [16] = "Color",
+    [17] = "File",
+    [18] = "Reference",
+    [19] = "Folder",
+    [20] = "EnumMember",
+    [21] = "Constant",
+    [22] = "Struct",
+    [23] = "Event",
+    [24] = "Operator",
+    [25] = "TypeParameter",
+}
+
+local utils = require("core.utils")
+
+---@param item lsp.CompletionItem
+---@return table
+local function convert(item)
+    local limit = vim.o.columns * 0.4
+    local label = item.label
+    if #label > limit then
+        label = label:sub(1, limit)
+        local last_comma = label:match(".*(),")
+        if last_comma then
+            label = label:sub(1, last_comma) .. " …)"
+        end
+    end
+    return {
+        abbr = label,
+        kind = item.kind and item_kind_map[item.kind] or 1,
+        menu = item.detail and utils.shorten_path(item.detail, 15) or ""
+    }
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("user.lspconfig", {}),
     callback = function(event)
@@ -61,7 +108,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
         vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
 
-        completion.setup(client, event.buf)
+        if client.server_capabilities.completionProvider then
+            vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+        end
+        if client.server_capabilities.definitionProvider then
+            vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+        end
+
+        if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+            vim.lsp.completion.enable(true, client.id, event.buf, {
+                autotrigger = true,
+                convert = convert
+            })
+        end
 
         local callback = callbacks[client.name]
         if callback ~= nil then

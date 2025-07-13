@@ -1,18 +1,3 @@
-vim.diagnostic.config({
-    severity_sort = true,
-    virtual_text = true,
-    underline = true,
-    update_in_insert = false,
-    float = {
-        source = true,
-        show_header = true,
-        style = "minimal",
-        header = "",
-        prefix = "",
-        border = "solid",
-    },
-})
-
 local sev = vim.diagnostic.severity
 local type = {
     [sev.ERROR] = "E",
@@ -78,12 +63,7 @@ vim.keymap.set("n", "<leader>dq", function()
     end
 end, { silent = true })
 
-vim.api.nvim_create_user_command("ToggleDiagnostics", function()
-    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-end, {})
-
-local utils = require("utils")
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     group = vim.api.nvim_create_augroup("user.diagnostic", {}),
-    callback = utils.debounce(set_qf_diagnostics, 300),
+    callback = require("core.utils").debounce(set_qf_diagnostics, 300),
 })

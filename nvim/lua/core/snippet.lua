@@ -1,7 +1,9 @@
+local M = {}
+
 ---@param trigger string
 ---@param body string | string[]
 ---@param opts? vim.keymap.set.Opts
-function vim.snippet.add(trigger, body, opts)
+function M.add(trigger, body, opts)
     vim.keymap.set("ia", trigger, function()
         -- only accept <C-]> as trigger key
         local c = vim.fn.nr2char(vim.fn.getchar(0))
@@ -16,3 +18,5 @@ function vim.snippet.add(trigger, body, opts)
         vim.snippet.expand(body)
     end, opts)
 end
+
+return M

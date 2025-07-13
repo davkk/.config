@@ -1,4 +1,4 @@
-vim.lint.config {
+return {
     cmd = {
         "vale",
         "--output=JSON",
@@ -47,7 +47,7 @@ vim.lint.config {
         return diagnostics
     end,
     enabled = function()
-        return vim.lint.find_cwd({
+        return require("core.utils").find_in_cwd({
             ".vale.ini",
             ".vale.toml",
         })

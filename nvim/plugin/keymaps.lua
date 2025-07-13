@@ -26,5 +26,8 @@ vim.keymap.set("n", "<A-Left>", "<C-w>5<", opts)
 vim.keymap.set("n", "<A-Up>", "<C-w>2+", opts)
 vim.keymap.set("n", "<A-Down>", "<C-w>2-", opts)
 
+vim.keymap.set("n", "<left>", "gT", opts)
+vim.keymap.set("n", "<right>", "gt", opts)
+
 vim.keymap.set({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })

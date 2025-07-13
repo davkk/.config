@@ -3,7 +3,7 @@ local severities = {
     vim.diagnostic.severity.ERROR,
 }
 
-vim.lint.config {
+return {
     cmd = {
         "eslint_d",
         "--format=json",
@@ -37,7 +37,7 @@ vim.lint.config {
         return diagnostics
     end,
     enabled = function()
-        return vim.lint.find_cwd({
+        return require("core.utils").has_in_cwd({
             ".eslintrc",
             ".eslintrc.js",
             ".eslintrc.json",

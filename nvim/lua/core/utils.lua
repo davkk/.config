@@ -71,4 +71,18 @@ function M.append(original, value)
     return new
 end
 
+---@param markers string[]
+function M.has_in_cwd(markers)
+    local cwd = vim.uv.cwd()
+    local has_marker = false
+    for _, marker in ipairs(markers) do
+        local filepath = vim.fs.joinpath(cwd, marker)
+        if vim.uv.fs_stat(filepath) then
+            has_marker = true
+            break
+        end
+    end
+    return has_marker
+end
+
 return M

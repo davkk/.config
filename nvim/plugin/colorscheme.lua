@@ -75,8 +75,6 @@ set("TabLine", { link = "StatusLine" })
 set("TabLineFill", { link = "StatusLine" })
 ext("TabLineSel", { bg = Normal.bg, fg = Normal.fg })
 
-ext("Directory", { bold = true })
-
 local DiffAdd = get "DiffAdd"
 local DiffChange = get "DiffChange"
 local DiffDelete = get "DiffDelete"

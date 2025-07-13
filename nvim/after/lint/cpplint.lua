@@ -1,4 +1,4 @@
-vim.lint.config {
+return {
     cmd = {
         "cpplint",
         "--quiet",
@@ -28,7 +28,7 @@ vim.lint.config {
         return diagnostics
     end,
     enabled = function()
-        return vim.lint.find_cwd({
+        return require("core.utils").find_in_cwd({
             ".cpplint",
             ".cpplint.yml",
             ".cpplint.yaml",

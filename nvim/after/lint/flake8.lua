@@ -4,7 +4,7 @@ local severity = {
     W = vim.diagnostic.severity.WARN,
 }
 
-vim.lint.config {
+return {
     cmd = {
         "flake8",
         function() return vim.fn.expand("%:p") end,
@@ -34,7 +34,7 @@ vim.lint.config {
         return diagnostics
     end,
     enabled = function()
-        return vim.lint.find_cwd({
+        return require("core.utils").find_in_cwd({
             ".flake8",
             ".flake8.ini",
         })

@@ -1,4 +1,4 @@
-vim.lint.config {
+return {
     cmd = {
         "python",
         function()

@@ -1,5 +1,5 @@
-local utils = require("utils")
-local group = vim.api.nvim_create_augroup("user.statusline", {})
+local utils = require("core.utils")
+local group = vim.api.nvim_create_augroup("user.statusline", { clear = true })
 
 -- FILE PATH
 ---@return string

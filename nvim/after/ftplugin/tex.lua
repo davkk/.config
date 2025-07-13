@@ -5,7 +5,8 @@ set.spelllang = { "en", "pl" }
 
 vim.g.tex_flavor = "latex"
 
-vim.snippet.add("fig", [[
+local snippet = require("core.snippet")
+snippet.add("fig", [[
 \begin{figure}[ht!]
     \centering
     \caption{${2}}
@@ -13,9 +14,8 @@ vim.snippet.add("fig", [[
 \end{figure}
 ]], { buffer = 0 })
 
-local group = vim.api.nvim_create_augroup("user.tex", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-    group = group,
+    group = vim.api.nvim_create_augroup("user.tex", { clear = true }),
     buffer = 0,
     callback = function()
         vim.cmd.Orphans()
