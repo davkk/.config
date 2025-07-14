@@ -27,12 +27,12 @@ return {
         end
         return diagnostics
     end,
-    enabled = function()
-        return require("core.utils").find_in_cwd({
+    enabled = function(bufnr)
+        return vim.fs.root(bufnr, {
             ".cpplint",
             ".cpplint.yml",
             ".cpplint.yaml",
             ".mega-linter.yml"
-        })
+        }) ~= nil
     end,
 }

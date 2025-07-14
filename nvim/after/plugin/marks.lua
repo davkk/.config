@@ -1,17 +1,16 @@
-local marks = {}
+local marks_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "marks")
+if not vim.fn.isdirectory(marks_dir) then vim.fn.mkdir(marks_dir, "p") end
 
 local cwd = vim.fn.getcwd()
-local marks_file = vim.fs.joinpath(vim.fn.stdpath("data"), "marks", vim.fn.sha256(cwd))
-vim.fn.mkdir(vim.fs.dirname(marks_file), "p")
+local marks_file = vim.fs.joinpath(marks_dir, vim.fn.sha256(cwd))
+local marks = {}
+
+local ok, content = pcall(vim.fn.readfile, marks_file)
+if ok then
+    marks = content or {}
+end
 
 local menu_win, menu_buf
-
-local function load_marks()
-    local ok, content = pcall(vim.fn.readfile, marks_file)
-    if ok then
-        marks = content or {}
-    end
-end
 
 local function save_marks()
     pcall(vim.fn.writefile, marks, marks_file)
@@ -29,10 +28,11 @@ local function add_mark()
     save_marks()
 end
 
+---@param n number
 local function nav_file(n)
     if vim.bo.buftype ~= "" then return end
     local mark = marks[n]
-    if mark and #mark > 0 then
+    if mark and #mark > 0 and vim.fn.filereadable(mark) == 1 then
         vim.cmd.edit(vim.fn.fnameescape(mark))
     end
 end
@@ -87,8 +87,6 @@ local function open_menu()
     vim.keymap.set("n", "<esc>", close_menu, opts)
     vim.keymap.set("n", "<C-c>", close_menu, opts)
 end
-
-load_marks()
 
 vim.keymap.set("n", "<leader>a", add_mark, { silent = true })
 vim.keymap.set("n", "<leader>h", function()

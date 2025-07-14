@@ -1,6 +1,3 @@
-vim.g.mapleader = vim.keycode("<space>")
-vim.g.maplocalleader = vim.keycode("<cr>")
-
 vim.o.relativenumber = true
 vim.o.number = true
 

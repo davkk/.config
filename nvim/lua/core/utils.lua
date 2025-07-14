@@ -44,10 +44,10 @@ end
 
 ---@generic T
 ---@param tbl T
----@return T | nil
+---@return T
 function M.tbl_copy(tbl)
     if not tbl then
-        return nil
+        return tbl
     end
     local new = {}
     for idx, value in ipairs(tbl) do
@@ -69,20 +69,6 @@ function M.append(original, value)
         table.insert(new, value)
     end
     return new
-end
-
----@param markers string[]
-function M.has_in_cwd(markers)
-    local cwd = vim.uv.cwd()
-    local has_marker = false
-    for _, marker in ipairs(markers) do
-        local filepath = vim.fs.joinpath(cwd, marker)
-        if vim.uv.fs_stat(filepath) then
-            has_marker = true
-            break
-        end
-    end
-    return has_marker
 end
 
 return M

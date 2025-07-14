@@ -9,7 +9,7 @@ return {
         "--format=json",
         function() return vim.fn.expand("%:p") end,
     },
-    pattern = { "*.ts", "*.js" },
+    pattern = { "*.ts", "*.js", "*.jsx", "*.tsx" },
     parser = function(_, output)
         local decode_opts = { luanil = { object = true, array = true } }
         local ok, data = pcall(vim.json.decode, output, decode_opts)
@@ -36,12 +36,12 @@ return {
 
         return diagnostics
     end,
-    enabled = function()
-        return require("core.utils").has_in_cwd({
+    enabled = function(bufnr)
+        return vim.fs.root(bufnr, {
             ".eslintrc",
             ".eslintrc.js",
             ".eslintrc.json",
             ".eslint-ts-config"
-        })
+        }) ~= nil
     end,
 }

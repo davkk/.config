@@ -1,10 +1,11 @@
+---@type Linter
 return {
     cmd = {
         "vale",
         "--output=JSON",
         function() return vim.fn.expand("%:p") end,
     },
-    pattern = { "*.md", "*.txt", "*.tex", "*.typ" },
+    pattern = { "*.md", "*.tex", "*.typ" },
     parser = function(bufnr, output)
         local decode_opts = { luanil = { object = true, array = true } }
         local json_ok, data = pcall(vim.json.decode, output, decode_opts)
@@ -46,10 +47,10 @@ return {
 
         return diagnostics
     end,
-    enabled = function()
-        return require("core.utils").find_in_cwd({
+    enabled = function(bufnr)
+        return vim.fs.root(bufnr, {
             ".vale.ini",
             ".vale.toml",
-        })
+        }) ~= nil
     end,
 }

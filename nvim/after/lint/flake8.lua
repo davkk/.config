@@ -33,10 +33,10 @@ return {
 
         return diagnostics
     end,
-    enabled = function()
-        return require("core.utils").find_in_cwd({
+    enabled = function(bufnr)
+        return vim.fs.root(bufnr, {
             ".flake8",
             ".flake8.ini",
-        })
+        }) ~= nil
     end,
 }
