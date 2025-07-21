@@ -1,5 +1,5 @@
 local marks_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "marks")
-if not vim.fn.isdirectory(marks_dir) then vim.fn.mkdir(marks_dir, "p") end
+vim.fn.mkdir(marks_dir, "p")
 
 local cwd = vim.fn.getcwd()
 local marks_file = vim.fs.joinpath(marks_dir, vim.fn.sha256(cwd))

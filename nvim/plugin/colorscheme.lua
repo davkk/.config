@@ -1,6 +1,5 @@
 local bit = require "bit"
 
-vim.cmd.syntax "off"
 vim.cmd.colorscheme "default"
 
 local ns = 0
