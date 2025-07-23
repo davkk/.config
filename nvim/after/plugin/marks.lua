@@ -94,5 +94,10 @@ vim.keymap.set("n", "<leader>h", function()
 end, { silent = true })
 
 for idx = 1, 5 do
-    vim.keymap.set("n", tostring(idx), function() nav_file(idx) end, { silent = true })
+    vim.keymap.set(
+        "n",
+        "<leader>" .. tostring(idx),
+        function() nav_file(idx) end,
+        { silent = true }
+    )
 end
