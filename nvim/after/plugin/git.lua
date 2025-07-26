@@ -100,5 +100,5 @@ vim.keymap.set("n", "<leader>gD", function()
     git_diff(ref)
 end, opts)
 
-vim.keymap.set("n", "gh", function() vim.cmd.diffget "LOCAL" end, opts)
-vim.keymap.set("n", "gl", function() vim.cmd.diffget "REMOTE" end, opts)
+vim.keymap.set({ "n", "v" }, "gh", ":diffget LOCAL<cr>", opts)
+vim.keymap.set({ "n", "v" }, "gl", ":diffget REMOTE<cr>", opts)
