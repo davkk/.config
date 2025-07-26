@@ -1,54 +1,89 @@
-local function create_scratch_split(lines, filetype)
-    vim.cmd("leftabove vsplit")
+---@param name string
+---@param lines string[]
+local function new_buffer(name, lines)
     local buf = vim.api.nvim_create_buf(false, true)
+    if name then
+        name = name:gsub("/$", "")
+        vim.api.nvim_buf_set_name(buf, "diff://" .. name)
+    end
+    vim.bo[buf].buftype = "nofile"
+    vim.bo[buf].bufhidden = "wipe"
+    vim.bo[buf].filetype = vim.bo.filetype == "" and "git" or vim.bo.filetype
     vim.api.nvim_win_set_buf(0, buf)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    vim.bo[buf].buftype = "nofile"
     vim.bo[buf].modifiable = false
-    vim.bo[buf].filetype = filetype or vim.bo.filetype
 end
 
-local function replace_with_scratch(lines, filetype)
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_win_set_buf(0, buf)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    vim.bo[buf].buftype = "nofile"; vim.bo[buf].modifiable = false; vim.bo[buf].filetype = filetype or vim.bo.filetype
+---@param output string
+local function parse_output(output)
+    local lines = vim.split(output, "\n")
+    if #lines > 0 and lines[#lines] == "" then
+        table.remove(lines)
+    end
+    return lines
 end
 
 ---@param ref string | nil
 local function git_diff(ref)
     ref = ref or "HEAD"
-    local cwd = vim.fn.getcwd()
-    local filepath = vim.fn.expand("%:p")
-    local relative_filepath = filepath:sub(#cwd + 2)
 
-    -- If it's a submodule, just show the current hash and stop.
-    local ls_files_res = vim.system({ "git", "ls-files", "--stage", "--", relative_filepath }):wait()
-    if ls_files_res.code == 0 and ls_files_res.stdout:match("^160000") then
-        local current_hash = vim.trim(vim.system({ "git", "rev-parse", (":%s"):format(relative_filepath) }):wait()
-            .stdout)
-        replace_with_scratch({ ("Submodule %s"):format(current_hash) }, "diff")
+    local cwd = vim.fn.getcwd()
+
+    local fullpath = vim.fn.expand("%:p")
+    if fullpath == "" then
+        vim.notify("No file under cursor", vim.log.levels.ERROR)
         return
     end
 
-    -- For regular files, try to get the content from the ref.
-    local show_result = vim.system({ "git", "show", ("%s:%s"):format(ref, relative_filepath) }):wait()
-    if show_result.code ~= 0 then return end -- File is new in this ref, so do nothing.
-    local lines = vim.split(show_result.stdout, "\n")
-    if #lines > 0 and lines[#lines] == "" then table.remove(lines) end
+    local relpath = fullpath:sub(#cwd + 2)
 
-    if not vim.fn.filereadable(filepath) then
-        create_scratch_split(lines)
-        vim.cmd("diffthis")
-        vim.cmd("wincmd p")
-        replace_with_scratch({})
-        vim.cmd("diffthis")
-    else
-        create_scratch_split(lines)
-        vim.cmd("diffthis")
-        vim.cmd("wincmd p")
-        vim.cmd("diffthis")
+    local lstree_res = vim.system({ "git", "ls-tree", ref, "--", relpath }):wait()
+    if lstree_res.code ~= 0 then
+        vim.notify(("ls-tree failed for %s"):format(relpath), vim.log.levels.ERROR)
+        return
     end
+
+    local lsfiles_res = vim.system({ "git", "ls-files", "--stage", "--", relpath }):wait()
+    if lsfiles_res.code ~= 0 then
+        vim.notify(("ls-files failed for %s"):format(relpath), vim.log.levels.ERROR)
+        return
+    end
+
+    local file_exists_ref = lstree_res.stdout ~= ""
+    local file_exists_head = lsfiles_res.stdout ~= ""
+
+    local is_submodule = lstree_res.stdout:match("^160000") or lsfiles_res.stdout:match("^160000")
+    if is_submodule then
+        local old_hash = string.match(lstree_res.stdout, "commit%s+([0-9a-fA-F]+)")
+
+        local diff_res
+        if old_hash ~= nil and file_exists_head then
+            diff_res = vim.system({ "git", "diff", old_hash }, { cwd = relpath }):wait()
+        else
+            diff_res = vim.system({ "git", "diff", ref, "--", relpath }):wait()
+        end
+
+        new_buffer(fullpath, parse_output(diff_res.stdout))
+        return
+    end
+
+    local lines_ref = {}
+    if file_exists_ref then
+        local show_res = vim.system({ "git", "show", ("%s:%s"):format(ref, relpath) }):wait()
+        if show_res.code ~= 0 then
+            vim.notify(("show failed for %s"):format(relpath), vim.log.levels.ERROR)
+            return
+        end
+        lines_ref = parse_output(show_res.stdout)
+    end
+
+    vim.cmd [[leftabove vsplit]]
+
+    new_buffer(fullpath, lines_ref)
+
+    vim.cmd.diffthis()
+    vim.cmd.wincmd "p"
+    vim.cmd.diffthis()
 end
 
 vim.api.nvim_create_user_command(
