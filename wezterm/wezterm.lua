@@ -21,8 +21,7 @@ config.max_fps = 144
 config.color_scheme = "neovim"
 
 -- fonts
-config.font = wezterm.font_with_fallback { "Input Mono" }
-config.freetype_load_target = "Light"
+config.font = wezterm.font_with_fallback { "Iosevka" }
 config.adjust_window_size_when_changing_font_size = false
 config.warn_about_missing_glyphs = false
 config.underline_thickness = "0.08cell"
