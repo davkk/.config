@@ -45,3 +45,5 @@ tmux/plugins
 
 !xdg-desktop-portal/
 !xdg-desktop-portal/portals.conf
+
+!iosevka-build.toml
