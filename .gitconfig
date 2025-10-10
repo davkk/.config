@@ -11,6 +11,9 @@ whitespace = trailing-space
 auto = true
 strategy = incremental
 
+[init]
+defaultBranch = master
+
 [alias]
 st = status --short
 
