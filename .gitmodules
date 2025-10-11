@@ -1,16 +1,6 @@
 [submodule "nvim/pack/vendor/start/conform.nvim"]
 	path = nvim/pack/vendor/start/conform.nvim
 	url = https://github.com/stevearc/conform.nvim
-[submodule "nvim/pack/vendor/start/fzf-lua"]
-	path = nvim/pack/vendor/start/fzf-lua
-	url = https://github.com/ibhagwan/fzf-lua
-[submodule "nvim/pack/vendor/start/harpoon"]
-	path = nvim/pack/vendor/start/harpoon
-	url = https://github.com/ThePrimeagen/harpoon
-	branch = harpoon2
-[submodule "nvim/pack/vendor/start/plenary.nvim"]
-	path = nvim/pack/vendor/start/plenary.nvim
-	url = https://github.com/nvim-lua/plenary.nvim
 [submodule "nvim/pack/vendor/start/nvim-lspconfig"]
 	path = nvim/pack/vendor/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig

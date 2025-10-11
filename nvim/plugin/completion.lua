@@ -1,6 +1,8 @@
 local utils = require("core.utils")
 
 vim.opt.wildchar = vim.fn.char2nr("")
+vim.opt.wildmode = "noselect,full:full"
+vim.opt.wildoptions = { "pum", "fuzzy" }
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "popup", "fuzzy" }
 vim.o.pumheight = 10
 vim.o.pumblend = 5

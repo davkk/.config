@@ -63,7 +63,11 @@ vim.keymap.set("n", "<leader>dq", function()
     end
 end, { silent = true })
 
+local utils = require("core.utils")
+
+set_qf_diagnostics()
+
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     group = vim.api.nvim_create_augroup("user.diagnostic", {}),
-    callback = require("core.utils").debounce(set_qf_diagnostics, 300),
+    callback = utils.debounce(set_qf_diagnostics, 300),
 })
