@@ -1,2 +1,3 @@
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-vim.g.undotree_DiffAutoOpen = 0
+pcall(vim.cmd.packadd, "nvim.undotree")
+
+vim.keymap.set("n", "<leader>u", vim.cmd.Undotree)
