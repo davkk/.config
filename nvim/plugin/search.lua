@@ -1,7 +1,13 @@
 local group = vim.api.nvim_create_augroup("user.search", { clear = true })
 
 FindFunc = function(cmdarg)
-    local fd_args = { "--type f", "--type l", "--hidden", "--follow" }
+    local fd_args = {
+        "--type f",
+        "--type l",
+        "--hidden",
+        "--follow",
+        "--exclude .git",
+    }
 
     local cmd = [[ find . ]]
     if vim.fn.executable("fd") == 1 then
