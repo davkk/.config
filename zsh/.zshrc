@@ -28,13 +28,8 @@ review() {
     fi
 }
 
-
 alias l='ls --color -lahF --group-directories-first'
 alias tmux='tmux -u'
-
-export ALIBUILD_WORK_DIR="$HOME/work/alice/sw"
-alias alice='apptainer shell -s /usr/bin/zsh ~/work/alice/alice.sif'
-alias o2='MODULES_SHELL=zsh alienv enter O2Physics/latest ninja/latest --shellrc'
 
 export XDG_CURRENT_DESKTOP="sway"
 export XDG_SESSION_DESKTOP="sway"
@@ -51,7 +46,7 @@ export QT_ENABLE_HIGHDPI_SCALING=1
 
 export HISTSIZE=100000000
 export SAVEHIST=$HISTSIZE
-export HISTFILE=$HOME/.local/zsh_history
+export HISTFILE=$XDG_DATA_HOME/zsh_history
 
 export VOLTA_HOME=$HOME/.volta
 export PNPM_HOME=$HOME/.local/share/pnpm
@@ -59,10 +54,12 @@ export BUN_INSTALL=$HOME/.bun
 export ANDROID_SDK_ROOT=$HOME/.android
 export ANDROID_AVD_HOME=$HOME/.android
 
+export GOPATH=$HOME/.go
+
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.config/.scripts/
 export PATH=$PATH:$HOME/.cargo/bin
-export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$HOME/.cargo/env
 export PATH=$PATH:$HOME/.yarn/bin
 export PATH=$PATH:$HOME/.dotnet/tools
@@ -88,8 +85,9 @@ export GIT_CONFIG_GLOBAL=$HOME/.config/.gitconfig
 # fix java gui apps
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-export SUDO_EDITOR=`which nvim`
-export EDITOR=`which nvim`
+export SUDO_EDITOR=$(which nvim)
+export EDITOR=$(which nvim)
+export MANPAGER=$(which nvim)
 
 zstyle ':completion:*:default' menu select
 
@@ -102,7 +100,7 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
-eval `opam env 2>/dev/null` 2>/dev/null
+eval $(opam env 2>/dev/null) 2>/dev/null
 
 source <(fzf --zsh 2>/dev/null)
 
