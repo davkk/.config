@@ -306,7 +306,6 @@ exec nm-applet &
 exec blueman-applet &
 exec dunst &
 exec /usr/bin/1password --silent &
-exec $HOME/.config/.scripts/autotiling &
 exec $rotation
 
 assign [class="thunderbird"] 5
