@@ -1,5 +1,28 @@
 local M = {}
 
+function M.fn(f, ...)
+    local args = { ... }
+    return function(...)
+        return f(unpack(args), ...)
+    end
+end
+
+---@param bufnr integer
+---@return string
+function M.relative_path(bufnr)
+    local cwd = vim.fn.getcwd()
+    local fullpath = vim.api.nvim_buf_get_name(bufnr)
+    return fullpath:sub(#cwd + 2)
+end
+
+---@param name string
+---@return string
+function M.node_modules(name)
+    local path = vim.fs.find("node_modules/.bin/" .. name, { upward = true })
+    print(vim.inspect(path), path[1], name)
+    return path[1] or name
+end
+
 ---@param path string
 ---@param max_len number
 ---@return string
