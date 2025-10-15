@@ -1,1 +1,1 @@
-vim.g.mapleader = vim.keycode("<space>")
+vim.g.mapleader = vim.keycode "<space>"

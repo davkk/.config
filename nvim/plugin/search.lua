@@ -10,9 +10,9 @@ FindFunc = function(cmdarg)
     }
 
     local cmd = [[ find . ]]
-    if vim.fn.executable("fd") == 1 then
+    if vim.fn.executable "fd" == 1 then
         cmd = string.format("fd %s", table.concat(fd_args, " "))
-    elseif vim.fn.executable("fdfind") == 1 then
+    elseif vim.fn.executable "fdfind" == 1 then
         cmd = string.format("fdfind %s", table.concat(fd_args, " "))
     end
 
@@ -26,7 +26,7 @@ end
 
 vim.opt.findfunc = "v:lua.FindFunc"
 
-if vim.fn.executable("rg") == 1 then
+if vim.fn.executable "rg" == 1 then
     vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case --hidden"
     vim.opt.grepformat:append "%f:%l:%c:%m"
 end
@@ -35,24 +35,19 @@ vim.keymap.set("n", "<C-f>", ":sil! fin! ", { desc = "find files" })
 vim.keymap.set("n", "<C-b>", ":sil! b! ", { desc = "pick buffer" })
 
 vim.keymap.set("n", "<C-g>", ":sil! gr! ", { desc = "grep" })
-vim.keymap.set(
-    { "n", "v" },
-    "<leader>gw",
-    function()
-        local input
-        if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
-            vim.cmd.normal [["vy]]
-            local selection = vim.fn.getreg "v"
-            input = string.gsub(selection, "\n", "")
-        else
-            input = vim.fn.expand "<cword>"
-        end
-        input = input:gsub("%%", "\\%%")
-        input = input:gsub("#", "\\#")
-        vim.cmd("sil! gr! -U --fixed-strings -- " .. vim.fn.shellescape(input))
-    end,
-    { desc = "grep cword" }
-)
+vim.keymap.set({ "n", "v" }, "<leader>gw", function()
+    local input
+    if vim.fn.mode() == "v" or vim.fn.mode() == "V" then
+        vim.cmd.normal [["vy]]
+        local selection = vim.fn.getreg "v"
+        input = string.gsub(selection, "\n", "")
+    else
+        input = vim.fn.expand "<cword>"
+    end
+    input = input:gsub("%%", "\\%%")
+    input = input:gsub("#", "\\#")
+    vim.cmd("sil! gr! -U --fixed-strings -- " .. vim.fn.shellescape(input))
+end, { desc = "grep cword" })
 
 vim.api.nvim_create_autocmd("CmdlineChanged", {
     group = group,
@@ -60,11 +55,11 @@ vim.api.nvim_create_autocmd("CmdlineChanged", {
         vim.opt.wildmenu = true
         vim.opt.wildmode = "noselect,full:full"
         vim.fn.wildtrigger()
-    end
+    end,
 })
 
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     group = group,
     pattern = { "[^l]*" },
-    command = "cwindow"
+    command = "cwindow",
 })

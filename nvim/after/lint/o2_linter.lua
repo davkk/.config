@@ -4,14 +4,18 @@ return {
         function()
             return vim.fs.joinpath(vim.uv.cwd(), "Scripts", "o2_linter.py")
         end,
-        function() return vim.fn.expand("%:p") end,
+        function()
+            return vim.fn.expand "%:p"
+        end,
     },
     pattern = { "*.c", "*.C", "*.cxx", "*.cpp", "*.h", "*.hpp" },
     parser = function(bufnr, output)
         local diagnostics = {}
 
         local ok, lines = pcall(vim.split, output, "\n")
-        if not ok then return diagnostics end
+        if not ok then
+            return diagnostics
+        end
 
         for _, line in ipairs(lines) do
             local file, lnum, message = string.match(line, "(.+):(%d+):(.+)")

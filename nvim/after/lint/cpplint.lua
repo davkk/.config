@@ -2,7 +2,9 @@ return {
     cmd = {
         "cpplint",
         "--quiet",
-        function() return vim.fn.expand("%:p") end,
+        function()
+            return vim.fn.expand "%:p"
+        end,
     },
     pattern = { "*.c", "*.C", "*.cxx", "*.cpp", "*.h", "*.hpp" },
     stream = "stderr",
@@ -32,7 +34,7 @@ return {
             ".cpplint",
             ".cpplint.yml",
             ".cpplint.yaml",
-            ".mega-linter.yml"
+            ".mega-linter.yml",
         }) ~= nil
     end,
 }

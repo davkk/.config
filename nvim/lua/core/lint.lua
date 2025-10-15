@@ -1,6 +1,6 @@
 local M = {}
 
-local utils = require("core.utils")
+local utils = require "core.utils"
 
 ---@class Linter
 ---@field cmd (string | fun(): string)[]
@@ -35,22 +35,26 @@ local function start_linter(name, linter)
                 return
             end
 
-            vim.system(cmd, { text = true }, vim.schedule_wrap(function(output)
-                local stream = linter.stream and output[linter.stream] or output.stdout
-                if not stream then
-                    vim.notify("Wrong stream specified in " .. name .. " config", vim.log.levels.ERROR)
-                    return
-                end
+            vim.system(
+                cmd,
+                { text = true },
+                vim.schedule_wrap(function(output)
+                    local stream = linter.stream and output[linter.stream] or output.stdout
+                    if not stream then
+                        vim.notify("Wrong stream specified in " .. name .. " config", vim.log.levels.ERROR)
+                        return
+                    end
 
-                local diagnostics = linter.parser(event.buf, stream)
+                    local diagnostics = linter.parser(event.buf, stream)
 
-                vim.diagnostic.set(namespace, event.buf, diagnostics, {
-                    underline = true,
-                    virtual_text = true,
-                    signs = true,
-                })
-            end))
-        end
+                    vim.diagnostic.set(namespace, event.buf, diagnostics, {
+                        underline = true,
+                        virtual_text = true,
+                        signs = true,
+                    })
+                end)
+            )
+        end,
     })
 
     vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {

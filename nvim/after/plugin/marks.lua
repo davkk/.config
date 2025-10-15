@@ -1,4 +1,4 @@
-local marks_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "marks")
+local marks_dir = vim.fs.joinpath(vim.fn.stdpath "data", "marks")
 vim.fn.mkdir(marks_dir, "p")
 
 local cwd = vim.fn.getcwd()
@@ -17,7 +17,9 @@ local function save_marks()
 end
 
 local function add_mark()
-    if vim.bo.buftype ~= "" or vim.fn.expand("%") == "" then return end
+    if vim.bo.buftype ~= "" or vim.fn.expand "%" == "" then
+        return
+    end
     local path = vim.fn.expand("%:p"):sub(#cwd + 2)
     for i, mark in ipairs(marks) do
         if mark == path or #mark == 0 then
@@ -30,7 +32,9 @@ end
 
 ---@param n number
 local function nav_file(n)
-    if vim.bo.buftype ~= "" then return end
+    if vim.bo.buftype ~= "" then
+        return
+    end
     local mark = marks[n]
     if mark and #mark > 0 and vim.fn.filereadable(mark) == 1 then
         vim.cmd.edit(vim.fn.fnameescape(mark))
@@ -90,14 +94,15 @@ end
 
 vim.keymap.set("n", "<leader>a", add_mark, { silent = true })
 vim.keymap.set("n", "<leader>h", function()
-    if menu_win then close_menu() else open_menu() end
+    if menu_win then
+        close_menu()
+    else
+        open_menu()
+    end
 end, { silent = true })
 
 for idx = 1, 5 do
-    vim.keymap.set(
-        "n",
-        "<leader>" .. tostring(idx),
-        function() nav_file(idx) end,
-        { silent = true }
-    )
+    vim.keymap.set("n", "<leader>" .. tostring(idx), function()
+        nav_file(idx)
+    end, { silent = true })
 end

@@ -6,7 +6,7 @@ vim.lsp.config("*", {
     },
 })
 
-vim.lsp.enable({
+vim.lsp.enable {
     "lua_ls",
     "ts_ls",
     "angularls",
@@ -22,7 +22,7 @@ vim.lsp.enable({
     "zls",
     "tinymist",
     "astro",
-})
+}
 
 local callbacks = {
     ts_ls = function(client, buffer)
@@ -36,12 +36,7 @@ local callbacks = {
         end, { buffer = buffer, desc = "Organize Imports" })
     end,
     clangd = function(_, buffer)
-        vim.keymap.set(
-            "n",
-            "<leader><tab>",
-            vim.cmd.ClangdSwitchSourceHeader,
-            { buffer = buffer }
-        )
+        vim.keymap.set("n", "<leader><tab>", vim.cmd.ClangdSwitchSourceHeader, { buffer = buffer })
     end,
 }
 
@@ -75,7 +70,7 @@ local item_kind_map = {
     [25] = "TypeParameter",
 }
 
-local utils = require("core.utils")
+local utils = require "core.utils"
 
 ---@param item lsp.CompletionItem
 ---@return table
@@ -84,7 +79,7 @@ local function convert(item)
     local label = item.label
     if #label > limit then
         label = label:sub(1, limit)
-        local last_comma = label:match(".*(),")
+        local last_comma = label:match ".*(),"
         if last_comma then
             label = label:sub(1, last_comma) .. " …)"
         end
@@ -92,17 +87,14 @@ local function convert(item)
     return {
         abbr = label,
         kind = item.kind and item_kind_map[item.kind] or 1,
-        menu = item.detail and utils.shorten_path(item.detail, 15) or ""
+        menu = item.detail and utils.shorten_path(item.detail, 15) or "",
     }
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("user.lspconfig", {}),
     callback = function(event)
-        local client = assert(
-            vim.lsp.get_client_by_id(event.data.client_id),
-            "must have valid client"
-        )
+        local client = assert(vim.lsp.get_client_by_id(event.data.client_id), "must have valid client")
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = event.buf })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
@@ -118,7 +110,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
             vim.lsp.completion.enable(true, client.id, event.buf, {
                 autotrigger = true,
-                convert = convert
+                convert = convert,
             })
         end
 

@@ -29,7 +29,7 @@ local function git_diff(ref)
 
     local cwd = vim.fn.getcwd()
 
-    local fullpath = vim.fn.expand("%:p")
+    local fullpath = vim.fn.expand "%:p"
     if fullpath == "" then
         vim.notify("No file under cursor", vim.log.levels.ERROR)
         return
@@ -52,7 +52,7 @@ local function git_diff(ref)
     local file_exists_ref = lstree_res.stdout ~= ""
     local file_exists_head = lsfiles_res.stdout ~= ""
 
-    local is_submodule = lstree_res.stdout:match("^160000") or lsfiles_res.stdout:match("^160000")
+    local is_submodule = lstree_res.stdout:match "^160000" or lsfiles_res.stdout:match "^160000"
     if is_submodule then
         local old_hash = string.match(lstree_res.stdout, "commit%s+([0-9a-fA-F]+)")
 
@@ -86,17 +86,15 @@ local function git_diff(ref)
     vim.cmd.diffthis()
 end
 
-vim.api.nvim_create_user_command(
-    "GitDiff",
-    function(cmd) git_diff(cmd.fargs[1]) end,
-    { nargs = "*", desc = "Diff current buffer with given Git ref" }
-)
+vim.api.nvim_create_user_command("GitDiff", function(cmd)
+    git_diff(cmd.fargs[1])
+end, { nargs = "*", desc = "Diff current buffer with given Git ref" })
 
 local opts = { noremap = true, silent = true }
 
 vim.keymap.set("n", "<leader>gd", git_diff, opts)
 vim.keymap.set("n", "<leader>gD", function()
-    local ref = vim.fn.input("ref> ")
+    local ref = vim.fn.input "ref> "
     git_diff(ref)
 end, opts)
 

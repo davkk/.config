@@ -9,9 +9,9 @@ local type = {
 --- @param title string
 --- @return integer?
 local function get_qf_id_for_title(title)
-    local lastqflist = vim.fn.getqflist({ nr = "$" })
+    local lastqflist = vim.fn.getqflist { nr = "$" }
     for i = 1, lastqflist.nr do
-        local qflist = vim.fn.getqflist({ nr = i, id = 0, title = 0 })
+        local qflist = vim.fn.getqflist { nr = i, id = 0, title = 0 }
         if qflist.title == title then
             return qflist.id
         end
@@ -63,7 +63,7 @@ vim.keymap.set("n", "<leader>dq", function()
     end
 end, { silent = true })
 
-local utils = require("core.utils")
+local utils = require "core.utils"
 
 set_qf_diagnostics()
 

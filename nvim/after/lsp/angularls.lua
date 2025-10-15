@@ -1,4 +1,4 @@
-local utils = require("core.utils")
+local utils = require "core.utils"
 local default = require("lspconfig.configs.angularls").default_config
 local cmd = utils.append(default.cmd, "--forceStrictTemplates")
 

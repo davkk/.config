@@ -9,7 +9,9 @@ local none = "NONE"
 ---@param color2 number
 ---@param amount number
 local function blend(color1, color2, amount)
-    if color1 == nil or color2 == nil then return nil end
+    if color1 == nil or color2 == nil then
+        return nil
+    end
     amount = math.max(0, math.min(1, amount))
 
     local r1 = bit.rshift(bit.band(color1, 0xff0000), 16)
@@ -28,11 +30,15 @@ local function blend(color1, color2, amount)
 end
 
 ---@param name string
-local function get(name) return vim.api.nvim_get_hl(ns, { name = name }) end
+local function get(name)
+    return vim.api.nvim_get_hl(ns, { name = name })
+end
 
 ---@param name string
 ---@param color vim.api.keyset.highlight
-local function set(name, color) vim.api.nvim_set_hl(ns, name, color) end
+local function set(name, color)
+    vim.api.nvim_set_hl(ns, name, color)
+end
 
 ---@param name string
 ---@param def vim.api.keyset.highlight

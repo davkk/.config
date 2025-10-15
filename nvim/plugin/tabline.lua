@@ -4,7 +4,7 @@ local function get_tabs()
     local tabs = {}
     local pos = 1
 
-    for idx = 1, vim.fn.tabpagenr("$") do
+    for idx = 1, vim.fn.tabpagenr "$" do
         local winnr = vim.fn.tabpagewinnr(idx)
         local buflist = vim.fn.tabpagebuflist(idx)
         local bufnr = buflist[winnr]

@@ -17,14 +17,14 @@ require("nvim-treesitter.configs").setup {
         "cpp",
         "doxygen",
         "python",
-        "angular"
+        "angular",
     },
     sync_install = true,
     auto_install = false,
     highlight = { enable = true },
     indent = {
         enable = true,
-        disable = { "cpp" }
+        disable = { "cpp" },
     },
 }
 

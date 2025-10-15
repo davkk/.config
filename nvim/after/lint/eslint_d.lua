@@ -7,7 +7,9 @@ return {
     cmd = {
         "eslint_d",
         "--format=json",
-        function() return vim.fn.expand("%:p") end,
+        function()
+            return vim.fn.expand "%:p"
+        end,
     },
     pattern = { "*.ts", "*.js", "*.jsx", "*.tsx" },
     parser = function(_, output)
@@ -41,7 +43,7 @@ return {
             ".eslintrc",
             ".eslintrc.js",
             ".eslintrc.json",
-            ".eslint-ts-config"
+            ".eslint-ts-config",
         }) ~= nil
     end,
 }

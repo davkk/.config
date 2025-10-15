@@ -1,37 +1,59 @@
-local snippet = require("core.snippet")
+local snippet = require "core.snippet"
 
-snippet.add("desc", [[
+snippet.add(
+    "desc",
+    [[
 describe('${1}', () => {
     ${2}
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("its", [[
+snippet.add(
+    "its",
+    [[
 it('${1}', () => {
     ${2}
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("its", [[
+snippet.add(
+    "its",
+    [[
 it('${1}', () => {
     ${2}
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("ita", [[
+snippet.add(
+    "ita",
+    [[
 it('${1}', async () => {
     ${2}
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("itf", [[
+snippet.add(
+    "itf",
+    [[
 it('${1}', () => {
     const fixture = factory();
     ${3}
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("tests", [[
+snippet.add(
+    "tests",
+    [[
 import { TestBed } from '@angular/core/testing';
 
 describe('${1}', () => {
@@ -49,9 +71,13 @@ describe('${1}', () => {
         expect(service).toBeTruthy();
     });
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("testc", [[
+snippet.add(
+    "testc",
+    [[
 import { TestBed } from '@angular/core/testing';
 import { MockInstance, MockRenderFactory } from 'ng-mocks';
 
@@ -75,18 +101,26 @@ describe('${1}', () => {
         expect(component).toBeTruthy();
     });
 });
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("angs", [[
+snippet.add(
+    "angs",
+    [[
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: ${1:'root'} })
 export class ${2:ServiceName}Service {
     constructor() { }
 }
-]], { buffer = 0 })
+]],
+    { buffer = 0 }
+)
 
-snippet.add("angc", [[
+snippet.add(
+    "angc",
+    [[
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -96,7 +130,6 @@ import { Component, OnInit } from '@angular/core';
 export class ${3:Name}Component implements OnInit {
     constructor() { }
 }
-]], { buffer = 0 })
-
-
-
+]],
+    { buffer = 0 }
+)

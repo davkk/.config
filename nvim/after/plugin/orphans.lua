@@ -17,7 +17,7 @@ local words = {
     "e.g.,",
     "as",
     "by",
-    "to"
+    "to",
 }
 
 vim.api.nvim_create_user_command("Orphans", function()

@@ -1,4 +1,4 @@
-vim.diagnostic.config({
+vim.diagnostic.config {
     severity_sort = true,
     virtual_text = true,
     underline = true,
@@ -11,7 +11,7 @@ vim.diagnostic.config({
         prefix = "",
         border = "solid",
     },
-})
+}
 
 vim.api.nvim_create_user_command("ToggleDiagnostics", function()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())

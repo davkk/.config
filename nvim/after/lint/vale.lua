@@ -3,7 +3,9 @@ return {
     cmd = {
         "vale",
         "--output=JSON",
-        function() return vim.fn.expand("%:p") end,
+        function()
+            return vim.fn.expand "%:p"
+        end,
     },
     pattern = { "*.md", "*.tex", "*.typ" },
     parser = function(bufnr, output)
@@ -13,7 +15,7 @@ return {
             return {}
         end
 
-        data = data[vim.fn.expand("%:p")]
+        data = data[vim.fn.expand "%:p"]
 
         ---@type vim.Diagnostic[]
         local diagnostics = {}

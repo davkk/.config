@@ -1,19 +1,19 @@
-local utils = require("core.utils")
+local utils = require "core.utils"
 local group = vim.api.nvim_create_augroup("user.statusline", { clear = true })
 
 -- FILE PATH
 ---@return string
 local function filepath()
-    local path = vim.fn.expand("%:p:~")
+    local path = vim.fn.expand "%:p:~"
 
-    if #path == 0 then return "[No Name]" end
+    if #path == 0 then
+        return "[No Name]"
+    end
 
     path = utils.shorten_path(path, vim.o.columns / 2)
 
-    local name = vim.fn.expand("%")
-    local is_new_file = name ~= ""
-        and vim.bo.buftype == ""
-        and vim.fn.filereadable(name) == 0
+    local name = vim.fn.expand "%"
+    local is_new_file = name ~= "" and vim.bo.buftype == "" and vim.fn.filereadable(name) == 0
 
     return "[" .. path .. (is_new_file and "][New]" or "]") .. "%r%m"
 end
@@ -58,8 +58,8 @@ end
 -- CURSOR LOCATION
 ---@return string
 local function location()
-    local col = vim.fn.virtcol(".")
-    local row = vim.fn.line(".")
+    local col = vim.fn.virtcol "."
+    local row = vim.fn.line "."
     return string.format("[%3d:%-3d]", row, col)
 end
 
@@ -68,12 +68,18 @@ end
 ---@return string
 local function parse_shortstat(output)
     local diffs = {}
-    local inserts = output:match("(%d+) insertions?") or nil
-    if inserts ~= nil then table.insert(diffs, "+" .. inserts) end
-    local deletions = output:match("(%d+) deletions?") or nil
-    if deletions ~= nil then table.insert(diffs, "-" .. deletions) end
-    local changed = output:match("(%d+) files? changed") or nil
-    if changed ~= nil then table.insert(diffs, "~" .. changed) end
+    local inserts = output:match "(%d+) insertions?" or nil
+    if inserts ~= nil then
+        table.insert(diffs, "+" .. inserts)
+    end
+    local deletions = output:match "(%d+) deletions?" or nil
+    if deletions ~= nil then
+        table.insert(diffs, "-" .. deletions)
+    end
+    local changed = output:match "(%d+) files? changed" or nil
+    if changed ~= nil then
+        table.insert(diffs, "~" .. changed)
+    end
     return table.concat(diffs, " ")
 end
 
@@ -111,7 +117,7 @@ local function get_git_diff(bufnr)
                     vim.api.nvim_buf_set_var(bufnr, "git_changes", result)
                 end
             end
-        end
+        end,
     })
     return ""
 end
@@ -120,7 +126,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
     group = group,
     callback = function(args)
         get_git_diff(args.buf)
-    end
+    end,
 })
 
 ---@return string
@@ -141,15 +147,21 @@ local loader_timer = nil
 local lsp_loading = false
 
 local function start_animation()
-    if loader_timer then return end
+    if loader_timer then
+        return
+    end
     loader_timer = vim.uv.new_timer()
     if loader_timer ~= nil then
-        loader_timer:start(0, 120, vim.schedule_wrap(function()
-            if lsp_loading then
-                loader_idx = (loader_idx % #loader) + 1
-                vim.cmd.redrawstatus()
-            end
-        end))
+        loader_timer:start(
+            0,
+            120,
+            vim.schedule_wrap(function()
+                if lsp_loading then
+                    loader_idx = (loader_idx % #loader) + 1
+                    vim.cmd.redrawstatus()
+                end
+            end)
+        )
     end
 end
 
@@ -184,14 +196,14 @@ vim.api.nvim_create_autocmd("LspProgress", {
             stop_animation()
             vim.cmd.redrawstatus()
         end
-    end
+    end,
 })
 
 StatusLine = {}
 
 ---@return string
 function StatusLine.build_statusline()
-    return table.concat({
+    return table.concat {
         filepath(),
         "  ",
         git_changes(),
@@ -199,7 +211,7 @@ function StatusLine.build_statusline()
         lsp_loading and lsp_progress() or lsp_diagnostics(),
         "  ",
         location(),
-    })
+    }
 end
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave", "DiagnosticChanged" }, {

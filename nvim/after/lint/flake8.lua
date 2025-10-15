@@ -7,7 +7,9 @@ local severity = {
 return {
     cmd = {
         "flake8",
-        function() return vim.fn.expand("%:p") end,
+        function()
+            return vim.fn.expand "%:p"
+        end,
     },
     pattern = { "*.py" },
     parser = function(bufnr, output)

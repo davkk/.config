@@ -30,9 +30,11 @@ end
 
 local function find_context_node()
     local node = vim.treesitter.get_node()
-    if not node then return nil end
+    if not node then
+        return nil
+    end
 
-    local top_visible_line = vim.fn.line("w0")
+    local top_visible_line = vim.fn.line "w0"
 
     while node do
         local context_start_line = node:start() + 1
@@ -82,7 +84,7 @@ local function display_context()
     local relative_line = cursor_line - context_start_line
     local context_text = get_context_text(context_node)
 
-    local last_line = vim.fn.line("$")
+    local last_line = vim.fn.line "$"
     local line_width = tostring(last_line):len()
     if vim.api.nvim_get_option_value("diff", { win = 0 }) then
         line_width = 5
@@ -99,7 +101,7 @@ local function display_context()
 
     vim.hl.range(
         context_buf,
-        vim.api.nvim_create_namespace("TreesitterContextNamespace"),
+        vim.api.nvim_create_namespace "TreesitterContextNamespace",
         "TreesitterContextLineNr",
         { 0, 0 },
         { 0, #line_number_text }
@@ -134,21 +136,23 @@ local group = vim.api.nvim_create_augroup("user.context", { clear = true })
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
     group = group,
     callback = function()
-        if not enabled then return end
+        if not enabled then
+            return
+        end
 
         local mode = vim.fn.mode()
-        if mode:match("[vV\22]") then
+        if mode:match "[vV\22]" then
             cleanup()
             return
         end
 
         vim.schedule(display_context)
-    end
+    end,
 })
 
 vim.api.nvim_create_autocmd("BufLeave", {
     group = group,
-    callback = cleanup
+    callback = cleanup,
 })
 
 vim.api.nvim_create_user_command("TreesitterContextToggle", function()
