@@ -1,8 +1,72 @@
+local utils = require "core.utils"
+
 vim.lsp.config("*", {
     capabilities = vim.lsp.protocol.make_client_capabilities(),
     flags = {
         debounce_text_changes = 2000,
         allow_incremental_sync = true,
+    },
+})
+
+vim.lsp.config("angularls", {
+    root_markers = { "angular.json", "nx.json", "Gruntfile.js" },
+    cmd = utils.append(require("lspconfig.configs.angularls").default_config.cmd, "--forceStrictTemplates"),
+    workspace_required = true,
+})
+
+vim.lsp.config("clangd", {
+    cmd = {
+        "clangd",
+        "-j=3",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--cross-file-rename",
+    },
+    single_file_support = false,
+    init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+        clangdFileStatus = true,
+    },
+})
+
+vim.lsp.config("lua_ls", {
+    settings = {
+        Lua = {
+            runtime = {
+                version = "LuaJIT",
+            },
+            diagnostics = {
+                globals = { "vim" },
+                disable = { "missing-fields" },
+            },
+            workspace = {
+                library = {
+                    vim.env.VIMRUNTIME,
+                    "${3rd}/luv/library",
+                },
+                checkThirdParty = false,
+            },
+            telemetry = { enable = false },
+        },
+    },
+})
+
+vim.lsp.config("ocamllsp", {
+    settings = {
+        codelens = { enable = true },
+        extendedHover = { enable = true },
+        inlayHints = { enable = true },
+        syntaxDocumentation = { enable = true },
+    },
+})
+
+vim.lsp.config("pyright", {
+    root_markers = { "pyproject.toml" },
+    settings = {
+        python = {
+            analysis = { typeCheckingMode = "basic" },
+        },
     },
 })
 
@@ -69,8 +133,6 @@ local item_kind_map = {
     [24] = "Operator",
     [25] = "TypeParameter",
 }
-
-local utils = require "core.utils"
 
 ---@param item lsp.CompletionItem
 ---@return table
