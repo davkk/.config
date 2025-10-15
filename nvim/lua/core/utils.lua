@@ -19,7 +19,6 @@ end
 ---@return string
 function M.node_modules(name)
     local path = vim.fs.find("node_modules/.bin/" .. name, { upward = true })
-    print(vim.inspect(path), path[1], name)
     return path[1] or name
 end
 
