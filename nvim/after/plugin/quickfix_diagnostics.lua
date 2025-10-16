@@ -48,7 +48,7 @@ local function set_qf_diagnostics()
     vim.fn.setqflist({}, qf_id and "r" or " ", {
         title = qf_title,
         items = items,
-        id = qf_id,
+        id = -1,
     })
 
     if qf_id == nil then
@@ -64,8 +64,6 @@ vim.keymap.set("n", "<leader>dq", function()
 end, { silent = true })
 
 local utils = require "core.utils"
-
-set_qf_diagnostics()
 
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     group = vim.api.nvim_create_augroup("user.diagnostic", {}),

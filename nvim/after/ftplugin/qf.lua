@@ -15,13 +15,13 @@ vim.keymap.set("n", "<C-f>", function()
             end
         end
 
-        local qflist = vim.fn.getqflist()
+        local qflist = vim.fn.getqflist { id = 0, title = true, items = true }
         local filtered = {}
 
         local regex_pos = #positives > 0 and vim.regex(table.concat(positives, "|")) or nil
         local regex_neg = #negatives > 0 and vim.regex(table.concat(negatives, "|")) or nil
 
-        for _, item in ipairs(qflist) do
+        for _, item in ipairs(qflist.items) do
             local bufname = vim.fn.bufname(item.bufnr)
             local text = item.text
 
@@ -35,6 +35,6 @@ vim.keymap.set("n", "<C-f>", function()
             end
         end
 
-        vim.fn.setqflist(filtered)
+        vim.fn.setqflist({}, " ", { title = ("%s (%s)"):format(qflist.title, pattern), items = filtered, id = 0 })
     end)
 end, { buffer = 0 })

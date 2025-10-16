@@ -27,7 +27,13 @@ end
 vim.opt.findfunc = "v:lua.FindFunc"
 
 if vim.fn.executable "rg" == 1 then
-    vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case --hidden"
+    vim.opt.grepprg = table.concat({
+        "rg",
+        "--vimgrep",
+        "--no-heading",
+        "--smart-case",
+        "--hidden",
+    }, " ")
     vim.opt.grepformat:append "%f:%l:%c:%m"
 end
 
@@ -49,16 +55,15 @@ vim.keymap.set({ "n", "v" }, "<leader>gw", function()
     vim.cmd("sil! gr! -U --fixed-strings -- " .. vim.fn.shellescape(input))
 end, { desc = "grep cword" })
 
-local utils = require "core.utils"
 vim.api.nvim_create_autocmd("CmdlineChanged", {
     group = group,
-    callback = utils.debounce(function()
+    callback = function()
         if vim.api.nvim_get_mode().mode == "c" then
             vim.opt.wildmenu = true
             vim.opt.wildmode = "noselect,full:full"
             vim.fn.wildtrigger()
         end
-    end, 200),
+    end,
 })
 
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {

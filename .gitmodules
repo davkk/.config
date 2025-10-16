@@ -1,15 +1,12 @@
-[submodule "nvim/pack/vendor/start/conform.nvim"]
-	path = nvim/pack/vendor/start/conform.nvim
-	url = https://github.com/stevearc/conform.nvim
 [submodule "nvim/pack/vendor/start/nvim-lspconfig"]
 	path = nvim/pack/vendor/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig
 [submodule "nvim/pack/vendor/start/nvim-treesitter"]
 	path = nvim/pack/vendor/start/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
-[submodule "nvim/pack/vendor/start/undotree"]
-	path = nvim/pack/vendor/start/undotree
-	url = https://github.com/mbbill/undotree
+[submodule "nvim/pack/vendor/start/supermaven-nvim"]
+	path = nvim/pack/vendor/start/supermaven-nvim
+	url = git@github.com:supermaven-inc/supermaven-nvim.git
 [submodule "zsh/powerlevel10k"]
 	path = zsh/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k

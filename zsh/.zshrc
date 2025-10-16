@@ -87,7 +87,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export SUDO_EDITOR=$(which nvim)
 export EDITOR=$(which nvim)
-export MANPAGER=$(which nvim)
+export MANPAGER="$(which nvim) +Man!"
 
 zstyle ':completion:*:default' menu select
 
