@@ -22,7 +22,13 @@ local function apply_hunks(bufnr, hunks, formatted)
             table.insert(new_lines, formatted[j])
         end
 
-        vim.api.nvim_buf_set_lines(bufnr, fi - 1, fi + fc - 1, false, new_lines)
+        if fc == 0 then
+            table.insert(new_lines, 1, vim.api.nvim_buf_get_lines(bufnr, fi - 1, fi, false)[1])
+        end
+
+        local start_row = fi - 1
+        local end_row = fi + math.max(fc, 1) - 1
+        vim.api.nvim_buf_set_lines(bufnr, start_row, end_row, false, new_lines)
     end
 end
 
@@ -40,7 +46,7 @@ local function get_formatter(bufnr)
             end
         end
     end
-    vim.notify(("No formatter configured for %s"):format(ft), vim.log.levels.WARN)
+    -- TODO: add log file
 end
 
 ---@param formatter format.Formatter
@@ -83,7 +89,6 @@ function M.external_format(bufnr)
                     local diff = vim.text.diff(old_text, output.stdout, {
                         algorithm = "histogram",
                         result_type = "indices",
-                        ignore_whitespace_change_at_eol = true,
                     }) ---@cast diff integer[][]?
 
                     if diff and #diff > 0 then
@@ -116,14 +121,13 @@ function M.lsp_format(bufnr)
 
     local clients = vim.lsp.get_clients { bufnr = bufnr, method = "textDocument/formatting" }
     if #clients == 0 then
-        vim.notify("No LSP clients available for formatting", vim.log.levels.WARN)
         return false
     end
 
     local params = vim.lsp.util.make_formatting_params()
     vim.lsp.buf_request(bufnr, "textDocument/formatting", params, function(err, result, ctx)
         if err or not result then
-            vim.notify("LSP formatting failed", vim.log.levels.ERROR)
+            vim.notify(("LSP formatting failed: %s"):format(err or "Unknown error"), vim.log.levels.ERROR)
             return
         end
         vim.lsp.util.apply_text_edits(
