@@ -48,7 +48,7 @@ local function set_qf_diagnostics()
     vim.fn.setqflist({}, qf_id and "r" or " ", {
         title = qf_title,
         items = items,
-        id = -1,
+        id = qf_id,
     })
 
     if qf_id == nil then

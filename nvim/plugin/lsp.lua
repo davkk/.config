@@ -70,6 +70,14 @@ vim.lsp.config("pyright", {
     },
 })
 
+vim.lsp.config("zls", {
+    settings = {
+        zls = {
+            enable_build_on_save = true,
+        },
+    },
+})
+
 vim.lsp.enable {
     "lua_ls",
     "ts_ls",

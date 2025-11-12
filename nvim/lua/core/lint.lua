@@ -28,9 +28,11 @@ local function start_linter(name, linter)
         group = vim.api.nvim_create_augroup("user.linter", { clear = false }),
         pattern = linter.pattern,
         callback = function(event)
-            local markers = linter.root_markers and vim.fs.root(event.buf, linter.root_markers) or true
-            if not markers then
-                return
+            if linter.root_markers ~= nil then
+                local check_markers = vim.fs.root(event.buf, linter.root_markers) ~= nil
+                if not check_markers then
+                    return
+                end
             end
 
             ---@type string[]
