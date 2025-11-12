@@ -14,7 +14,7 @@ export HYPHEN_INSENSITIVE=false
 export WORDCHARS=
 
 sd() {
-    dirs=(~/ ~/projects ~/work ~/personal ~/university)
+    dirs=(~/ ~/git ~/projects ~/work ~/personal ~/university)
     selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --height ~60%)
     [ -n "$selected" ] && cd $selected || echo "no directory selected"
 }
