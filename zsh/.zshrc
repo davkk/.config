@@ -56,6 +56,8 @@ export ANDROID_AVD_HOME=$HOME/.android
 
 export GOPATH=$HOME/.go
 
+export ZVM_INSTALL="$HOME/.zvm/self"
+
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/.config/.scripts/
 export PATH=$PATH:$HOME/.cargo/bin
@@ -69,6 +71,8 @@ export PATH=$PATH:$HOME/.android/platform-tools
 export PATH=$PATH:$VOLTA_HOME/bin
 export PATH=$PATH:$PNPM_HOME
 export PATH=$PATH:$BUN_INSTALL/bin
+export PATH=$PATH:$HOME/.zvm/bin
+export PATH=$PATH:$ZVM_INSTALL/
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
@@ -88,8 +92,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export SUDO_EDITOR=$(which nvim)
 export EDITOR=$(which nvim)
 export MANPAGER="$(which nvim) +Man!"
-
-zstyle ':completion:*:default' menu select
 
 bindkey -e
 bindkey '^y' autosuggest-accept
