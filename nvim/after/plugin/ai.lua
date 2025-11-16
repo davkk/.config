@@ -10,7 +10,6 @@ local ns = vim.api.nvim_create_namespace "user.ai"
 local handle
 local stdout
 local current_buf
-
 local extmark_id
 local buffer
 
@@ -35,16 +34,17 @@ function M.request()
         cache_prompt = true,
         samplers = { "top_k", "top_p", "infill" },
         max_tokens = 16,
-        top_p = 0.9,
+        top_p = 0.8,
         top_k = 40,
-        temperature = 0.5,
+        t_max_prompt_ms = 500,
+        t_max_predict_ms = 1000,
         stream = true,
         stop = { "\r\n", "\n", "\r" },
     }
 
     handle = vim.uv.spawn("curl", {
         args = {
-            "http://localhost:42069/infill",
+            "http://localhost:8012/infill",
             "--no-buffer",
             "--request",
             "POST",
@@ -101,7 +101,7 @@ function M.debounced_request()
     timer = vim.uv.new_timer()
     if timer then
         timer:start(
-            10,
+            100,
             0,
             vim.schedule_wrap(function()
                 M.request()
@@ -171,6 +171,29 @@ function M.get_local_context()
     return { prefix = prefix, middle = curr_prefix .. vim.v.char, suffix = suffix }
 end
 
+function M.accept()
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_buf_get_lines(current_buf, row - 1, row, false)[1]
+    local suffix = line:sub(col + 1)
+
+    local max_overlap = math.min(#suffix, #buffer)
+    local overlap = 0
+
+    for i = 1, max_overlap do
+        local buffer_end = buffer:sub(-i)
+        local suffix_start = suffix:sub(1, i)
+
+        if buffer_end == suffix_start then
+            overlap = i
+        end
+    end
+
+    local new_text = buffer:sub(1, -overlap - 1)
+    vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { new_text })
+    vim.api.nvim_win_set_cursor(0, { row, col + #new_text })
+    buffer = ""
+end
+
 vim.api.nvim_create_user_command("AI", function()
     vim.keymap.set("i", "<C-q>", function()
         if handle then
@@ -180,19 +203,13 @@ vim.api.nvim_create_user_command("AI", function()
             if vim.fn.pumvisible() == 1 then
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, false, true), "n", false)
             end
-            vim.defer_fn(function()
-                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-                vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { buffer })
-                vim.api.nvim_win_set_cursor(0, { row, col + #buffer })
-                buffer = ""
-            end, 10)
+            vim.defer_fn(M.accept, 10)
         end
     end)
 
     vim.keymap.set("i", "<C-space>", M.request)
-    vim.keymap.set("i", "<C-x>", M.cancel)
 
-    vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP" }, {
+    vim.api.nvim_create_autocmd({ "InsertCharPre", "CursorMovedI" }, {
         callback = function()
             M.cancel()
             M.debounced_request()

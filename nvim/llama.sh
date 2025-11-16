@@ -8,4 +8,4 @@ llama-server \
     --ubatch-size 512 \
     --flash-attn on \
     --cache-reuse 256 \
-    --port 42069
+    --port 8012
