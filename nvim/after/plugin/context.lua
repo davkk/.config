@@ -1,17 +1,41 @@
 local enabled = true
 
-local config = {
-    "function_declaration",
-    "function_definition",
-    "method_declaration",
-    "method_definition",
-    "class_declaration",
-    "class_definition",
-    "class_specifier",
-    "struct_specifier",
-    "interface_declaration",
-    "expression_statement",
-}
+local query_cache = {}
+
+---@param lang string
+---@return vim.treesitter.Query?
+local function get_locals_query(lang)
+    if query_cache[lang] == nil then
+        query_cache[lang] = vim.treesitter.query.get(lang, "locals") or nil
+    end
+    return query_cache[lang]
+end
+
+---@param bufnr number
+---@param lang string
+---@return table<TSNode>, TSNode?
+local function get_scopes(bufnr, lang)
+    local query = get_locals_query(lang)
+    if not query then
+        return {}, nil
+    end
+
+    local parser = vim.treesitter.get_parser(bufnr)
+    if not parser then
+        return {}, nil
+    end
+    local tree = parser:parse()[1]
+    local root = tree:root()
+
+    local scopes = {}
+    for id, scope_node in query:iter_captures(root, bufnr) do
+        if query.captures[id] == "local.scope" then
+            table.insert(scopes, scope_node)
+        end
+    end
+
+    return scopes, root
+end
 
 local buf_id = nil
 local win_id = nil
@@ -21,31 +45,51 @@ local function cleanup()
         vim.api.nvim_win_close(win_id, true)
         win_id = nil
     end
-
     if buf_id and vim.api.nvim_buf_is_valid(buf_id) then
         vim.api.nvim_buf_delete(buf_id, { force = true })
         buf_id = nil
     end
 end
 
+---@return TSNode?
 local function find_context_node()
     local node = vim.treesitter.get_node()
     if not node then
         return nil
     end
 
-    local top_visible_line = vim.fn.line "w0"
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lang = vim.bo[bufnr].filetype
+    local scopes, root = get_scopes(bufnr, lang)
 
-    while node do
-        local context_start_line = node:start() + 1
+    local containing_scopes = {}
+    for _, scope in ipairs(scopes) do
+        if scope:start() <= node:start() and scope:end_() >= node:end_() then
+            table.insert(containing_scopes, scope)
+        end
+    end
 
-        if context_start_line < top_visible_line then
-            if vim.tbl_contains(config, node:type()) then
-                return node
+    -- Exclude the root scope
+    if root then
+        local filtered_scopes = {}
+        for _, scope in ipairs(containing_scopes) do
+            if scope ~= root then
+                table.insert(filtered_scopes, scope)
             end
         end
+        containing_scopes = filtered_scopes
+    end
 
-        node = node:parent()
+    table.sort(containing_scopes, function(a, b)
+        return a:start() > b:start()
+    end)
+
+    local top_visible_line = vim.fn.line "w0"
+    for _, scope in ipairs(containing_scopes) do
+        local start_line = scope:start() + 1
+        if start_line < top_visible_line then
+            return scope
+        end
     end
 
     return nil
@@ -59,6 +103,7 @@ local function get_context_text(node)
     return vim.api.nvim_buf_get_lines(bufnr, start_row, start_row + 1, false)[1]
 end
 
+---@return number
 local function get_context_buffer()
     if not buf_id or not vim.api.nvim_buf_is_valid(buf_id) then
         buf_id = vim.api.nvim_create_buf(false, true)
@@ -66,7 +111,6 @@ local function get_context_buffer()
         vim.bo[buf_id].bufhidden = "wipe"
         vim.bo[buf_id].filetype = vim.bo.filetype
     end
-
     return buf_id
 end
 
@@ -154,13 +198,3 @@ vim.api.nvim_create_autocmd("BufLeave", {
     group = group,
     callback = cleanup,
 })
-
-vim.api.nvim_create_user_command("TreesitterContextToggle", function()
-    if win_id and vim.api.nvim_win_is_valid(win_id) then
-        cleanup()
-        enabled = false
-    else
-        display_context()
-        enabled = true
-    end
-end, { desc = "Toggle TreeSitter context display" })
