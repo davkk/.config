@@ -1,4 +1,5 @@
 local M = {}
+local utils = require "core.utils"
 
 ---@class ai.LocalContext
 ---@field prefix string
@@ -6,6 +7,7 @@ local M = {}
 ---@field suffix string
 
 local ns = vim.api.nvim_create_namespace "user.ai"
+local group = vim.api.nvim_create_augroup("ai", { clear = true })
 
 M.handle = nil
 M.stdout = nil
@@ -13,6 +15,9 @@ M.extmark_id = nil
 
 M.timer = nil
 M.suggestion = ""
+
+M.request_id = 0
+M.current_request_id = 0
 
 ---@type table<string, string>
 M.cache = {}
@@ -64,14 +69,19 @@ function M.cache_get(context)
 end
 
 ---@param context ai.LocalContext
-function M.request(context)
+M.request = utils.debounce(function(context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
     end
 
+    M.clear()
     M.cancel()
 
     M.suggestion = ""
+    M.request_id = M.request_id + 1
+
+    local request_id = M.request_id
+    M.current_request_id = request_id
     M.stdout = vim.uv.new_pipe(false)
 
     local payload = vim.json.encode {
@@ -119,7 +129,7 @@ function M.request(context)
         end
 
         vim.schedule(function()
-            if M.suggestion and #M.suggestion > 0 then
+            if request_id == M.current_request_id and M.suggestion and #M.suggestion > 0 then
                 M.cache_add(context, M.suggestion)
             end
         end)
@@ -132,10 +142,10 @@ function M.request(context)
 
     M.stdout:read_start(function(_, chunk)
         if chunk then
-            M.on_chunk(chunk)
+            M.on_chunk(chunk, request_id)
         end
     end)
-end
+end, 100)
 
 ---@param text string
 function M.show_suggestion(text)
@@ -148,7 +158,11 @@ function M.show_suggestion(text)
 end
 
 ---@param chunk string
-function M.on_chunk(chunk)
+---@param request_id number
+function M.on_chunk(chunk, request_id)
+    if request_id ~= M.current_request_id then
+        return
+    end
     if #chunk > 6 and chunk:sub(1, 6) == "data: " then
         chunk = chunk:sub(7)
         local ok, resp = pcall(vim.json.decode, chunk)
@@ -179,10 +193,9 @@ function M.cancel()
             M.stdout:close()
         end
         M.handle:close()
-        M.stdout = nil
-        M.handle = nil
     end
-    M.clear()
+    M.stdout = nil
+    M.handle = nil
 end
 
 ---@return ai.LocalContext
@@ -266,6 +279,7 @@ function M.suggest(context)
         M.suggestion = best
         return M.show_suggestion(best)
     end
+    M.clear()
     return M.request(context)
 end
 
@@ -283,17 +297,22 @@ vim.api.nvim_create_user_command("AI", function()
     end)
 
     vim.keymap.set("i", "<C-space>", function()
-        M.suggest(get_local_context())
+        M.request(get_local_context())
     end)
 
     vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter", "CursorMovedI" }, {
+        group = group,
         callback = function()
             M.suggest(get_local_context())
         end,
     })
-
-    vim.api.nvim_create_autocmd("InsertLeavePre", { callback = M.cancel })
-    vim.api.nvim_create_autocmd("CursorMoved", { callback = M.cancel })
+    vim.api.nvim_create_autocmd({ "InsertLeavePre", "CursorMoved" }, {
+        group = group,
+        callback = function()
+            M.clear()
+            M.cancel()
+        end,
+    })
 end, {})
 
 return M
