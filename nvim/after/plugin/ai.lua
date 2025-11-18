@@ -127,12 +127,6 @@ M.request = utils.debounce(function(context)
                 vim.notify(("curl exited with code %d"):format(code), vim.diagnostic.severity.ERROR)
             end)
         end
-
-        vim.schedule(function()
-            if request_id == M.current_request_id and M.suggestion and #M.suggestion > 0 then
-                M.cache_add(context, M.suggestion)
-            end
-        end)
     end)
 
     if not M.handle then
@@ -142,7 +136,7 @@ M.request = utils.debounce(function(context)
 
     M.stdout:read_start(function(_, chunk)
         if chunk then
-            M.on_chunk(chunk, request_id)
+            M.on_chunk(chunk, context, request_id)
         end
     end)
 end, 100)
@@ -158,8 +152,9 @@ function M.show_suggestion(text)
 end
 
 ---@param chunk string
+---@param context ai.LocalContext
 ---@param request_id number
-function M.on_chunk(chunk, request_id)
+function M.on_chunk(chunk, context, request_id)
     if request_id ~= M.current_request_id then
         return
     end
@@ -174,6 +169,9 @@ function M.on_chunk(chunk, request_id)
             M.suggestion = M.suggestion .. text
             vim.schedule(function()
                 M.show_suggestion(M.suggestion)
+                if request_id == M.current_request_id and M.suggestion and #M.suggestion > 0 then
+                    M.cache_add(context, M.suggestion)
+                end
             end)
         end
     end
@@ -212,7 +210,7 @@ local function get_local_context()
         .. table.concat(lines, "\n", math.min(#lines + 1, row + 1), math.min(#lines, row + N_SUFFIX + 1))
         .. "\n"
 
-    return { prefix = prefix, middle = curr_prefix .. vim.v.char, suffix = suffix }
+    return { prefix = prefix, middle = curr_prefix, suffix = suffix }
 end
 
 function M.accept()
@@ -300,13 +298,13 @@ vim.api.nvim_create_user_command("AI", function()
         M.request(get_local_context())
     end)
 
-    vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter", "CursorMovedI" }, {
+    vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter" }, {
         group = group,
         callback = function()
             M.suggest(get_local_context())
         end,
     })
-    vim.api.nvim_create_autocmd({ "InsertLeavePre", "CursorMoved" }, {
+    vim.api.nvim_create_autocmd({ "InsertLeavePre", "CursorMoved", "CursorMovedI" }, {
         group = group,
         callback = function()
             M.clear()
