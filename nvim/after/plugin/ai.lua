@@ -240,8 +240,7 @@ end
 
 ---@param context ai.LocalContext
 function M.suggest(context)
-    local best = nil
-    local best_len = 0
+    local best = ""
 
     local cached = M.cache_get(context)
     for i = 1, 64 do
@@ -265,15 +264,14 @@ function M.suggest(context)
             local removed = context.middle:sub(#context.middle - i + 1)
             if hit:sub(1, #removed) == removed then
                 local remain = hit:sub(#removed + 1)
-                if #remain > best_len then
+                if #remain > #best then
                     best = remain
-                    best_len = #remain
                 end
             end
         end
     end
 
-    if best then
+    if #best > 0 then
         M.suggestion = best
         return M.show_suggestion(best)
     end
