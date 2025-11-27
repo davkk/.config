@@ -1,13 +1,15 @@
 background = 000000
 window-theme = ghostty
 
+font-family = Iosevka
+
 gtk-tabs-location = bottom
 gtk-wide-tabs = false
 
 shell-integration-features = sudo, no-cursor, title, ssh-terminfo
 confirm-close-surface = always
 
-font-family = Iosevka
-
 cursor-style-blink = false
 adjust-cursor-thickness = 300%
+
+mouse-hide-while-typing = true
