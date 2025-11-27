@@ -278,7 +278,7 @@ local function get_lsp_context(line)
                     if i > 10 then
                         break
                     end
-                    if v.label then
+                    if v.kind ~= 15 and v.label then
                         local label = v.label
                         if v.detail then
                             label = label .. " -> " .. v.detail
