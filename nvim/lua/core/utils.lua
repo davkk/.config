@@ -59,7 +59,7 @@ function M.debounce(fn, delay)
         end
         local args = { ... }
         timer = vim.fn.timer_start(delay, function()
-            fn(unpack(args)) ---@diagnostic disable-line: deprecated
+            fn(unpack(args))
         end)
     end
 end

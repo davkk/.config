@@ -13,7 +13,6 @@ M.handle = nil
 M.stdout = nil
 M.extmark_id = nil
 
-M.timer = nil
 M.suggestion = ""
 
 M.request_id = 0
@@ -69,13 +68,15 @@ function M.cache_get(context)
 end
 
 ---@param context ai.LocalContext
-M.request = utils.debounce(function(context)
+M.request = utils.debounce(function(context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
     end
 
     M.clear()
     M.cancel()
+
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
     M.suggestion = ""
     M.request_id = M.request_id + 1
@@ -88,11 +89,13 @@ M.request = utils.debounce(function(context)
         input_prefix = context.prefix,
         prompt = context.middle,
         input_suffix = context.suffix,
+        input_extra = { lsp_context.input_extra },
         cache_prompt = true,
-        samplers = { "top_k", "top_p", "infill" },
         max_tokens = 16,
-        top_p = 0.8,
         top_k = 40,
+        top_p = 0.7,
+        samplers = { "top_k", "top_p", "infill" },
+        logit_bias = lsp_context.logit_bias,
         t_max_prompt_ms = 500,
         t_max_predict_ms = 500,
         stream = true,
@@ -136,14 +139,15 @@ M.request = utils.debounce(function(context)
 
     M.stdout:read_start(function(_, chunk)
         if chunk then
-            M.on_chunk(chunk, context, request_id)
+            M.on_chunk(chunk, context, request_id, row, col)
         end
     end)
 end, 100)
 
 ---@param text string
-function M.show_suggestion(text)
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+---@param row number
+---@param col number
+function M.show_suggestion(text, row, col)
     M.extmark_id = vim.api.nvim_buf_set_extmark(0, ns, row - 1, col, {
         id = M.extmark_id,
         virt_text = { { text, "Comment" } },
@@ -154,7 +158,9 @@ end
 ---@param chunk string
 ---@param context ai.LocalContext
 ---@param request_id number
-function M.on_chunk(chunk, context, request_id)
+---@param row number
+---@param col number
+function M.on_chunk(chunk, context, request_id, row, col)
     if request_id ~= M.current_request_id then
         return
     end
@@ -168,7 +174,7 @@ function M.on_chunk(chunk, context, request_id)
             end
             M.suggestion = M.suggestion .. text
             vim.schedule(function()
-                M.show_suggestion(M.suggestion)
+                M.show_suggestion(M.suggestion, row, col)
                 if request_id == M.current_request_id and M.suggestion and #M.suggestion > 0 then
                     M.cache_add(context, M.suggestion)
                 end
@@ -207,10 +213,96 @@ local function get_local_context()
 
     local curr_suffix = lines[row]:sub(col + 1)
     local suffix = (#curr_suffix > 0 and curr_suffix .. "\n" or "")
+        .. "\n"
         .. table.concat(lines, "\n", math.min(#lines + 1, row + 1), math.min(#lines, row + N_SUFFIX + 1))
         .. "\n"
 
     return { prefix = prefix, middle = curr_prefix, suffix = suffix }
+end
+
+---@param a string
+---@param b string
+---@return string, string
+local function remove_overlap(a, b)
+    local max_overlap = math.min(#a, #b)
+    local overlap = 0
+    for i = 1, max_overlap do
+        local a_end = a:sub(-i)
+        local b_start = b:sub(1, i)
+        if a_end == b_start then
+            overlap = i
+        end
+    end
+    return a:sub(1, #a - overlap), b:sub(overlap + 1)
+end
+
+---@param trie table<string, table<string>>
+---@param word string
+local function unique_suffix(trie, word)
+    local curr = trie
+    local unique
+    for i = 1, #word do
+        local char = word:sub(i, i)
+        if not curr[char] then
+            curr[char] = {}
+            if not unique then
+                unique = i
+            end
+        end
+        curr = curr[char]
+    end
+    return unique and word:sub(unique) or word
+end
+
+---@param line string
+local function get_lsp_context(line)
+    local co = assert(coroutine.running())
+
+    local buf = vim.api.nvim_get_current_buf()
+    local win = vim.api.nvim_get_current_win()
+
+    vim.lsp.buf_request(
+        buf,
+        "textDocument/completion",
+        vim.lsp.util.make_position_params(win, "utf-8"),
+        function(err, result)
+            if err then
+                coroutine.resume(co, {})
+                return
+            end
+            local trie = {}
+            local completions = {}
+            local logit_bias = {}
+            if result and result.items then
+                for i, v in ipairs(result.items) do
+                    if i > 10 then
+                        break
+                    end
+                    if v.label then
+                        local label = v.label
+                        if v.detail then
+                            label = label .. " -> " .. v.detail
+                        end
+                        table.insert(completions, label)
+
+                        if v.filterText or v.insertText then
+                            local _, rest = remove_overlap(line, v.filterText or v.insertText or v.label)
+                            table.insert(logit_bias, { unique_suffix(trie, rest), 1 })
+                        end
+                    end
+                end
+            end
+            coroutine.resume(co, {
+                logit_bias = logit_bias,
+                input_extra = #completions > 0 and {
+                    filename = "filename",
+                    text = table.concat(completions, "\n") .. "\n",
+                } or nil,
+            })
+        end
+    )
+
+    return coroutine.yield()
 end
 
 function M.accept()
@@ -218,19 +310,7 @@ function M.accept()
     local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
     local suffix = line:sub(col + 1)
 
-    local max_overlap = math.min(#suffix, #M.suggestion)
-    local overlap = 0
-
-    for i = 1, max_overlap do
-        local buffer_end = M.suggestion:sub(-i)
-        local suffix_start = suffix:sub(1, i)
-
-        if buffer_end == suffix_start then
-            overlap = i
-        end
-    end
-
-    local new_text = M.suggestion:sub(1, -overlap - 1)
+    local new_text = remove_overlap(M.suggestion, suffix)
     vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { new_text })
     vim.api.nvim_win_set_cursor(0, { row, col + #M.suggestion })
 
@@ -238,30 +318,31 @@ function M.accept()
     M.clear()
 end
 
----@param context ai.LocalContext
-function M.suggest(context)
+---@param local_context ai.LocalContext
+function M.suggest(local_context)
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local best = ""
 
-    local cached = M.cache_get(context)
+    local cached = M.cache_get(local_context)
     for i = 1, 64 do
         if cached then
             best = cached
             break
         end
 
-        local new_middle = context.middle:sub(1, #context.middle - i)
+        local new_middle = local_context.middle:sub(1, #local_context.middle - i)
         if #new_middle == 0 then
             break
         end
 
         local new_context = {
-            prefix = context.prefix,
+            prefix = local_context.prefix,
             middle = new_middle,
-            suffix = context.suffix,
+            suffix = local_context.suffix,
         }
         local hit = M.cache_get(new_context)
         if hit then
-            local removed = context.middle:sub(#context.middle - i + 1)
+            local removed = local_context.middle:sub(#local_context.middle - i + 1)
             if hit:sub(1, #removed) == removed then
                 local remain = hit:sub(#removed + 1)
                 if #remain > #best then
@@ -273,10 +354,15 @@ function M.suggest(context)
 
     if #best > 0 then
         M.suggestion = best
-        return M.show_suggestion(best)
+        return M.show_suggestion(best, row, col)
     end
+
     M.clear()
-    return M.request(context)
+
+    return coroutine.resume(coroutine.create(function()
+        local lsp_context = get_lsp_context(local_context.middle)
+        M.request(local_context, lsp_context)
+    end))
 end
 
 vim.api.nvim_create_user_command("AI", function()
@@ -293,7 +379,11 @@ vim.api.nvim_create_user_command("AI", function()
     end)
 
     vim.keymap.set("i", "<C-space>", function()
-        M.request(get_local_context())
+        coroutine.resume(coroutine.create(function()
+            local local_context = get_local_context()
+            local lsp_context = get_lsp_context(local_context.middle)
+            M.request(local_context, lsp_context)
+        end))
     end)
 
     vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter" }, {
