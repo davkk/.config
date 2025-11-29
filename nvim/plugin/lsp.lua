@@ -10,7 +10,7 @@ vim.lsp.config("*", {
 
 vim.lsp.config("angularls", {
     root_markers = { "angular.json", "nx.json", "Gruntfile.js" },
-    cmd = utils.append(require("lspconfig.configs.angularls").default_config.cmd, "--forceStrictTemplates"),
+    cmd = utils.tbl_append(require("lspconfig.configs.angularls").default_config.cmd, "--forceStrictTemplates"),
     workspace_required = true,
 })
 

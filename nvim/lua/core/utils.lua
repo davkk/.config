@@ -15,13 +15,6 @@ function M.relative_path(bufnr)
     return fullpath:sub(#cwd + 2)
 end
 
----@param name string
----@return string
-function M.node_modules(name)
-    local path = vim.fs.find("node_modules/.bin/" .. name, { upward = true })
-    return path[1] or name
-end
-
 ---@param path string
 ---@param max_len number
 ---@return string
@@ -46,6 +39,13 @@ function M.shorten_path(path, max_len)
     end
 
     return table.concat(segments, sep)
+end
+
+---@param name string
+---@return string
+function M.node_modules(name)
+    local path = vim.fs.find("node_modules/.bin/" .. name, { upward = true })
+    return path[1] or name
 end
 
 ---@param fn function
@@ -82,7 +82,7 @@ end
 ---@param original T[]
 ---@param value T
 ---@return T | nil
-function M.append(original, value)
+function M.tbl_append(original, value)
     if not original then
         return nil
     end

@@ -6,6 +6,10 @@ local utils = require "core.utils"
 ---@field middle string
 ---@field suffix string
 
+---@class ai.LspContext
+---@field completions string
+---@field logit_bias table<table<string>>
+
 local ns = vim.api.nvim_create_namespace "user.ai"
 local group = vim.api.nvim_create_augroup("ai", { clear = true })
 
@@ -68,6 +72,7 @@ function M.cache_get(context)
 end
 
 ---@param context ai.LocalContext
+---@param lsp_context ai.LspContext
 M.request = utils.debounce(function(context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
@@ -89,11 +94,16 @@ M.request = utils.debounce(function(context, lsp_context)
         input_prefix = context.prefix,
         prompt = context.middle,
         input_suffix = context.suffix,
-        input_extra = { lsp_context.input_extra },
+        input_extra = {
+            {
+                filename = "filename",
+                text = lsp_context.completions,
+            },
+        },
         cache_prompt = true,
         max_tokens = 16,
         top_k = 40,
-        top_p = 0.7,
+        top_p = 0.9,
         samplers = { "top_k", "top_p", "infill" },
         logit_bias = lsp_context.logit_bias,
         t_max_prompt_ms = 500,
@@ -240,68 +250,81 @@ end
 ---@param word string
 local function unique_suffix(trie, word)
     local curr = trie
-    local unique
+    local unique_start
     for i = 1, #word do
         local char = word:sub(i, i)
         if not curr[char] then
             curr[char] = {}
-            if not unique then
-                unique = i
+            if not unique_start then
+                unique_start = i
             end
         end
         curr = curr[char]
     end
-    return unique and word:sub(unique) or word
+    return word:sub(unique_start or 1)
 end
 
 ---@param line string
+---@param items table
+---@return ai.LspContext
+local function parse_lsp_completion(line, items)
+    local trie_prefix = {}
+    local trie_suffix = {}
+
+    local cmp_items = {}
+    local logit_bias = {}
+
+    local line_prefix
+
+    local i = 0
+    for _, v in ipairs(items) do
+        if i > 10 then
+            break
+        end
+        if v.kind ~= 15 and v.label then
+            local text = v.filterText or v.insertText or v.label
+
+            local rest
+            line_prefix, rest = remove_overlap(line, text)
+
+            local label = v.detail and (v.label .. " -> " .. v.detail) or v.label
+            table.insert(cmp_items, label)
+
+            local rest_suf = unique_suffix(trie_prefix, rest)
+            local rest_pre = unique_suffix(trie_suffix, rest_suf:reverse())
+
+            if #rest_pre > 1 and #rest < #text then
+                table.insert(logit_bias, { rest_pre:reverse(), 4 })
+                i = i + 1
+            end
+        end
+    end
+
+    local completions = (line_prefix or line) .. "\n  " .. table.concat(cmp_items, "\n  ") .. "\n"
+    return {
+        logit_bias = #logit_bias > 0 and logit_bias or {},
+        completions = #cmp_items > 0 and completions or "",
+    }
+end
+
+---@param line string
+---@return async ai.LspContext
 local function get_lsp_context(line)
     local co = assert(coroutine.running())
-
     local buf = vim.api.nvim_get_current_buf()
     local win = vim.api.nvim_get_current_win()
-
     vim.lsp.buf_request(
         buf,
         "textDocument/completion",
         vim.lsp.util.make_position_params(win, "utf-8"),
         function(err, result)
             if err then
-                coroutine.resume(co, {})
-                return
+                return coroutine.resume(co, {})
             end
-            local trie = {}
-            local completions = {}
-            local logit_bias = {}
-            if result and result.items then
-                for i, v in ipairs(result.items) do
-                    if i > 10 then
-                        break
-                    end
-                    if v.kind ~= 15 and v.label then
-                        local label = v.label
-                        if v.detail then
-                            label = label .. " -> " .. v.detail
-                        end
-                        table.insert(completions, label)
-
-                        if v.filterText or v.insertText then
-                            local _, rest = remove_overlap(line, v.filterText or v.insertText or v.label)
-                            table.insert(logit_bias, { unique_suffix(trie, rest), 1 })
-                        end
-                    end
-                end
-            end
-            coroutine.resume(co, {
-                logit_bias = logit_bias,
-                input_extra = #completions > 0 and {
-                    filename = "filename",
-                    text = table.concat(completions, "\n") .. "\n",
-                } or nil,
-            })
+            local items = result and result.items or {}
+            return coroutine.resume(co, parse_lsp_completion(line, items))
         end
     )
-
     return coroutine.yield()
 end
 
@@ -352,12 +375,12 @@ function M.suggest(local_context)
         end
     end
 
+    M.clear()
+
     if #best > 0 then
         M.suggestion = best
         return M.show_suggestion(best, row, col)
     end
-
-    M.clear()
 
     return coroutine.resume(coroutine.create(function()
         local lsp_context = get_lsp_context(local_context.middle)
