@@ -79,15 +79,9 @@ M.request = utils.debounce(function(context, lsp_context)
     end
 
     M.clear()
-    M.cancel()
 
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-
-    M.suggestion = ""
-    M.request_id = M.request_id + 1
-
-    local request_id = M.request_id
-    M.current_request_id = request_id
+    local request_id = M.current_request_id
     M.stdout = vim.uv.new_pipe(false)
 
     local payload = vim.json.encode {
@@ -194,6 +188,7 @@ function M.on_chunk(chunk, context, request_id, row, col)
 end
 
 function M.clear()
+    M.suggestion = ""
     if M.extmark_id then
         vim.api.nvim_buf_del_extmark(0, ns, M.extmark_id)
         M.extmark_id = nil
@@ -271,10 +266,8 @@ local function parse_lsp_completion(line, items)
     local trie_prefix = {}
     local trie_suffix = {}
 
-    local cmp_items = {}
+    local completions = {}
     local logit_bias = {}
-
-    local line_prefix
 
     local i = 0
     for _, v in ipairs(items) do
@@ -283,27 +276,26 @@ local function parse_lsp_completion(line, items)
         end
         if v.kind ~= 15 and v.label then
             local text = v.filterText or v.insertText or v.label
-
-            local rest
-            line_prefix, rest = remove_overlap(line, text)
+            local _, rest = remove_overlap(line, text)
 
             local label = v.detail and (v.label .. " -> " .. v.detail) or v.label
-            table.insert(cmp_items, label)
+            table.insert(completions, label)
 
-            local rest_suf = unique_suffix(trie_prefix, rest)
-            local rest_pre = unique_suffix(trie_suffix, rest_suf:reverse())
+            if #rest > 4 then
+                rest = unique_suffix(trie_prefix, rest)
+                rest = unique_suffix(trie_suffix, rest:reverse()):reverse()
+            end
 
-            if #rest_pre > 1 and #rest < #text then
-                table.insert(logit_bias, { rest_pre:reverse(), 4 })
+            if #rest > 2 and #rest < #text then
+                table.insert(logit_bias, { rest, 2 })
                 i = i + 1
             end
         end
     end
 
-    local completions = (line_prefix or line) .. "\n  " .. table.concat(cmp_items, "\n  ") .. "\n"
     return {
         logit_bias = #logit_bias > 0 and logit_bias or {},
-        completions = #cmp_items > 0 and completions or "",
+        completions = #completions > 0 and table.concat(completions, "\n  ") .. "\n" or "",
     }
 end
 
@@ -311,6 +303,10 @@ end
 ---@return async ai.LspContext
 local function get_lsp_context(line)
     local co = assert(coroutine.running())
+    if #line:gsub([[\s]], "") == 0 then
+        coroutine.resume(co, {})
+        return coroutine.yield()
+    end
     local buf = vim.api.nvim_get_current_buf()
     local win = vim.api.nvim_get_current_win()
     vim.lsp.buf_request(
@@ -343,10 +339,16 @@ end
 
 ---@param local_context ai.LocalContext
 function M.suggest(local_context)
+    M.cancel()
+    M.clear()
+
+    M.request_id = M.request_id + 1
+    local this_generation = M.request_id
+
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local best = ""
-
     local cached = M.cache_get(local_context)
+
     for i = 1, 64 do
         if cached then
             best = cached
@@ -375,15 +377,21 @@ function M.suggest(local_context)
         end
     end
 
-    M.clear()
-
     if #best > 0 then
+        M.current_request_id = this_generation
         M.suggestion = best
-        return M.show_suggestion(best, row, col)
+        M.show_suggestion(best, row, col)
+        return
     end
 
     return coroutine.resume(coroutine.create(function()
         local lsp_context = get_lsp_context(local_context.middle)
+
+        if M.request_id ~= this_generation then
+            return
+        end
+
+        M.current_request_id = this_generation
         M.request(local_context, lsp_context)
     end))
 end
