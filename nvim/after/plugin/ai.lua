@@ -1,14 +1,16 @@
 local M = {}
 local utils = require "core.utils"
 
+local Promise = require "core.promise"
+
 ---@class ai.LocalContext
 ---@field prefix string
 ---@field middle string
 ---@field suffix string
 
 ---@class ai.LspContext
----@field completions string
----@field logit_bias table<table<string>>
+---@field logit_bias table<string, string>
+---@field completions string?
 
 local ns = vim.api.nvim_create_namespace "user.ai"
 local group = vim.api.nvim_create_augroup("ai", { clear = true })
@@ -31,6 +33,8 @@ local N_PREFIX = 32
 local N_SUFFIX = 16
 
 local MAX_CACHE = 256
+
+local URL = "http://localhost:8012"
 
 ---@param context ai.LocalContext
 local function get_hash(context)
@@ -71,33 +75,37 @@ function M.cache_get(context)
     return value
 end
 
----@param context ai.LocalContext
+---@param local_context ai.LocalContext
 ---@param lsp_context ai.LspContext
-M.request = utils.debounce(function(context, lsp_context)
+M.request_infill = utils.debounce(function(local_context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
     end
 
+    M.cancel()
     M.clear()
+    M.suggestion = ""
 
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local request_id = M.current_request_id
-    M.stdout = vim.uv.new_pipe(false)
+
+    local input_extra = {}
+    if lsp_context.completions then
+        table.insert(input_extra, {
+            filename = "filename",
+            text = lsp_context.completions,
+        })
+    end
 
     local payload = vim.json.encode {
-        input_prefix = context.prefix,
-        prompt = context.middle,
-        input_suffix = context.suffix,
-        input_extra = {
-            {
-                filename = "filename",
-                text = lsp_context.completions,
-            },
-        },
+        input_prefix = local_context.prefix,
+        prompt = local_context.middle,
+        input_suffix = local_context.suffix,
+        input_extra = input_extra,
         cache_prompt = true,
         max_tokens = 16,
-        top_k = 40,
-        top_p = 0.9,
+        top_k = 30,
+        top_p = 0.6,
         samplers = { "top_k", "top_p", "infill" },
         logit_bias = lsp_context.logit_bias,
         t_max_prompt_ms = 500,
@@ -106,9 +114,10 @@ M.request = utils.debounce(function(context, lsp_context)
         stop = { "\r\n", "\n", "\r" },
     }
 
+    M.stdout = vim.uv.new_pipe(false)
     M.handle = vim.uv.spawn("curl", {
         args = {
-            "http://localhost:8012/infill",
+            ("%s/infill"):format(URL),
             "--no-buffer",
             "--request",
             "POST",
@@ -123,27 +132,23 @@ M.request = utils.debounce(function(context, lsp_context)
             M.stdout:close()
             M.stdout = nil
         end
-
         if M.handle then
             M.handle:close()
             M.handle = nil
         end
-
         if code ~= 0 then
             vim.schedule(function()
                 vim.notify(("curl exited with code %d"):format(code), vim.diagnostic.severity.ERROR)
             end)
         end
     end)
-
     if not M.handle then
         vim.notify("Failed to spawn curl process", vim.diagnostic.severity.ERROR)
         return
     end
-
     M.stdout:read_start(function(_, chunk)
         if chunk then
-            M.on_chunk(chunk, context, request_id, row, col)
+            M.on_chunk(chunk, local_context, request_id, row, col)
         end
     end)
 end, 100)
@@ -188,7 +193,6 @@ function M.on_chunk(chunk, context, request_id, row, col)
 end
 
 function M.clear()
-    M.suggestion = ""
     if M.extmark_id then
         vim.api.nvim_buf_del_extmark(0, ns, M.extmark_id)
         M.extmark_id = nil
@@ -196,15 +200,16 @@ function M.clear()
 end
 
 function M.cancel()
-    if M.handle then
-        M.handle:kill()
+    pcall(function()
         if M.stdout then
             M.stdout:close()
+            M.stdout = nil
         end
-        M.handle:close()
-    end
-    M.stdout = nil
-    M.handle = nil
+        if M.handle then
+            M.handle:close()
+            M.handle = nil
+        end
+    end)
 end
 
 ---@return ai.LocalContext
@@ -227,101 +232,132 @@ end
 
 ---@param a string
 ---@param b string
----@return string, string
-local function remove_overlap(a, b)
+---@return string, string, string
+local function overlap(a, b)
     local max_overlap = math.min(#a, #b)
-    local overlap = 0
+    local ol = 0
     for i = 1, max_overlap do
         local a_end = a:sub(-i)
         local b_start = b:sub(1, i)
         if a_end == b_start then
-            overlap = i
+            ol = i
         end
     end
-    return a:sub(1, #a - overlap), b:sub(overlap + 1)
+    return a:sub(1, #a - ol), a:sub(#a - ol + 1), b:sub(ol + 1)
 end
 
----@param trie table<string, table<string>>
----@param word string
-local function unique_suffix(trie, word)
-    local curr = trie
-    local unique_start
-    for i = 1, #word do
-        local char = word:sub(i, i)
-        if not curr[char] then
-            curr[char] = {}
-            if not unique_start then
-                unique_start = i
+---@param route string
+---@param payload string
+---@return Promise
+local function request_json(route, payload)
+    return Promise.new(function(resolve, reject)
+        local stdout_chunks = {}
+        local stderr_chunks = {}
+        vim.fn.jobstart({
+            "curl",
+            ("%s/%s"):format(URL, route),
+            "--request",
+            "POST",
+            "-H",
+            "Content-Type: application/json",
+            "-d",
+            payload,
+        }, {
+            on_stdout = function(_, data)
+                if data then
+                    table.insert(stdout_chunks, table.concat(data, "\n"))
+                end
+            end,
+            on_stderr = function(_, data)
+                if data then
+                    table.insert(stderr_chunks, table.concat(data, "\n"))
+                end
+            end,
+            on_exit = function(_, code)
+                if code == 0 then
+                    local ok, resp = pcall(vim.json.decode, table.concat(stdout_chunks))
+                    if ok then
+                        resolve(resp)
+                    else
+                        reject(resp)
+                    end
+                else
+                    reject(table.concat(stderr_chunks))
+                end
+            end,
+        })
+    end)
+end
+
+---@param method string
+---@return Promise
+local function lsp_request(method)
+    return Promise.new(function(resolve, reject)
+        local buf = vim.api.nvim_get_current_buf()
+        local win = vim.api.nvim_get_current_win()
+        local params = vim.lsp.util.make_position_params(win, "utf-8")
+        vim.lsp.buf_request(buf, method, params, function(err, result)
+            if err then
+                reject(err)
+                return
             end
-        end
-        curr = curr[char]
-    end
-    return word:sub(unique_start or 1)
+            resolve(result and result.items or {})
+        end)
+    end)
 end
 
 ---@param line string
----@param items table
 ---@return ai.LspContext
-local function parse_lsp_completion(line, items)
-    local trie_prefix = {}
-    local trie_suffix = {}
+local function get_lsp_context(line)
+    local items = lsp_request("textDocument/completion"):await()
 
     local completions = {}
     local logit_bias = {}
 
-    local i = 0
+    local tokenize_promises = {}
+
+    local num_items = 0
     for _, v in ipairs(items) do
-        if i > 10 then
+        if num_items > 10 then
             break
         end
         if v.kind ~= 15 and v.label then
-            local text = v.filterText or v.insertText or v.label
-            local _, rest = remove_overlap(line, text)
-
-            local label = v.detail and (v.label .. " -> " .. v.detail) or v.label
+            local label = v.label
+            if v.detail then
+                label = label .. " -> " .. v.detail
+            end
+            if v.documentation and v.documentation.value then
+                label = label .. "\n\t" .. v.documentation.value:gsub("\n", " ")
+            end
             table.insert(completions, label)
 
-            if #rest > 4 then
-                rest = unique_suffix(trie_prefix, rest)
-                rest = unique_suffix(trie_suffix, rest:reverse()):reverse()
+            ---@type string
+            local text = v.filterText or v.insertText or v.label
+            local _, ol, rest = overlap(line, text)
+
+            if text:sub(1, #ol) == ol then
+                local tokenized = request_json("tokenize", vim.json.encode { content = rest, with_pieces = true })
+                table.insert(tokenize_promises, tokenized)
             end
 
-            if #rest > 2 and #rest < #text then
-                table.insert(logit_bias, { rest, 2 })
-                i = i + 1
+            num_items = num_items + 1
+        end
+    end
+
+    local all_tokens = Promise.all(tokenize_promises):await()
+    for _, tokens in ipairs(all_tokens) do
+        for _, token in ipairs(tokens.tokens) do
+            local piece = token.piece
+            if not logit_bias[piece] then
+                logit_bias[piece] = 1
             end
         end
     end
 
     return {
-        logit_bias = #logit_bias > 0 and logit_bias or {},
-        completions = #completions > 0 and table.concat(completions, "\n  ") .. "\n" or "",
+        logit_bias = logit_bias,
+        completions = #completions > 0 and table.concat(completions, "\n") .. "\n" or nil,
     }
-end
-
----@param line string
----@return async ai.LspContext
-local function get_lsp_context(line)
-    local co = assert(coroutine.running())
-    if #line:gsub([[\s]], "") == 0 then
-        coroutine.resume(co, {})
-        return coroutine.yield()
-    end
-    local buf = vim.api.nvim_get_current_buf()
-    local win = vim.api.nvim_get_current_win()
-    vim.lsp.buf_request(
-        buf,
-        "textDocument/completion",
-        vim.lsp.util.make_position_params(win, "utf-8"),
-        function(err, result)
-            if err then
-                return coroutine.resume(co, {})
-            end
-            local items = result and result.items or {}
-            return coroutine.resume(co, parse_lsp_completion(line, items))
-        end
-    )
-    return coroutine.yield()
 end
 
 function M.accept()
@@ -329,18 +365,19 @@ function M.accept()
     local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
     local suffix = line:sub(col + 1)
 
-    local new_text = remove_overlap(M.suggestion, suffix)
+    local new_text = overlap(M.suggestion, suffix)
     vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { new_text })
     vim.api.nvim_win_set_cursor(0, { row, col + #M.suggestion })
 
-    M.suggestion = ""
     M.clear()
+    M.suggestion = ""
 end
 
 ---@param local_context ai.LocalContext
 function M.suggest(local_context)
     M.cancel()
     M.clear()
+    M.suggestion = ""
 
     M.request_id = M.request_id + 1
     local this_generation = M.request_id
@@ -384,23 +421,22 @@ function M.suggest(local_context)
         return
     end
 
-    return coroutine.resume(coroutine.create(function()
-        local lsp_context = get_lsp_context(local_context.middle)
+    vim.schedule(function()
+        coroutine.wrap(function()
+            local lsp_context = get_lsp_context(local_context.middle)
 
-        if M.request_id ~= this_generation then
-            return
-        end
+            if M.request_id ~= this_generation then
+                return
+            end
 
-        M.current_request_id = this_generation
-        M.request(local_context, lsp_context)
-    end))
+            M.current_request_id = this_generation
+            M.request_infill(local_context, lsp_context)
+        end)()
+    end)
 end
 
 vim.api.nvim_create_user_command("AI", function()
     vim.keymap.set("i", "<C-q>", function()
-        if M.handle then
-            return
-        end
         if #M.suggestion > 0 then
             if vim.fn.pumvisible() == 1 then
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, false, true), "n", false)
@@ -410,11 +446,13 @@ vim.api.nvim_create_user_command("AI", function()
     end)
 
     vim.keymap.set("i", "<C-space>", function()
-        coroutine.resume(coroutine.create(function()
+        coroutine.wrap(function()
             local local_context = get_local_context()
             local lsp_context = get_lsp_context(local_context.middle)
-            M.request(local_context, lsp_context)
-        end))
+            vim.schedule(function()
+                M.request_infill(local_context, lsp_context)
+            end)
+        end)()
     end)
 
     vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter" }, {
@@ -423,6 +461,7 @@ vim.api.nvim_create_user_command("AI", function()
             M.suggest(get_local_context())
         end,
     })
+
     vim.api.nvim_create_autocmd({ "InsertLeavePre", "CursorMoved", "CursorMovedI" }, {
         group = group,
         callback = function()
