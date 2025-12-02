@@ -50,7 +50,7 @@ function Promise:await()
     assert(self._done)
 
     if self._error ~= nil then
-        error(self._error)
+        return error(self._error)
     end
     return self._result
 end

@@ -1,5 +1,6 @@
 local M = {}
 local utils = require "core.utils"
+local lsp = require "core.lsp"
 
 local Promise = require "core.promise"
 
@@ -33,6 +34,7 @@ local N_PREFIX = 32
 local N_SUFFIX = 16
 
 local MAX_CACHE = 256
+local MAX_TOKENS = 16
 
 local URL = "http://localhost:8012"
 
@@ -103,9 +105,9 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
         input_suffix = local_context.suffix,
         input_extra = input_extra,
         cache_prompt = true,
-        max_tokens = 16,
+        max_tokens = MAX_TOKENS,
         top_k = 30,
-        top_p = 0.6,
+        top_p = 0.5,
         samplers = { "top_k", "top_p", "infill" },
         logit_bias = lsp_context.logit_bias,
         t_max_prompt_ms = 500,
@@ -151,7 +153,7 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
             M.on_chunk(chunk, local_context, request_id, row, col)
         end
     end)
-end, 100)
+end, 50)
 
 ---@param text string
 ---@param row number
@@ -311,45 +313,44 @@ end
 local function get_lsp_context(line)
     local items = lsp_request("textDocument/completion"):await()
 
-    local completions = {}
-    local logit_bias = {}
+    local re = vim.regex [[\k*$]]
+    local s, e = re:match_str(line)
+    local keyword = s and line:sub(s + 1, e) or ""
 
+    local completions = {}
     local tokenize_promises = {}
 
     local num_items = 0
     for _, v in ipairs(items) do
-        if num_items > 10 then
+        if num_items > 20 then
             break
         end
-        if v.kind ~= 15 and v.label then
-            local label = v.label
-            if v.detail then
-                label = label .. " -> " .. v.detail
+        if v.kind ~= 15 and v.label and v.label:sub(1, #keyword) == keyword then
+            local label = ("%s %s"):format(lsp.item_kind_map[v.kind]:lower(), v.label)
+            if (v.kind == 2 or v.kind == 3) and not label:match([[\(]]) then
+                label = label .. "("
             end
-            if v.documentation and v.documentation.value then
-                label = label .. "\n\t" .. v.documentation.value:gsub("\n", " ")
+            if v.detail then
+                label = ("%s -> %s"):format(label, v.detail)
             end
             table.insert(completions, label)
 
-            ---@type string
-            local text = v.filterText or v.insertText or v.label
-            local _, ol, rest = overlap(line, text)
-
-            if text:sub(1, #ol) == ol then
-                local tokenized = request_json("tokenize", vim.json.encode { content = rest, with_pieces = true })
-                table.insert(tokenize_promises, tokenized)
-            end
+            local content = v.label:sub(#keyword + 1)
+            local tokenized = request_json("tokenize", vim.json.encode { content = content, with_pieces = true })
+            table.insert(tokenize_promises, tokenized)
 
             num_items = num_items + 1
         end
     end
 
     local all_tokens = Promise.all(tokenize_promises):await()
+
+    local logit_bias = {}
     for _, tokens in ipairs(all_tokens) do
         for _, token in ipairs(tokens.tokens) do
             local piece = token.piece
             if not logit_bias[piece] then
-                logit_bias[piece] = 1
+                logit_bias[piece] = 5
             end
         end
     end
