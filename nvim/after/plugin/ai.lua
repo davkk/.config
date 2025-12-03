@@ -1,8 +1,7 @@
 local M = {}
 local utils = require "core.utils"
-local lsp = require "core.lsp"
 
-local Promise = require "core.promise"
+local async = require "core.async"
 
 ---@class ai.LocalContext
 ---@field prefix string
@@ -106,8 +105,9 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
         input_extra = input_extra,
         cache_prompt = true,
         max_tokens = MAX_TOKENS,
-        top_k = 30,
+        top_k = 40,
         top_p = 0.5,
+        repeat_penalty = 1.3,
         samplers = { "top_k", "top_p", "infill" },
         logit_bias = lsp_context.logit_bias,
         t_max_prompt_ms = 500,
@@ -195,10 +195,8 @@ function M.on_chunk(chunk, context, request_id, row, col)
 end
 
 function M.clear()
-    if M.extmark_id then
-        vim.api.nvim_buf_del_extmark(0, ns, M.extmark_id)
-        M.extmark_id = nil
-    end
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+    M.extmark_id = nil
 end
 
 function M.cancel()
@@ -250,9 +248,8 @@ end
 
 ---@param route string
 ---@param payload string
----@return Promise
 local function request_json(route, payload)
-    return Promise.new(function(resolve, reject)
+    return function(resume)
         local stdout_chunks = {}
         local stderr_chunks = {}
         vim.fn.jobstart({
@@ -277,41 +274,50 @@ local function request_json(route, payload)
             end,
             on_exit = function(_, code)
                 if code == 0 then
-                    local ok, resp = pcall(vim.json.decode, table.concat(stdout_chunks))
-                    if ok then
-                        resolve(resp)
-                    else
-                        reject(resp)
-                    end
+                    resume(nil, vim.json.decode(table.concat(stdout_chunks)))
                 else
-                    reject(table.concat(stderr_chunks))
+                    resume(table.concat(stderr_chunks))
                 end
             end,
         })
-    end)
+    end
 end
 
 ---@param method string
----@return Promise
 local function lsp_request(method)
-    return Promise.new(function(resolve, reject)
+    return function(resume)
         local buf = vim.api.nvim_get_current_buf()
         local win = vim.api.nvim_get_current_win()
         local params = vim.lsp.util.make_position_params(win, "utf-8")
-        vim.lsp.buf_request(buf, method, params, function(err, result)
-            if err then
-                reject(err)
-                return
+        vim.lsp.buf_request_all(buf, method, params, function(results)
+            local items = {}
+            for _, resp in ipairs(results) do
+                if resp.err then
+                    resume(resp.err)
+                    return
+                end
+                if resp.result and resp.result.items then
+                    for _, item in ipairs(resp.result.items) do
+                        items[#items + 1] = item
+                    end
+                end
             end
-            resolve(result and result.items or {})
+            resume(nil, items)
         end)
-    end)
+    end
+end
+
+local function is_function(kind)
+    return kind == vim.lsp.protocol.CompletionItemKind.Function or kind == vim.lsp.protocol.CompletionItemKind.Method
 end
 
 ---@param line string
 ---@return ai.LspContext
 local function get_lsp_context(line)
-    local items = lsp_request("textDocument/completion"):await()
+    local err, items = async.await(lsp_request "textDocument/completion")
+    if err ~= nil then
+        return {}
+    end
 
     local re = vim.regex [[\k*$]]
     local s, e = re:match_str(line)
@@ -326,8 +332,8 @@ local function get_lsp_context(line)
             break
         end
         if v.kind ~= 15 and v.label and v.label:sub(1, #keyword) == keyword then
-            local label = ("%s %s"):format(lsp.item_kind_map[v.kind]:lower(), v.label)
-            if (v.kind == 2 or v.kind == 3) and not label:match([[\(]]) then
+            local label = ("%s %s"):format(vim.lsp.protocol.CompletionItemKind[v.kind]:lower(), v.label)
+            if is_function(v.kind) and not label:match "%(" then
                 label = label .. "("
             end
             if v.detail then
@@ -335,7 +341,10 @@ local function get_lsp_context(line)
             end
             table.insert(completions, label)
 
-            local content = v.label:sub(#keyword + 1)
+            local content = (v.filterText or v.insertText or v.label):gsub("^%.", ""):sub(#keyword + 1)
+            if is_function(v.kind) and not content:match "%(" then
+                content = content .. "("
+            end
             local tokenized = request_json("tokenize", vim.json.encode { content = content, with_pieces = true })
             table.insert(tokenize_promises, tokenized)
 
@@ -343,14 +352,17 @@ local function get_lsp_context(line)
         end
     end
 
-    local all_tokens = Promise.all(tokenize_promises):await()
+    local err_all, all_tokens = async.all(tokenize_promises)
+    if err_all ~= nil then
+        return {}
+    end
 
     local logit_bias = {}
-    for _, tokens in ipairs(all_tokens) do
+    for _, tokens in ipairs(all_tokens or {}) do
         for _, token in ipairs(tokens.tokens) do
             local piece = token.piece
             if not logit_bias[piece] then
-                logit_bias[piece] = 5
+                logit_bias[piece] = 2
             end
         end
     end
@@ -422,18 +434,18 @@ function M.suggest(local_context)
         return
     end
 
-    vim.schedule(function()
-        coroutine.wrap(function()
-            local lsp_context = get_lsp_context(local_context.middle)
+    async.async(function()
+        local lsp_context = get_lsp_context(local_context.middle)
 
-            if M.request_id ~= this_generation then
-                return
-            end
+        if M.request_id ~= this_generation then
+            return
+        end
 
-            M.current_request_id = this_generation
+        M.current_request_id = this_generation
+        vim.schedule(function()
             M.request_infill(local_context, lsp_context)
-        end)()
-    end)
+        end)
+    end)()
 end
 
 vim.api.nvim_create_user_command("AI", function()
@@ -447,7 +459,7 @@ vim.api.nvim_create_user_command("AI", function()
     end)
 
     vim.keymap.set("i", "<C-space>", function()
-        coroutine.wrap(function()
+        async.async(function()
             local local_context = get_local_context()
             local lsp_context = get_lsp_context(local_context.middle)
             vim.schedule(function()

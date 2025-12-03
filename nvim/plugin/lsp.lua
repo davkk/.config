@@ -1,5 +1,4 @@
 local utils = require "core.utils"
-local lsp = require "core.lsp"
 
 vim.lsp.config("*", {
     capabilities = vim.lsp.protocol.make_client_capabilities(),
@@ -134,7 +133,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
             vim.lsp.completion.enable(true, client.id, event.buf, {
                 autotrigger = true,
-                convert = lsp.convert_completion_item,
+                convert = function(item)
+                    local limit = vim.o.columns * 0.4
+                    local label = item.label
+                    if #label > limit then
+                        label = label:sub(1, limit)
+                        local last_comma = label:match ".*(),"
+                        if last_comma then
+                            label = label:sub(1, last_comma) .. " …)"
+                        end
+                    end
+                    return {
+                        abbr = label,
+                        kind = item.kind and vim.lsp.protocol.CompletionItemKind[item.kind] or 1,
+                        menu = item.detail and utils.shorten_path(item.detail, 15) or "",
+                    }
+                end,
             })
         end
 
@@ -149,7 +163,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if capabilities then
             for k, v in pairs(capabilities) do
                 if v == vim.NIL then
-                    v = nil ---@diagnostic disable-line: cast-local-type
+                    v = nil
                 end
                 client.server_capabilities[k] = v
             end
