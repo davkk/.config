@@ -27,7 +27,7 @@ end
 local function git_diff(ref)
     ref = ref or "HEAD"
 
-    local cwd = vim.fn.getcwd()
+    local root_dir = vim.fs.root(0, ".git")
 
     local fullpath = vim.fn.expand "%:p"
     if fullpath == "" then
@@ -35,15 +35,16 @@ local function git_diff(ref)
         return
     end
 
-    local relpath = fullpath:sub(#cwd + 2)
+    local relpath = fullpath:sub(#root_dir + 2)
+    print(root_dir, fullpath, relpath)
 
-    local lstree_res = vim.system({ "git", "ls-tree", ref, "--", relpath }):wait()
+    local lstree_res = vim.system({ "git", "ls-tree", ref, "--", relpath }, { cwd = root_dir }):wait()
     if lstree_res.code ~= 0 then
         vim.notify(("ls-tree failed for %s"):format(relpath), vim.log.levels.ERROR)
         return
     end
 
-    local lsfiles_res = vim.system({ "git", "ls-files", "--stage", "--", relpath }):wait()
+    local lsfiles_res = vim.system({ "git", "ls-files", "--stage", "--", relpath }, { cwd = root_dir }):wait()
     if lsfiles_res.code ~= 0 then
         vim.notify(("ls-files failed for %s"):format(relpath), vim.log.levels.ERROR)
         return
@@ -58,9 +59,9 @@ local function git_diff(ref)
 
         local diff_res
         if old_hash ~= nil and file_exists_head then
-            diff_res = vim.system({ "git", "diff", old_hash }, { cwd = relpath }):wait()
+            diff_res = vim.system({ "git", "diff", old_hash }, { cwd = root_dir }):wait()
         else
-            diff_res = vim.system({ "git", "diff", ref, "--", relpath }):wait()
+            diff_res = vim.system({ "git", "diff", ref, "--", relpath }, { cwd = root_dir }):wait()
         end
 
         new_buffer(fullpath, parse_output(diff_res.stdout))
@@ -69,9 +70,9 @@ local function git_diff(ref)
 
     local lines_ref = {}
     if file_exists_ref then
-        local show_res = vim.system({ "git", "show", ("%s:%s"):format(ref, relpath) }):wait()
+        local show_res = vim.system({ "git", "show", ("%s:%s"):format(ref, relpath) }, { cwd = root_dir }):wait()
         if show_res.code ~= 0 then
-            vim.notify(("show failed for %s"):format(relpath), vim.log.levels.ERROR)
+            vim.notify(("show failed for %s: %s"):format(relpath, show_res.stderr), vim.log.levels.ERROR)
             return
         end
         lines_ref = parse_output(show_res.stdout)
