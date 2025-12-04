@@ -1,6 +1,6 @@
 local M = {}
-local utils = require "core.utils"
 
+local utils = require "core.utils"
 local async = require "core.async"
 
 ---@class ai.LocalContext
@@ -11,6 +11,7 @@ local async = require "core.async"
 ---@class ai.LspContext
 ---@field logit_bias table<string, string>
 ---@field completions string?
+---@field signatures string?
 
 local ns = vim.api.nvim_create_namespace "user.ai"
 local group = vim.api.nvim_create_augroup("ai", { clear = true })
@@ -36,6 +37,7 @@ local MAX_CACHE = 256
 local MAX_TOKENS = 16
 
 local URL = "http://localhost:8012"
+local STOP_CHARS = { "\n", "\r", "\r\n" }
 
 ---@param context ai.LocalContext
 local function get_hash(context)
@@ -57,7 +59,7 @@ function M.cache_add(context, value)
     M.lru = vim.tbl_filter(function(k)
         return k ~= hash
     end, M.lru)
-    table.insert(M.lru, hash)
+    M.lru[#M.lru + 1] = hash
 end
 
 ---@param context ai.LocalContext
@@ -71,14 +73,14 @@ function M.cache_get(context)
     M.lru = vim.tbl_filter(function(k)
         return k ~= hash
     end, M.lru)
-    table.insert(M.lru, hash)
+    M.lru[#M.lru + 1] = hash
 
     return value
 end
 
 ---@param local_context ai.LocalContext
 ---@param lsp_context ai.LspContext
-M.request_infill = utils.debounce(function(local_context, lsp_context)
+function M.request_infill(local_context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
     end
@@ -92,10 +94,26 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
 
     local input_extra = {}
     if lsp_context.completions then
-        table.insert(input_extra, {
-            filename = "filename",
+        input_extra[#input_extra + 1] = {
+            filename = "in_scope_symbols",
             text = lsp_context.completions,
-        })
+        }
+    end
+    if lsp_context.signatures then
+        input_extra[#input_extra + 1] = {
+            filename = "active_call_hint",
+            text = lsp_context.signatures,
+        }
+    end
+
+    local stop = utils.tbl_copy(STOP_CHARS)
+    local clients = vim.lsp.get_clients { bufnr = 0 }
+    for _, client in ipairs(clients) do
+        for _, char in ipairs(client.server_capabilities.completionProvider.triggerCharacters or {}) do
+            if char ~= " " and not vim.tbl_contains(stop, char) then
+                stop[#stop + 1] = char
+            end
+        end
     end
 
     local payload = vim.json.encode {
@@ -110,10 +128,9 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
         repeat_penalty = 1.3,
         samplers = { "top_k", "top_p", "infill" },
         logit_bias = lsp_context.logit_bias,
-        t_max_prompt_ms = 500,
         t_max_predict_ms = 500,
         stream = true,
-        stop = { "\r\n", "\n", "\r" },
+        stop = stop,
     }
 
     M.stdout = vim.uv.new_pipe(false)
@@ -153,7 +170,7 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
             M.on_chunk(chunk, local_context, request_id, row, col)
         end
     end)
-end, 50)
+end
 
 ---@param text string
 ---@param row number
@@ -180,8 +197,12 @@ function M.on_chunk(chunk, context, request_id, row, col)
         local ok, resp = pcall(vim.json.decode, chunk)
         if ok then
             local text = resp.content
-            if text == "" or text == nil then
-                return
+            if resp.stop then
+                if resp.stop_type == "word" and not vim.tbl_contains(STOP_CHARS, resp.stopping_word) then
+                    text = resp.stopping_word
+                else
+                    return
+                end
             end
             M.suggestion = M.suggestion .. text
             vim.schedule(function()
@@ -264,12 +285,12 @@ local function request_json(route, payload)
         }, {
             on_stdout = function(_, data)
                 if data then
-                    table.insert(stdout_chunks, table.concat(data, "\n"))
+                    stdout_chunks[#stdout_chunks + 1] = table.concat(data, "\n")
                 end
             end,
             on_stderr = function(_, data)
                 if data then
-                    table.insert(stderr_chunks, table.concat(data, "\n"))
+                    stderr_chunks[#stderr_chunks + 1] = table.concat(data, "\n")
                 end
             end,
             on_exit = function(_, code)
@@ -284,25 +305,12 @@ local function request_json(route, payload)
 end
 
 ---@param method string
-local function lsp_request(method)
+---@param buf number
+---@param params table
+local function lsp_request(buf, method, params)
     return function(resume)
-        local buf = vim.api.nvim_get_current_buf()
-        local win = vim.api.nvim_get_current_win()
-        local params = vim.lsp.util.make_position_params(win, "utf-8")
-        vim.lsp.buf_request_all(buf, method, params, function(results)
-            local items = {}
-            for _, resp in ipairs(results) do
-                if resp.err then
-                    resume(resp.err)
-                    return
-                end
-                if resp.result and resp.result.items then
-                    for _, item in ipairs(resp.result.items) do
-                        items[#items + 1] = item
-                    end
-                end
-            end
-            resume(nil, items)
+        pcall(vim.lsp.buf_request_all, buf, method, params, function(results)
+            resume(results)
         end)
     end
 end
@@ -314,9 +322,43 @@ end
 ---@param line string
 ---@return ai.LspContext
 local function get_lsp_context(line)
-    local err, items = async.await(lsp_request "textDocument/completion")
-    if err ~= nil then
-        return {}
+    local params = vim.lsp.util.make_position_params(0, "utf-8")
+
+    ---@type table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
+    local sig_resp = async.await(lsp_request(0, "textDocument/signatureHelp", params)) or {}
+    local signatures = {}
+    for _, resp in ipairs(sig_resp) do
+        if resp.err then
+            break
+        end
+        if resp.result and resp.result.signatures then
+            for _, sig in ipairs(resp.result.signatures) do
+                local signature = {}
+                if sig.documentation and sig.documentation.value then
+                    signature[#signature + 1] = vim.api
+                        .nvim_get_option_value("commentstring", { buf = 0 })
+                        :format(sig.documentation.value:gsub("\n", " "))
+                end
+                if sig.label then
+                    signature[#signature + 1] = sig.label
+                end
+                signatures[#signatures + 1] = table.concat(signature, "\n")
+            end
+        end
+    end
+
+    ---@type table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
+    local cmp_resp = async.await(lsp_request(0, "textDocument/completion", params)) or {}
+    local items = {}
+    for _, resp in ipairs(cmp_resp) do
+        if resp.err then
+            break
+        end
+        if resp.result and resp.result.items then
+            for _, item in ipairs(resp.result.items) do
+                items[#items + 1] = item
+            end
+        end
     end
 
     local re = vim.regex [[\k*$]]
@@ -339,14 +381,19 @@ local function get_lsp_context(line)
             if v.detail then
                 label = ("%s -> %s"):format(label, v.detail)
             end
-            table.insert(completions, label)
+            completions[#completions + 1] = label
 
             local content = (v.filterText or v.insertText or v.label):gsub("^%.", ""):sub(#keyword + 1)
             if is_function(v.kind) and not content:match "%(" then
                 content = content .. "("
             end
-            local tokenized = request_json("tokenize", vim.json.encode { content = content, with_pieces = true })
-            table.insert(tokenize_promises, tokenized)
+            tokenize_promises[#tokenize_promises + 1] = request_json(
+                "tokenize",
+                vim.json.encode {
+                    content = content,
+                    with_pieces = true,
+                }
+            )
 
             num_items = num_items + 1
         end
@@ -370,6 +417,7 @@ local function get_lsp_context(line)
     return {
         logit_bias = logit_bias,
         completions = #completions > 0 and table.concat(completions, "\n") .. "\n" or nil,
+        signatures = #signatures > 0 and table.concat(signatures, "\n") .. "\n" or nil,
     }
 end
 
