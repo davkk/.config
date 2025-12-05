@@ -358,24 +358,8 @@ local function get_lsp_context(line)
                         end
                         signature[#signature + 1] = commentstring:format(doc)
                     end
-                    if sig.parameters then
-                        for _, param in ipairs(sig.parameters) do
-                            if param.documentation then
-                                local param_doc = "  "
-                                if type(param.label) == "table" then
-                                    param_doc = param_doc .. docs:sub(param.label[1] + 1, param.label[2])
-                                else
-                                    param_doc = param_doc .. param.label
-                                end
-                                param_doc = ("%s (%s)"):format(
-                                    param_doc,
-                                    param.documentation.value or param.documentation
-                                )
-                                signature[#signature + 1] = commentstring:format(param_doc)
-                            end
-                        end
-                    end
                 end
+
                 if sig.label then
                     signature[#signature + 1] = sig.label
                 end
@@ -471,6 +455,33 @@ function M.accept()
     M.suggestion = ""
 end
 
+function M.accept_word()
+    if #M.suggestion == 0 then
+        return
+    end
+    local match = M.suggestion:match("^.-[%a%d_]+")
+    local word = match or M.suggestion
+    if #word == 0 then
+        return
+    end
+
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+    local suffix = line:sub(col + 1)
+
+    local new_text = overlap(word, suffix)
+    vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { new_text })
+    vim.api.nvim_win_set_cursor(0, { row, col + #word })
+
+    M.suggestion = M.suggestion:sub(#word + 1)
+
+    if #M.suggestion > 0 then
+        M.show_suggestion(M.suggestion, row, col + #word)
+    else
+        M.clear()
+    end
+end
+
 ---@param local_context ai.LocalContext
 function M.suggest(local_context)
     M.cancel()
@@ -540,6 +551,15 @@ vim.api.nvim_create_user_command("AI", function()
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, false, true), "n", false)
             end
             vim.defer_fn(M.accept, 10)
+        end
+    end)
+
+    vim.keymap.set("i", "<C-l>", function()
+        if #M.suggestion > 0 then
+            if vim.fn.pumvisible() == 1 then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, false, true), "n", false)
+            end
+            vim.defer_fn(M.accept_word, 10)
         end
     end)
 
