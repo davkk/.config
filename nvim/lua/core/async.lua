@@ -26,8 +26,9 @@ function M.async(fn)
     end
 end
 
----@param fn function
----@return any
+---@generic T
+---@param fn fun(resume: fun(result: T))
+---@return T
 function M.await(fn)
     assert(coroutine.running(), "await must be called inside a coroutine")
     return coroutine.yield(function(resume)

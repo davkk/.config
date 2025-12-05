@@ -309,14 +309,26 @@ end
 ---@param params table
 local function lsp_request(buf, method, params)
     return function(resume)
-        pcall(vim.lsp.buf_request_all, buf, method, params, function(results)
-            resume(results)
-        end)
+        local supported = false
+        for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
+            if client:supports_method(method) then
+                supported = true
+                break
+            end
+        end
+        if supported then
+            vim.lsp.buf_request_all(buf, method, params, function(results)
+                resume(results)
+            end)
+        else
+            resume {}
+        end
     end
 end
 
 local function is_function(kind)
-    return kind == vim.lsp.protocol.CompletionItemKind.Function or kind == vim.lsp.protocol.CompletionItemKind.Method
+    return kind == vim.lsp.protocol.CompletionItemKind.Function --
+        or kind == vim.lsp.protocol.CompletionItemKind.Method
 end
 
 ---@param line string
@@ -324,20 +336,45 @@ end
 local function get_lsp_context(line)
     local params = vim.lsp.util.make_position_params(0, "utf-8")
 
-    ---@type table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
+    ---@type table<integer, { err: (lsp.ResponseError)?, result: lsp.SignatureHelp, context: lsp.HandlerContext }>
     local sig_resp = async.await(lsp_request(0, "textDocument/signatureHelp", params)) or {}
     local signatures = {}
     for _, resp in ipairs(sig_resp) do
         if resp.err then
             break
         end
-        if resp.result and resp.result.signatures then
-            for _, sig in ipairs(resp.result.signatures) do
+        if resp.result then
+            for _, sig in ipairs(resp.result.signatures or resp.result or {}) do
                 local signature = {}
-                if sig.documentation and sig.documentation.value then
-                    signature[#signature + 1] = vim.api
-                        .nvim_get_option_value("commentstring", { buf = 0 })
-                        :format(sig.documentation.value:gsub("\n", " "))
+                ---@type string
+                local commentstring = vim.api.nvim_get_option_value("commentstring", { buf = 0 }) or "%s"
+                if sig.documentation then
+                    local docs = sig.documentation.value or sig.documentation
+                    local docs_lines = vim.split(docs, "\n")
+                    for i, doc in ipairs(docs_lines) do
+                        if i > 20 then
+                            signature[#signature + 1] = commentstring:format("...")
+                            break
+                        end
+                        signature[#signature + 1] = commentstring:format(doc)
+                    end
+                    if sig.parameters then
+                        for _, param in ipairs(sig.parameters) do
+                            if param.documentation then
+                                local param_doc = "  "
+                                if type(param.label) == "table" then
+                                    param_doc = param_doc .. docs:sub(param.label[1] + 1, param.label[2])
+                                else
+                                    param_doc = param_doc .. param.label
+                                end
+                                param_doc = ("%s (%s)"):format(
+                                    param_doc,
+                                    param.documentation.value or param.documentation
+                                )
+                                signature[#signature + 1] = commentstring:format(param_doc)
+                            end
+                        end
+                    end
                 end
                 if sig.label then
                     signature[#signature + 1] = sig.label
@@ -347,15 +384,15 @@ local function get_lsp_context(line)
         end
     end
 
-    ---@type table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
+    ---@type table<integer, { err: (lsp.ResponseError)?, result: lsp.CompletionList, context: lsp.HandlerContext }>
     local cmp_resp = async.await(lsp_request(0, "textDocument/completion", params)) or {}
     local items = {}
     for _, resp in ipairs(cmp_resp) do
         if resp.err then
             break
         end
-        if resp.result and resp.result.items then
-            for _, item in ipairs(resp.result.items) do
+        if resp.result then
+            for _, item in ipairs(resp.result.items or resp.result or {}) do
                 items[#items + 1] = item
             end
         end
@@ -373,7 +410,7 @@ local function get_lsp_context(line)
         if num_items > 20 then
             break
         end
-        if v.kind ~= 15 and v.label and v.label:sub(1, #keyword) == keyword then
+        if v.kind ~= 15 and v.label:sub(1, #keyword) == keyword then
             local label = ("%s %s"):format(vim.lsp.protocol.CompletionItemKind[v.kind]:lower(), v.label)
             if is_function(v.kind) and not label:match "%(" then
                 label = label .. "("
