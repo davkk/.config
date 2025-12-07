@@ -81,13 +81,13 @@ local function find_context_node()
     end
 
     table.sort(containing_scopes, function(a, b)
-        return a:start() > b:start()
+        return a:start() < b:start()
     end)
 
-    local top_visible_line = vim.fn.line "w0"
-    for _, scope in ipairs(containing_scopes) do
+    if #containing_scopes > 0 then
+        local scope = containing_scopes[1]
         local start_line = scope:start() + 1
-        if start_line < top_visible_line then
+        if start_line < vim.fn.line "w0" then
             return scope
         end
     end
