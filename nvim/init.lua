@@ -33,8 +33,6 @@ vim.o.splitbelow = true
 vim.opt.iskeyword:append "-"
 vim.opt.isfname:append "@-@"
 
-vim.o.updatetime = 50
-
 vim.o.undofile = true
 vim.o.swapfile = false
 vim.o.backup = false

@@ -13,6 +13,21 @@ local async = require "core.async"
 ---@field completions string?
 ---@field signatures string?
 
+---@class ai.Chunk
+---@field filename string
+---@field lines table<string>
+
+local N_PREFIX = 32
+local N_SUFFIX = 16
+
+local CHUNK_SIZE = 32
+
+local MAX_CACHE = 256
+local MAX_TOKENS = 8
+
+local URL = "http://localhost:8012"
+local STOP_CHARS = { "\n", "\r", "\r\n" }
+
 local ns = vim.api.nvim_create_namespace "user.ai"
 local group = vim.api.nvim_create_augroup("ai", { clear = true })
 
@@ -29,15 +44,10 @@ M.current_request_id = 0
 M.cache = {}
 ---@type table<string>
 M.lru = {}
-
-local N_PREFIX = 32
-local N_SUFFIX = 16
-
-local MAX_CACHE = 256
-local MAX_TOKENS = 16
-
-local URL = "http://localhost:8012"
-local STOP_CHARS = { "\n", "\r", "\r\n" }
+---@type table<ai.Chunk>
+M.chunks = {}
+---@type table<ai.Chunk>
+M.chunks_queue = {}
 
 ---@param context ai.LocalContext
 local function get_hash(context)
@@ -80,7 +90,7 @@ end
 
 ---@param local_context ai.LocalContext
 ---@param lsp_context ai.LspContext
-function M.request_infill(local_context, lsp_context)
+M.request_infill = utils.debounce(function(local_context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
         return
     end
@@ -93,17 +103,18 @@ function M.request_infill(local_context, lsp_context)
     local request_id = M.current_request_id
 
     local input_extra = {}
-    if lsp_context.completions then
+    -- TODO: store chunks as filename + text instead of lines
+    for _, chunk in ipairs(M.chunks) do
         input_extra[#input_extra + 1] = {
-            filename = "in_scope_symbols",
-            text = lsp_context.completions,
+            filename = chunk.filename,
+            text = table.concat(chunk.lines, "\n") .. "\n",
         }
     end
+    if lsp_context.completions then
+        input_extra[#input_extra + 1] = { text = lsp_context.completions }
+    end
     if lsp_context.signatures then
-        input_extra[#input_extra + 1] = {
-            filename = "active_call_hint",
-            text = lsp_context.signatures,
-        }
+        input_extra[#input_extra + 1] = { text = lsp_context.signatures }
     end
 
     local stop = utils.tbl_copy(STOP_CHARS)
@@ -123,6 +134,7 @@ function M.request_infill(local_context, lsp_context)
         input_extra = input_extra,
         cache_prompt = true,
         max_tokens = MAX_TOKENS,
+        n_predict = MAX_TOKENS,
         top_k = 40,
         top_p = 0.5,
         repeat_penalty = 1.3,
@@ -167,10 +179,10 @@ function M.request_infill(local_context, lsp_context)
     end
     M.stdout:read_start(function(_, chunk)
         if chunk then
-            M.on_chunk(chunk, local_context, request_id, row, col)
+            M.on_stream_chunk(chunk, local_context, request_id, row, col)
         end
     end)
-end
+end, 100)
 
 ---@param text string
 ---@param row number
@@ -188,7 +200,7 @@ end
 ---@param request_id number
 ---@param row number
 ---@param col number
-function M.on_chunk(chunk, context, request_id, row, col)
+function M.on_stream_chunk(chunk, context, request_id, row, col)
     if request_id ~= M.current_request_id then
         return
     end
@@ -353,7 +365,7 @@ local function get_lsp_context(line)
                     local docs_lines = vim.split(docs, "\n")
                     for i, doc in ipairs(docs_lines) do
                         if i > 20 then
-                            signature[#signature + 1] = commentstring:format("...")
+                            signature[#signature + 1] = commentstring:format "..."
                             break
                         end
                         signature[#signature + 1] = commentstring:format(doc)
@@ -370,14 +382,14 @@ local function get_lsp_context(line)
 
     ---@type table<integer, { err: (lsp.ResponseError)?, result: lsp.CompletionList, context: lsp.HandlerContext }>
     local cmp_resp = async.await(lsp_request(0, "textDocument/completion", params)) or {}
-    local items = {}
+    local cmp_items = {}
     for _, resp in ipairs(cmp_resp) do
         if resp.err then
             break
         end
         if resp.result then
             for _, item in ipairs(resp.result.items or resp.result or {}) do
-                items[#items + 1] = item
+                cmp_items[#cmp_items + 1] = item
             end
         end
     end
@@ -387,14 +399,14 @@ local function get_lsp_context(line)
     local keyword = s and line:sub(s + 1, e) or ""
 
     local completions = {}
-    local tokenize_promises = {}
+    local tokenize = {}
 
     local num_items = 0
-    for _, v in ipairs(items) do
+    for _, v in ipairs(cmp_items) do
         if num_items > 20 then
             break
         end
-        if v.kind ~= 15 and v.label:sub(1, #keyword) == keyword then
+        if v.kind ~= vim.lsp.protocol.CompletionItemKind.Snippet and v.label:sub(1, #keyword) == keyword then
             local label = ("%s %s"):format(vim.lsp.protocol.CompletionItemKind[v.kind]:lower(), v.label)
             if is_function(v.kind) and not label:match "%(" then
                 label = label .. "("
@@ -408,30 +420,28 @@ local function get_lsp_context(line)
             if is_function(v.kind) and not content:match "%(" then
                 content = content .. "("
             end
-            tokenize_promises[#tokenize_promises + 1] = request_json(
-                "tokenize",
-                vim.json.encode {
-                    content = content,
-                    with_pieces = true,
-                }
-            )
+            tokenize[#tokenize + 1] = content
 
             num_items = num_items + 1
         end
     end
 
-    local err_all, all_tokens = async.all(tokenize_promises)
-    if err_all ~= nil then
+    local err, tokenize_resp = async.await(request_json(
+        "tokenize",
+        vim.json.encode {
+            content = tokenize,
+            with_pieces = true,
+        }
+    ))
+    if err ~= nil then
         return {}
     end
 
     local logit_bias = {}
-    for _, tokens in ipairs(all_tokens or {}) do
-        for _, token in ipairs(tokens.tokens) do
-            local piece = token.piece
-            if not logit_bias[piece] then
-                logit_bias[piece] = 2
-            end
+    for _, token in ipairs(tokenize_resp.tokens or {}) do
+        local piece = token.piece
+        if not logit_bias[piece] then
+            logit_bias[piece] = 2
         end
     end
 
@@ -459,7 +469,7 @@ function M.accept_word()
     if #M.suggestion == 0 then
         return
     end
-    local match = M.suggestion:match("^.-[%a%d_]+")
+    local match = M.suggestion:match "^.-[%a%d_]+"
     local word = match or M.suggestion
     if #word == 0 then
         return
@@ -531,16 +541,98 @@ function M.suggest(local_context)
     end
 
     async.async(function()
-        local lsp_context = get_lsp_context(local_context.middle)
-
         if M.request_id ~= this_generation then
             return
         end
 
         M.current_request_id = this_generation
+
+        local lsp_context = get_lsp_context(local_context.middle)
         vim.schedule(function()
             M.request_infill(local_context, lsp_context)
         end)
+    end)()
+end
+
+---@param text string
+local function trim(text)
+    return text:gsub("^%s+", ""):gsub("^\t+", "")
+end
+
+---@param buf number
+---@param row number
+function M.try_add_chunk(buf, row)
+    local chunk_start = row - CHUNK_SIZE / 2 - 1
+    local chunk_end = row + CHUNK_SIZE / 2
+
+    local max_line_nr = vim.api.nvim_buf_line_count(buf)
+
+    if chunk_start < 0 then
+        chunk_end = math.min(chunk_end + math.abs(chunk_start), max_line_nr)
+        chunk_start = 0
+    elseif chunk_end > max_line_nr then
+        chunk_start = math.max(chunk_start - (chunk_end - max_line_nr), 0)
+        chunk_end = max_line_nr
+    end
+
+    local lines = vim.api.nvim_buf_get_lines(buf, chunk_start, chunk_end, true)
+    lines = vim.tbl_filter(function(line)
+        return #trim(line) > 0
+    end, lines)
+
+    ---@type ai.Chunk
+    local new_chunk = {
+        filename = vim.api.nvim_buf_get_name(buf),
+        lines = lines,
+    }
+
+    -- TODO: chunks should have unique lines between them
+    for idx, chunk in ipairs(M.chunks) do
+        local common = 0
+        local chunk_lines = {}
+        for _, line1 in ipairs(chunk.lines) do
+            chunk_lines[line1] = true
+        end
+        for _, line2 in ipairs(lines) do
+            if chunk_lines[line2] then
+                common = common + 1
+            end
+        end
+        if 2 * common / (#lines + #chunk.lines) > 0.8 then
+            table.remove(M.chunks, idx)
+        end
+    end
+
+    if #M.chunks + 1 > 16 then
+        table.remove(M.chunks, 1)
+    end
+
+    M.chunks[#M.chunks + 1] = new_chunk
+
+    local input_extra = {}
+    for _, chunk in ipairs(M.chunks) do
+        input_extra[#input_extra + 1] = {
+            filename = chunk.filename,
+            text = table.concat(chunk.lines, "\n") .. "\n",
+        }
+    end
+
+    async.async(function()
+        async.await(request_json(
+            "infill",
+            vim.json.encode {
+                input_prefix = "",
+                prompt = "",
+                input_suffix = "",
+                input_extra = input_extra,
+                cache_prompt = true,
+                samplers = {},
+                n_predict = 0,
+                max_tokens = 0,
+                t_max_predict_ms = 1,
+                response_fields = { "" },
+            }
+        ))
     end)()
 end
 
@@ -585,6 +677,14 @@ vim.api.nvim_create_user_command("AI", function()
         callback = function()
             M.clear()
             M.cancel()
+        end,
+    })
+
+    vim.api.nvim_create_autocmd({ "CursorHold", "BufWritePost" }, {
+        group = group,
+        callback = function(ev)
+            local row = unpack(vim.api.nvim_win_get_cursor(0))
+            M.try_add_chunk(ev.buf, row)
         end,
     })
 end, {})
