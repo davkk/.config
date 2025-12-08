@@ -571,10 +571,17 @@ function M.try_add_chunk(buf, row)
         chunk_end = max_line_nr
     end
 
-    local lines = vim.api.nvim_buf_get_lines(buf, chunk_start, chunk_end, true)
+    assert(chunk_start < chunk_end)
+
+    local lines = vim.api.nvim_buf_get_lines(buf, chunk_start, chunk_end, false)
     lines = vim.tbl_filter(function(line)
         return #trim(line) > 0
     end, lines)
+
+    -- skip small chunks
+    if #lines < 5 then
+        return
+    end
 
     ---@type ai.Chunk
     local new_chunk = {
