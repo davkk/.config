@@ -34,7 +34,6 @@ local group = vim.api.nvim_create_augroup("ai", { clear = true })
 M.handle = nil
 M.stdin = nil
 M.stdout = nil
-M.extmark_id = nil
 
 M.suggestion = ""
 
@@ -89,10 +88,15 @@ function M.cache_get(context)
     return value
 end
 
+---@param request_id number
 ---@param local_context ai.LocalContext
 ---@param lsp_context ai.LspContext
-M.request_infill = utils.debounce(function(local_context, lsp_context)
+function M.request_infill(request_id, local_context, lsp_context)
     if vim.bo.readonly or vim.bo.buftype ~= "" then
+        return
+    end
+
+    if request_id ~= M.current_request_id then
         return
     end
 
@@ -101,7 +105,6 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
     M.suggestion = ""
 
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    local request_id = M.current_request_id
 
     local input_extra = {}
     -- TODO: store chunks as filename + text instead of lines
@@ -183,25 +186,26 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
             M.on_stream_chunk(chunk, local_context, request_id, row, col)
         end
     end)
-end, 50)
+end
 
 ---@param text string
 ---@param row number
 ---@param col number
 function M.show_suggestion(text, row, col)
-    M.extmark_id = vim.api.nvim_buf_set_extmark(0, ns, row - 1, col, {
-        id = M.extmark_id,
-        virt_text = { { text, "Comment" } },
-        virt_text_pos = "overlay",
-    })
+    if vim.api.nvim_get_mode().mode:sub(1, 1) == "i" then
+        pcall(vim.api.nvim_buf_set_extmark, 0, ns, row - 1, col, {
+            virt_text = { { text, "Comment" } },
+            virt_text_pos = "overlay",
+        })
+    end
 end
 
 ---@param chunk string
----@param context ai.LocalContext
+---@param local_context ai.LocalContext
 ---@param request_id number
 ---@param row number
 ---@param col number
-function M.on_stream_chunk(chunk, context, request_id, row, col)
+function M.on_stream_chunk(chunk, local_context, request_id, row, col)
     if request_id ~= M.current_request_id then
         return
     end
@@ -219,9 +223,12 @@ function M.on_stream_chunk(chunk, context, request_id, row, col)
             end
             M.suggestion = M.suggestion .. text
             vim.schedule(function()
+                if request_id ~= M.current_request_id then
+                    return
+                end
                 M.show_suggestion(M.suggestion, row, col)
-                if request_id == M.current_request_id and M.suggestion and #M.suggestion > 0 then
-                    M.cache_add(context, M.suggestion)
+                if M.suggestion and #M.suggestion > 0 then
+                    M.cache_add(local_context, M.suggestion)
                 end
             end)
         end
@@ -229,14 +236,16 @@ function M.on_stream_chunk(chunk, context, request_id, row, col)
 end
 
 function M.clear()
-    if M.extmark_id then
-        vim.api.nvim_buf_del_extmark(0, ns, M.extmark_id)
-    end
-    M.extmark_id = nil
+    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 end
 
 function M.cancel()
     pcall(function()
+        if M.handle and M.handle:is_active() then
+            M.handle:kill()
+            M.handle:close()
+            M.handle = nil
+        end
         if M.stdin then
             M.stdin:close()
             M.stdin = nil
@@ -244,10 +253,6 @@ function M.cancel()
         if M.stdout then
             M.stdout:close()
             M.stdout = nil
-        end
-        if M.handle then
-            M.handle:close()
-            M.handle = nil
         end
     end)
 end
@@ -487,7 +492,8 @@ function M.suggest(local_context)
     M.suggestion = ""
 
     M.request_id = M.request_id + 1
-    local this_generation = M.request_id
+    local request_id = M.request_id
+    M.current_request_id = request_id
 
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local best = ""
@@ -522,22 +528,24 @@ function M.suggest(local_context)
     end
 
     if #best > 0 then
-        M.current_request_id = this_generation
+        if request_id ~= M.current_request_id then
+            return
+        end
         M.suggestion = best
         M.show_suggestion(best, row, col)
         return
     end
 
     async.async(function()
-        if M.request_id ~= this_generation then
+        if request_id ~= M.current_request_id then
             return
         end
-
-        M.current_request_id = this_generation
-
         local lsp_context = get_lsp_context(local_context.middle)
         vim.schedule(function()
-            M.request_infill(local_context, lsp_context)
+            if request_id ~= M.current_request_id then
+                return
+            end
+            M.request_infill(request_id, local_context, lsp_context)
         end)
     end)()
 end
@@ -648,7 +656,9 @@ vim.api.nvim_create_user_command("AI", function()
             local local_context = get_local_context()
             local lsp_context = get_lsp_context(local_context.middle)
             vim.schedule(function()
-                M.request_infill(local_context, lsp_context)
+                M.request_id = M.request_id + 1
+                M.current_request_id = M.request_id
+                M.request_infill(M.current_request_id, local_context, lsp_context)
             end)
         end)()
     end)

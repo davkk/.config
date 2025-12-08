@@ -37,42 +37,4 @@ function M.await(fn)
     end)
 end
 
----@param tasks table
----@return any, table?
-function M.all(tasks)
-    local count = #tasks
-    if count == 0 then
-        return nil, {}
-    end
-    return M.await(function(resume)
-        assert(type(resume) == "function", "internal resume must be a function")
-
-        local remaining = count
-        local results = {}
-        local done = false
-
-        for i, task in ipairs(tasks) do
-            task(function(err, ...)
-                if done then
-                    return
-                end
-
-                if err ~= nil then
-                    done = true
-                    resume(err)
-                    return
-                end
-
-                results[i] = ...
-                remaining = remaining - 1
-
-                if remaining == 0 then
-                    done = true
-                    resume(nil, results)
-                end
-            end)
-        end
-    end)
-end
-
 return M
