@@ -32,6 +32,7 @@ local ns = vim.api.nvim_create_namespace "user.ai"
 local group = vim.api.nvim_create_augroup("ai", { clear = true })
 
 M.handle = nil
+M.stdin = nil
 M.stdout = nil
 M.extmark_id = nil
 
@@ -146,6 +147,7 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
     }
 
     M.stdout = vim.uv.new_pipe(false)
+    M.stdin = vim.uv.new_pipe(false)
     M.handle = vim.uv.spawn("curl", {
         args = {
             ("%s/infill"):format(URL),
@@ -155,9 +157,9 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
             "-H",
             "Content-Type: application/json",
             "-d",
-            payload,
+            "@-",
         },
-        stdio = { nil, M.stdout },
+        stdio = { M.stdin, M.stdout },
     }, function(code)
         if M.stdout then
             M.stdout:close()
@@ -173,16 +175,15 @@ M.request_infill = utils.debounce(function(local_context, lsp_context)
             end)
         end
     end)
-    if not M.handle then
-        vim.notify("Failed to spawn curl process", vim.diagnostic.severity.ERROR)
-        return
-    end
+    M.stdin:write(payload, function()
+        M.stdin:close()
+    end)
     M.stdout:read_start(function(_, chunk)
         if chunk then
             M.on_stream_chunk(chunk, local_context, request_id, row, col)
         end
     end)
-end, 100)
+end, 50)
 
 ---@param text string
 ---@param row number
@@ -228,12 +229,18 @@ function M.on_stream_chunk(chunk, context, request_id, row, col)
 end
 
 function M.clear()
-    vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
+    if M.extmark_id then
+        vim.api.nvim_buf_del_extmark(0, ns, M.extmark_id)
+    end
     M.extmark_id = nil
 end
 
 function M.cancel()
     pcall(function()
+        if M.stdin then
+            M.stdin:close()
+            M.stdin = nil
+        end
         if M.stdout then
             M.stdout:close()
             M.stdout = nil
@@ -283,36 +290,17 @@ end
 ---@param payload string
 local function request_json(route, payload)
     return function(resume)
-        local stdout_chunks = {}
-        local stderr_chunks = {}
-        vim.fn.jobstart({
-            "curl",
-            ("%s/%s"):format(URL, route),
-            "--request",
-            "POST",
-            "-H",
-            "Content-Type: application/json",
-            "-d",
-            payload,
-        }, {
-            on_stdout = function(_, data)
-                if data then
-                    stdout_chunks[#stdout_chunks + 1] = table.concat(data, "\n")
-                end
-            end,
-            on_stderr = function(_, data)
-                if data then
-                    stderr_chunks[#stderr_chunks + 1] = table.concat(data, "\n")
-                end
-            end,
-            on_exit = function(_, code)
-                if code == 0 then
-                    resume(nil, vim.json.decode(table.concat(stdout_chunks)))
+        vim.system(
+            { "curl", ("%s/%s"):format(URL, route), "-X", "POST", "-H", "Content-Type: application/json", "-d", "@-" },
+            { stdin = payload },
+            function(result)
+                if result.code == 0 then
+                    resume(nil, vim.json.decode(result.stdout))
                 else
-                    resume(table.concat(stderr_chunks))
+                    resume(result.stderr)
                 end
-            end,
-        })
+            end
+        )
     end
 end
 
