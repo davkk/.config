@@ -25,7 +25,7 @@ set $down j
 set $up k
 set $right l
 set $term wezterm
-set $browser brave-browser
+set $browser zen
 set $menu j4-dmenu-desktop
 set $rotation $HOME/.cargo/bin/rot8 -d eDP-1 --normalization-factor 10 -k &
 set $wallpaper $HOME/Pictures/wallpaper.jpg
