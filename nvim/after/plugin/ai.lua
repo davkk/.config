@@ -23,7 +23,7 @@ local N_SUFFIX = 16
 local CHUNK_SIZE = 32
 
 local MAX_CACHE = 256
-local MAX_TOKENS = 8
+local MAX_TOKENS = 16
 
 local URL = "http://localhost:8012"
 local STOP_CHARS = { "\n", "\r", "\r\n" }
@@ -46,8 +46,6 @@ M.cache = {}
 M.lru = {}
 ---@type table<ai.Chunk>
 M.chunks = {}
----@type table<ai.Chunk>
-M.chunks_queue = {}
 
 ---@param context ai.LocalContext
 local function get_hash(context)
@@ -321,13 +319,29 @@ local function lsp_request(buf, method, params)
                 break
             end
         end
-        if supported then
-            vim.lsp.buf_request_all(buf, method, params, function(results)
-                resume(results)
-            end)
-        else
+        if not supported then
             resume {}
+            return
         end
+        local done = false
+        local timer = vim.uv.new_timer() ---@cast timer uv.uv_timer_t
+        local cancel_lsp_req = vim.lsp.buf_request_all(buf, method, params, function(results)
+            if not done then
+                done = true
+                timer:stop()
+                timer:close()
+                resume(results)
+            end
+        end)
+        timer:start(500, 0, function()
+            if not done then
+                done = true
+                vim.schedule(cancel_lsp_req)
+                timer:stop()
+                timer:close()
+                resume {}
+            end
+        end)
     end
 end
 
@@ -558,6 +572,10 @@ end
 ---@param buf number
 ---@param row number
 function M.try_add_chunk(buf, row)
+    if vim.bo.readonly or vim.bo.buftype ~= "" then
+        return
+    end
+
     local chunk_start = row - CHUNK_SIZE / 2 - 1
     local chunk_end = row + CHUNK_SIZE / 2
 
