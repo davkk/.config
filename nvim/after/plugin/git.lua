@@ -36,7 +36,6 @@ local function git_diff(ref)
     end
 
     local relpath = fullpath:sub(#root_dir + 2)
-    print(root_dir, fullpath, relpath)
 
     local lstree_res = vim.system({ "git", "ls-tree", ref, "--", relpath }, { cwd = root_dir }):wait()
     if lstree_res.code ~= 0 then
