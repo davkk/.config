@@ -6,7 +6,8 @@ local query_cache = {}
 ---@return vim.treesitter.Query?
 local function get_locals_query(lang)
     if query_cache[lang] == nil then
-        query_cache[lang] = vim.treesitter.query.get(lang, "locals") or nil
+        local ok, query = pcall(vim.treesitter.query.get, lang, "locals")
+        query_cache[lang] = ok and query or nil
     end
     return query_cache[lang]
 end

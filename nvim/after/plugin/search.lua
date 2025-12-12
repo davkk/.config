@@ -33,6 +33,7 @@ if vim.fn.executable "rg" == 1 then
         "--no-heading",
         "--smart-case",
         "--hidden",
+        "--glob=!.git",
     }, " ")
     vim.opt.grepformat:append "%f:%l:%c:%m"
 end
@@ -61,7 +62,6 @@ vim.api.nvim_create_autocmd("CmdlineChanged", {
         if vim.api.nvim_get_mode().mode == "c" then
             vim.opt.wildmenu = true
             vim.opt.wildmode = "noselect,full:full"
-            vim.fn.wildtrigger()
         end
     end,
 })
