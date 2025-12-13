@@ -43,16 +43,13 @@ config.underline_thickness = "0.08cell"
 config.tab_bar_at_bottom = true
 config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
-config.tab_max_width = 100
+config.show_close_tab_button_in_tabs = false
+config.tab_max_width = 50
 
 wezterm.on("format-tab-title", function(tab)
-    local tab_title = tab.tab_title
-    local pane_title = tab.active_pane.title
     return {
         { Background = { Color = "#000000" } },
-        { Text = " " },
-        { Text = (tab_title and #tab_title > 0) and tab_title or pane_title },
-        { Text = " " },
+        { Text = (" [%d] "):format(tab.tab_index + 1) },
     }
 end)
 
