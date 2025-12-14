@@ -56,16 +56,6 @@ vim.keymap.set({ "n", "v" }, "<leader>gw", function()
     vim.cmd("sil! gr! -U --fixed-strings -- " .. vim.fn.shellescape(input))
 end, { desc = "grep cword" })
 
-vim.api.nvim_create_autocmd("CmdlineChanged", {
-    group = group,
-    callback = function()
-        if vim.api.nvim_get_mode().mode == "c" then
-            vim.opt.wildmenu = true
-            vim.opt.wildmode = "noselect,full:full"
-        end
-    end,
-})
-
 vim.api.nvim_create_autocmd("QuickFixCmdPost", {
     group = group,
     pattern = { "[^l]*" },

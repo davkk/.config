@@ -132,7 +132,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
             vim.lsp.completion.enable(true, client.id, event.buf, {
-                autotrigger = true,
                 convert = function(item)
                     local limit = vim.o.columns * 0.4
                     local label = item.label

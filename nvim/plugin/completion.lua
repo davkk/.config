@@ -25,7 +25,7 @@ end, { expr = true })
 vim.api.nvim_create_autocmd("InsertCharPre", {
     group = vim.api.nvim_create_augroup("user.completion", { clear = true }),
     callback = utils.debounce(function()
-        if tonumber(vim.fn.pumvisible()) == 0 and #vim.lsp.get_clients() > 0 then
+        if tonumber(vim.fn.pumvisible()) ~= 0 and #vim.lsp.get_clients() > 0 then
             vim.schedule(function()
                 pcall(vim.lsp.completion.get)
             end)
