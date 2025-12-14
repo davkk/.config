@@ -5,12 +5,10 @@ local keep_open = false
 vim.api.nvim_create_autocmd("CmdlineChanged", {
     group = group,
     callback = function()
-        if vim.api.nvim_get_mode().mode == "c" then
+        if vim.api.nvim_get_mode().mode == "c" and keep_open then
             vim.opt.wildmenu = true
             vim.opt.wildmode = "noselect,full:full"
-            if keep_open then
-                vim.fn.wildtrigger()
-            end
+            vim.fn.wildtrigger()
         end
     end,
 })
@@ -24,11 +22,17 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 
 vim.keymap.set("c", "<C-n>", function()
     keep_open = true
-    vim.fn.wildtrigger()
+    vim.opt.wildmenu = true
+    vim.opt.wildmode = "noselect,full:full"
+    if vim.fn.wildmenumode() == 1 then
+        return "<C-n>"
+    else
+        vim.fn.wildtrigger()
+        return ""
+    end
 end, { expr = true })
 
 vim.keymap.set("c", "<C-e>", function()
     keep_open = false
     return "<C-e>"
 end, { expr = true })
-
