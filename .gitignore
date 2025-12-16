@@ -50,3 +50,6 @@ tmux/plugins
 !xdg-desktop-portal/portals.conf
 
 !iosevka-build.toml
+
+!foot/
+!foot/foot.ini
