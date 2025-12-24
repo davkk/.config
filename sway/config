@@ -1,5 +1,5 @@
 # Read `man 5 sway` for a complete reference.
-font pango:Iosevka,monospace 18px
+font pango:Iosevka,monospace 16px
 
 xwayland enable
 
@@ -8,8 +8,8 @@ xwayland enable
 ##
 
 #              border background text
-client.focused #222222 #222222 #ffffff
-client.focused_inactive #222222 #222222 #ffffff
+client.focused #111111 #111111 #ffffff
+client.focused_inactive #111111 #111111 #ffffff
 client.unfocused #000000 #000000 #888888
 client.urgent #900000 #900000 #ffffff
 client.placeholder #000000 #000000 #ffffff
@@ -23,9 +23,9 @@ set $left h
 set $down j
 set $up k
 set $right l
-set $term wezterm
-set $browser zen
-set $menu j4-dmenu-desktop
+set $term foot
+set $browser brave-browser
+set $menu fuzzel
 set $rotation $HOME/.cargo/bin/rot8 -d eDP-1 --normalization-factor 10 -k &
 set $wallpaper $HOME/Pictures/wallpaper.jpg
 set $default_light 20
@@ -248,7 +248,7 @@ bar {
     tray_output none
     colors {
         statusline #888888
-        focused_workspace   #222222 #222222 #ffffff
+        focused_workspace   #111111 #111111 #ffffff
         inactive_workspace  #000000 #000000 #888888
     }
 }
@@ -273,29 +273,22 @@ seat seat0 xcursor_theme Adwaita $cursor_size
 # app settings
 ##
 
-for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 for_window [app_id="org.mozilla.thunderbird" title="Work Online"] floating enable
 for_window [app_id="blueman-manager"] floating enable
 for_window [class="1Password"] floating enable
-for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
+# for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
 for_window [title="Emulator*"] floating enable
-for_window [app_id="python3"] floating enable
 for_window [app_id="gnuplot_qt"] floating enable, resize set width 1000 px height 800 px
-for_window [class="Xplot"] floating enable
-for_window [class="Matplotlib"] floating enable, resize set width 1000 px height 800 px
-for_window [class="matplotlib"] floating enable, resize set width 1000 px height 800 px
-for_window [class="ROOT"] floating enable, resize set width 1000 px height 800 px
-for_window [class="org-openscience-jmol-app-jmolpanel-JmolPanel"] floating enable
-for_window [title="Picture in picture"] floating enable, resize set width 640 px height 360 px, move position 0 px 0 px, sticky on
 for_window [title="Friends List" class="steam"] floating enable
 for_window [title="Steam Settings" class="steam"] floating enable
+for_window [app_id = "xdg-desktop-portal-gtk"] floating enable;
 for_window [window_role="About"] floating enable
 for_window [window_role="Preferences"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-for_window [title="Data: *"] floating enable, resize set width 1000 px height 800 px
-for_window [title="R Graphics: *"] floating enable, resize set width 1000 px height 800 px
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 
 ##
 # startup
@@ -316,6 +309,6 @@ exec $rotation
 
 assign [class="thunderbird"] 5
 
-exec swaymsg 'workspace 5; exec thunderbird'
-exec swaymsg 'workspace 3; exec $term'
 exec swaymsg 'workspace 2; exec $browser'
+exec swaymsg 'workspace 3; exec $term'
+exec swaymsg 'workspace 5; exec thunderbird'
