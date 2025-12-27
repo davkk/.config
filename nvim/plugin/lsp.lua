@@ -24,8 +24,6 @@ vim.lsp.config("clangd", {
     },
     single_file_support = false,
     init_options = {
-        usePlaceholders = true,
-        completeUnimported = true,
         clangdFileStatus = true,
     },
 })
@@ -61,8 +59,7 @@ vim.lsp.config("ocamllsp", {
     },
 })
 
-vim.lsp.config("pyright", {
-    root_markers = { "pyproject.toml" },
+vim.lsp.config("basedpyright", {
     settings = {
         python = {
             analysis = { typeCheckingMode = "basic" },
@@ -80,14 +77,15 @@ vim.lsp.config("zls", {
 
 vim.lsp.enable {
     "lua_ls",
-    "ts_ls",
-    "angularls",
+    -- "ts_ls",
+    "tsgo",
+    -- "angularls",
     "jsonls",
     "cssls",
     "clangd",
     "ocamllsp",
-    "ruff",
-    "pyright",
+    -- "ruff",
+    "basedpyright",
     "gopls",
     "marksman",
     "texlab",
@@ -123,9 +121,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf })
         vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { buffer = event.buf })
 
-        if client.server_capabilities.completionProvider then
-            vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-        end
+        vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
         if client.server_capabilities.definitionProvider then
             vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
         end
