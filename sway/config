@@ -1,5 +1,5 @@
 # Read `man 5 sway` for a complete reference.
-font pango:Iosevka,monospace 16px
+font pango:monospace 16px
 
 xwayland enable
 
@@ -309,6 +309,6 @@ exec $rotation
 
 assign [class="thunderbird"] 5
 
-exec swaymsg 'workspace 2; exec $browser'
-exec swaymsg 'workspace 3; exec $term'
 exec swaymsg 'workspace 5; exec thunderbird'
+exec swaymsg 'workspace 3; exec $term'
+exec swaymsg 'workspace 2; exec $browser'

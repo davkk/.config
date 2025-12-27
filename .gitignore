@@ -53,3 +53,6 @@ tmux/plugins
 
 !foot/
 !foot/foot.ini
+
+!fuzzel/
+!fuzzel/fuzzel.ini
