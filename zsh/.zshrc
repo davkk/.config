@@ -101,6 +101,8 @@ bindkey "\e[3~" delete-char
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+eval $(luarocks path 2>/dev/null) 2>/dev/null
+
 [[ ! -r /home/davkk/.opam/opam-init/init.zsh ]] || source /home/davkk/.opam/opam-init/init.zsh > /dev/null 2> /dev/null
 eval $(opam env 2>/dev/null) 2>/dev/null
 
