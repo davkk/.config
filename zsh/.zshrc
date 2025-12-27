@@ -76,11 +76,11 @@ export PATH=$PATH:$ZVM_INSTALL/
 
 export FZF_BASE=$(which fzf)
 export FZF_DEFAULT_OPTS="
---color=fg:#e0e2ea,bg:#2c2e33,hl:#a6dbff
---color=fg+:#eef1f8,bg+:#4f5258,hl+:#8cf8f7
---color=border:#4f5258,header:#c4c6cd,gutter:#2c2e33
---color=spinner:#fce094,info:#9b9ea4
---color=pointer:#a6dbff,marker:#b4f6c0,prompt:#a6dbff
+--color=fg:#888888,bg:#111111,hl:#ffffff
+--color=fg+:#888888,bg+:#222222,hl+:#ffffff
+--color=border:#222222,header:#888888,gutter:#111111
+--color=spinner:#ffffff,info:#888888
+--color=pointer:#ffffff,marker:#ffffff,prompt:#ffffff
 --bind ctrl-y:accept
 "
 
