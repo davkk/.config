@@ -56,3 +56,9 @@ tmux/plugins
 
 !fuzzel/
 !fuzzel/fuzzel.ini
+
+!alacritty/
+!alacritty/**
+
+!fontconfig/
+!fontconfig/**
